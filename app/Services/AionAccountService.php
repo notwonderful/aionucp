@@ -17,4 +17,14 @@ class AionAccountService
                 'password' => base64_encode(sha1($userData->password, true)),
             ]);
     }
+
+    public function updatePassword(int $aionAccountId, string $password): void
+    {
+        DB::connection('aiondb')
+            ->table('account_data')
+            ->where('id', $aionAccountId)
+            ->update([
+                'password' => base64_encode(sha1($password, true)),
+            ]);
+    }
 }
