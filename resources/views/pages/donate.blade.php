@@ -23,7 +23,7 @@
                         <div>
                             <x-input-label for="amount" :value="__('Amount')" />
                             <x-text-input id="amount" name="amount" type="number" class="mt-1 block w-full" :value="old('amount', 1)" autocomplete="amount" />
-                            <x-input-error :messages="$errors->create->get('amount')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('amount')" class="mt-2" />
                         </div>
 
                         <div>
@@ -37,7 +37,7 @@
                                 :value="old('currency')"
                                 class="mt-1 block w-full"
                             />
-                            <x-input-error :messages="$errors->store->get('currency')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('currency')" class="mt-2" />
                         </div>
 
                         <div>
@@ -50,7 +50,7 @@
                                 :value="old('payment_system')"
                                 class="mt-1 block w-full"
                             />
-                            <x-input-error :messages="$errors->store->get('payment_system')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('payment_system')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center gap-4">
