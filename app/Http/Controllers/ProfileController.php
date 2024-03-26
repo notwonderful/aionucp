@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Auth\UpdateUserEmail;
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\DonateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -24,7 +24,7 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request, UpdateUserEmail $updateUserEmail): RedirectResponse
+    public function update(DonateRequest $request, UpdateUserEmail $updateUserEmail): RedirectResponse
     {
         $request->user()->fill($request->validated());
 

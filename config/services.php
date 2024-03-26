@@ -14,6 +14,11 @@ return [
     |
     */
 
+    'palych' => [
+        'shop_id' => env('PALYCH_SHOP_ID'),
+        'token' => env('PALYCH_TOKEN'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
