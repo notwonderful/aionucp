@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DataTransferObjects\UserData;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class AionAccountService
@@ -36,5 +37,18 @@ class AionAccountService
             ->update([
                 'email' => $email,
             ]);
+    }
+
+    public function getAccountBalance(int $userId)
+    {
+        $cacheKey = "account_balance_{$userId}";
+
+        return Cache::remember($cacheKey, 900, function () use ($userId) {
+            return DB::connection('aiondb')
+                ->table('account_data')
+                ->where('id', $userId)
+                ->select('toll')
+                ->value('toll') ?? 0;
+        });
     }
 }
