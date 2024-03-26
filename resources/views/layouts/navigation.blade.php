@@ -2,7 +2,7 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex items-center">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="dark:text-white">
@@ -19,7 +19,7 @@
 
                 <x-dropdown>
                     <x-slot name="trigger">
-                        <button class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                        <button class="hidden sm:ms-10 sm:flex items-center border border-transparent text-sm font-medium leading-5 rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ __('Rating') }}</div>
 
                             <div class="ms-1">
@@ -31,8 +31,8 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                        <x-dropdown-link :href="route('rating.abyss')">
+                            {{ __('Abyss') }}
                         </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
