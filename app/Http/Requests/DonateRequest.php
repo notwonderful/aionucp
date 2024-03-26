@@ -16,7 +16,7 @@ class DonateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => ['required', 'int'],
+            'amount' => ['required', 'int', 'min:10', 'max:10000'],
             'currency' => ['required','string', Rule::enum(Currency::class)],
             'payment_system' => ['required', 'string'],
         ];

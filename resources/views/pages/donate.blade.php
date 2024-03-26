@@ -22,7 +22,7 @@
 
                         <div>
                             <x-input-label for="amount" :value="__('Amount')" />
-                            <x-text-input id="amount" name="amount" type="number" class="mt-1 block w-full" :value="old('amount', 1)" autocomplete="amount" />
+                            <x-text-input id="amount" name="amount" type="number" class="mt-1 block w-full" :value="old('amount', 10)" autocomplete="amount" />
                             <x-input-error :messages="$errors->get('amount')" class="mt-2" />
                         </div>
 
