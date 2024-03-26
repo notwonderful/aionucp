@@ -27,4 +27,14 @@ class AionAccountService
                 'password' => base64_encode(sha1($password, true)),
             ]);
     }
+
+    public function updateEmail(int $aionAccountId, string $email): void
+    {
+        DB::connection('aiondb')
+            ->table('account_data')
+            ->where('id', $aionAccountId)
+            ->update([
+                'email' => $email,
+            ]);
+    }
 }
