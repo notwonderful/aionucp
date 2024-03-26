@@ -10,12 +10,13 @@ class PaymentService
 {
     protected PaymentGatewayContract $paymentGateway;
 
-    public function createPayment(int $amount, string $currency, string $paymentSystem, int $userId, PaymentGatewayContract $paymentGateway): RedirectResponse
+    public function createPayment(float $amount, int $toll, string $currency, string $paymentSystem, int $userId, PaymentGatewayContract $paymentGateway): RedirectResponse
     {
         $this->paymentGateway = $paymentGateway;
 
         $donate = Donate::create([
             'amount' => $amount,
+            'toll' => $toll,
             'currency' => $currency,
             'payment_system' => $paymentSystem,
             'user_id' => $userId,

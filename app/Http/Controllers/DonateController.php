@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\ConvertCurrencyAction;
 use App\Http\Requests\DonateRequest;
 use App\Services\Payments\Contracts\PaymentGatewayContract;
 use App\Services\Payments\Gateways\PalychGateway;
@@ -15,12 +16,15 @@ class DonateController extends Controller
         return view('pages.donate');
     }
 
-    public function store(DonateRequest $request, PaymentService $paymentService)
+    public function store(DonateRequest $request, PaymentService $paymentService, ConvertCurrencyAction $convertCurrencyAction)
     {
         $paymentGateway = $this->getPaymentGateway($request->validated('payment_system'));
 
+        $amount = $convertCurrencyAction->execute($request);
+
         return $paymentService->createPayment(
-            amount: $request->validated('amount'),
+            amount: $amount,
+            toll: $request->validated('amount'),
             currency: $request->validated('currency'),
             paymentSystem: $request->validated('payment_system'),
             userId: auth()->id(),

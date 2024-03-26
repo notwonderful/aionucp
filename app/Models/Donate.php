@@ -14,6 +14,7 @@ class Donate extends Model
 
     protected $fillable = [
         'amount',
+        'toll',
         'currency',
         'user_id',
         'payment_system',

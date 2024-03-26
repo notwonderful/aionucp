@@ -11,7 +11,8 @@ return new class extends Migration
     {
         Schema::create('donates', function (Blueprint $table) {
             $table->id();
-            $table->integer('amount');
+            $table->decimal('amount', 10, 2);
+            $table->integer('toll');
             $table->string('currency');
             $table->string('status')->default(DonateStatus::Pending->value);
             $table->string('payment_system');
