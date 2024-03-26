@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(RatingController::class)->prefix('rating')->as('rating.')->group(function(){
         Route::get('abyss', 'abyss')->name('abyss');
+        Route::get('legion', 'legion')->name('legion');
     });
 });
 

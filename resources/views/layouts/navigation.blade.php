@@ -34,6 +34,9 @@
                         <x-dropdown-link :href="route('rating.abyss')">
                             {{ __('Abyss') }}
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('rating.legion')">
+                            {{ __('Legions') }}
+                        </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
             </div>
