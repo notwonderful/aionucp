@@ -49,6 +49,9 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+
+                <x-theme-switcher />
+
                 <x-nav-link :href="route('donate')" :active="request()->routeIs('donate')">
                        {{ __('Balance') }}: <x-account-balance />
                 </x-nav-link>
