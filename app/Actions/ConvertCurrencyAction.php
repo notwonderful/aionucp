@@ -13,7 +13,7 @@ class ConvertCurrencyAction
         $currency = Currency::from($request->validated('currency'));
 
         return match ($currency) {
-            Currency::RUB => round($amount * 0.11 / 0.011, 2),
+            Currency::RUB => round($amount * 10, 2),
             Currency::USD => round($amount * 0.11, 2),
             default => throw new \InvalidArgumentException("Invalid currency: {$currency->value}"),
         };
