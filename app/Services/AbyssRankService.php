@@ -11,7 +11,7 @@ class AbyssRankService
     {
         return Cache::remember('abyss_ranks', 300, function () {
             return AbyssRank::with('player:id,name,race,player_class')
-                ->orderBy('ap')
+                ->orderByDesc('rank')
                 ->paginate();
         });
     }
