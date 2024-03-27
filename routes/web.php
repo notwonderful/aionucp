@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DonateController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/donate', [DonateController::class, 'create'])->name('donate');
     Route::post('/donate', [DonateController::class, 'store'])->name('donate');
+
+    Route::get('membership', [MembershipController::class, 'create'])->name('membership');
+    Route::post('membership', [MembershipController::class, 'store'])->name('membership');
 
     Route::controller(RatingController::class)->prefix('rating')->as('rating.')->group(function(){
         Route::get('abyss', 'abyss')->name('abyss');

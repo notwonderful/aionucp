@@ -17,6 +17,12 @@
                     </x-nav-link>
                 </div>
 
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('membership')" :active="request()->routeIs('membership')">
+                        {{ __('Membership') }}
+                    </x-nav-link>
+                </div>
+
                 <x-dropdown>
                     <x-slot name="trigger">
                         <button class="hidden sm:ms-10 sm:flex items-center border border-transparent text-sm font-medium leading-5 rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">

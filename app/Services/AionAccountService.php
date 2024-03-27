@@ -46,4 +46,15 @@ class AionAccountService
                 ->value('toll') ?? 0;
         });
     }
+
+    public function decrementAccountBalance(int $userId, int $amount): void
+    {
+        $cacheKey = "account_balance_{$userId}";
+
+        Cache::increment($cacheKey, -$amount);
+
+        AccountData::query()
+            ->where('id', $userId)
+            ->decrement('toll', $amount);
+    }
 }
