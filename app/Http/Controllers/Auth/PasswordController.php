@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Auth\UpdateUserEmail;
+use App\Actions\Auth\UpdateUserPassword;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class PasswordController extends Controller
     /**
      * Update the user's password.
      */
-    public function update(Request $request, UpdateUserEmail $updateUserPassword): RedirectResponse
+    public function update(Request $request, UpdateUserPassword $updateUserPassword): RedirectResponse
     {
         $validated = $request->validateWithBag('updatePassword', [
             'current_password' => ['required', 'current_password'],
