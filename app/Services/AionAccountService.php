@@ -57,4 +57,13 @@ class AionAccountService
             ->where('id', $userId)
             ->decrement('toll', $amount);
     }
+
+    public function getAccountPlayers(int $userId)
+    {
+        return Cache::remember("account_{$userId}_players", 300, function () use ($userId) {
+            return AccountData::with('players')
+                ->where('id', $userId)
+                ->paginate();
+        });
+    }
 }

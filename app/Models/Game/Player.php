@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Player extends BaseGameModel
 {
+    protected $fillable = [
+        'x',
+        'y',
+        'z',
+        'world_id',
+    ];
+
     public function account(): BelongsTo
     {
         return $this->belongsTo(

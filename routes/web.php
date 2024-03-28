@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonateController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
@@ -8,9 +9,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::controller(DashboardController::class)->prefix('dashboard')->group(function(){
+        Route::get('/', 'create')->name('dashboard');
+        Route::post('players/{player}/teleport', 'teleport')->name('teleport');
+    });
 
 });
 
