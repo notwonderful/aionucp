@@ -1,8 +1,16 @@
 <x-guest-layout>
+    @push('head')
+        <script>
+            function onSubmit(token) {
+                document.getElementById("loginForm").submit();
+            }
+        </script>
+    @endpush
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form id="loginForm" method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
@@ -43,7 +51,11 @@
                 {{ __('Don\'t have an account?') }}
             </a>
 
-            <x-primary-button class="ms-3">
+            <x-primary-button class="ms-3 g-recaptcha"
+                              data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
+                              data-callback="onSubmit"
+                              data-action="submitLogin"
+            >
                 {{ __('Log in') }}
             </x-primary-button>
         </div>

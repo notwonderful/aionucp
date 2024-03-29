@@ -13,6 +13,10 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+
+        @stack('head')
     </head>
     <body class="font-sans text-gray-900 antialiased"
           x-data="{ darkMode: localStorage.getItem('dark') === 'true'}"

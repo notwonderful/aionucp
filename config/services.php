@@ -14,6 +14,11 @@ return [
     |
     */
 
+    'recaptcha_v3' => [
+        'site_key' => env('RECAPTCHA_V3_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_V3_SECRET_KEY'),
+    ],
+
     'palych' => [
         'shop_id' => env('PALYCH_SHOP_ID'),
         'token' => env('PALYCH_TOKEN'),
