@@ -14,10 +14,18 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
+    <body class="font-sans text-gray-900 antialiased"
+          x-data="{ darkMode: localStorage.getItem('dark') === 'true'}"
+          x-init="$watch('darkMode', val => localStorage.setItem('dark', val))"
+          x-bind:class="{'dark': darkMode}"
+          x-cloak
+    >
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+            <div class="mb-1.5">
+                <x-theme-switcher />
+            </div>
             <div>
-                <a href="/" class="text-white text-2xl">
+                <a href="/" class="text-black dark:text-white text-2xl">
                     <x-application-logo />
                 </a>
             </div>
