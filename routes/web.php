@@ -33,3 +33,10 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('locale/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'ru'])) {
+       session()->put('locale', $locale);
+    }
+    return redirect()->back()->withInput();
+})->name('lang.switch');
