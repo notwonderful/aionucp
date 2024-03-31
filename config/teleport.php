@@ -13,4 +13,6 @@ return [
         'z' => env('TELEPORT_ASMODIANS_Z'),
         'map' => env('TELEPORT_ASMODIANS_MAP'),
     ],
+
+    'cooldown_teleport_minutes' => env('TELEPORT_COOLDOWN_MINUTES'),
 ];
