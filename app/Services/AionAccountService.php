@@ -66,4 +66,24 @@ class AionAccountService
                 ->paginate();
         });
     }
+
+    public function banAccount(string $name): int
+    {
+        return AccountData::query()
+            ->where('name', $name)
+            ->select('ip_force')
+            ->update([
+               'ip_force' => 1,
+            ]);
+    }
+
+    public function unbanAccount(string $name): int
+    {
+        return AccountData::query()
+            ->where('name', $name)
+            ->select('ip_force')
+            ->update([
+                'ip_force' => null,
+            ]);
+    }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\DonateController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -26,17 +27,20 @@ Route::middleware('auth')->group(function () {
     Route::get('membership', [MembershipController::class, 'create'])->name('membership');
     Route::post('membership', [MembershipController::class, 'store'])->name('membership');
 
+    Route::resource('shop', ShopController::class);
+
     Route::controller(RatingController::class)->prefix('rating')->as('rating.')->group(function(){
         Route::get('abyss', 'abyss')->name('abyss');
         Route::get('legion', 'legion')->name('legion');
     });
 });
 
+require __DIR__.'/admin.php';
 require __DIR__.'/auth.php';
 
 Route::get('locale/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'ru'])) {
-       session()->put('locale', $locale);
+        session()->put('locale', $locale);
     }
     return redirect()->back()->withInput();
 })->name('lang.switch');

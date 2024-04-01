@@ -64,5 +64,10 @@
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Забыли пароль? Без проблем. Просто сообщите нам свой адрес электронной почты, и мы вышлем вам ссылку для сброса пароля, которая позволит вам сделать новый.",
     "Email Password Reset Link": "Ссылка для сброса пароля электронной почты",
     "Select an option": "Выберите вариант",
-    "Language": "Язык"
+    "Language": "Язык",
+    "Edit": "Редактировать",
+    "Role": "Роль",
+    "Users": "Пользователи",
+    "Categories": "Категории",
+    "Products": "Товары"
 }
