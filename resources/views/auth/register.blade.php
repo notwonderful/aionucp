@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-auth-layout>
     @push('head')
         <script>
             function onSubmit(token) {
@@ -47,12 +47,8 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-3 g-recaptcha"
+        <div class="flex">
+            <x-primary-button class="mt-2 g-recaptcha"
                               data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
                               data-callback="onSubmit"
                               data-action="submitRegister"
@@ -61,4 +57,10 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+
+        <div class="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 mt-12 uppercase text-sm mt-2">
+            <a href="{{ route('login') }}" class="text-slate-900 dark:text-white font-medium hover:underline">
+                {{ __('Already registered?') }}
+            </a>
+        </div>
+</x-auth-layout>

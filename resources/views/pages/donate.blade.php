@@ -1,73 +1,48 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Donate') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <header>
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {{ __('Donate') }}
-                    </h2>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+    <div class="card">
+        <div class="card-body flex flex-col p-6">
+            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <div class="flex-1">
+                    <div class="card-title text-slate-900 dark:text-white">{{ __('Donate') }}</div>
+                    <p class="mt-1 text-slate-900 dark:text-white">
                         {{ __('You can financially support our server and get bonuses for it.') }}
                     </p>
-                </header>
-                <div class="max-w-xl">
-                    <form method="post" action="{{ route('donate') }}" class="mt-6 space-y-6">
-                        @csrf
-
-                        <div>
-                            <x-input-label for="amount" :value="__('Amount')" />
-                            <x-text-input id="amount" name="amount" type="number" class="mt-1 block w-full" :value="old('amount', 10)" autocomplete="amount" />
-                            <x-input-error :messages="$errors->get('amount')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="currency" :value="__('Currency')" />
-                            <x-select-input
-                                name="currency"
-                                :options="[
-                                    'RUB' => 'RUB',
-                                    'USD' => 'USD',
-                                ]"
-                                :value="old('currency')"
-                                class="mt-1 block w-full"
-                            />
-                            <x-input-error :messages="$errors->get('currency')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="payment_system" :value="__('Payment System')" />
-                            <x-select-input
-                                name="payment_system"
-                                    :options="[
-                                    'palych' => 'Palych.io',
-                                ]"
-                                :value="old('payment_system')"
-                                class="mt-1 block w-full"
-                            />
-                            <x-input-error :messages="$errors->get('payment_system')" class="mt-2" />
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Donate') }}</x-primary-button>
-
-                            @if (session('status') === 'donate-error')
-                                <p
-                                    x-data="{ show: true }"
-                                    x-show="show"
-                                    x-transition
-                                    class="text-sm text-red-600 dark:text-red-400"
-                                >{{ __('Something went wrong!') }}</p>
-                            @endif
-                        </div>
-                    </form>
                 </div>
-            </div>
+            </header>
+            <form method="post" action="{{ route('donate') }}">
+                @csrf
+                <div class="card-text h-full space-y-4">
+                    <div class="input-area">
+                        <label for="amount" class="form-label">{{ __('Amount') }}</label>
+                        <input id="amount" name="amount" type="number" class="form-control" value="{{ old('amount', 10) }}">
+                        @error('amount')
+                        <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="input-area">
+                        <label for="currency" class="form-label">{{ __('Currency') }}</label>
+                        <select id="currency" name="currency" class="form-control">
+                            @foreach(\App\Enums\Currency::cases() as $currency)
+                                <option value="{{ $currency->value }}" class="dark:bg-slate-700">{{ $currency }}</option>
+                            @endforeach
+                        </select>
+                        @error('currency')
+                        <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="input-area">
+                        <label for="select" class="form-label">{{ __('Payment System') }}</label>
+                        <select id="payment_system" name="payment_system" class="form-control">
+                            <option value="">{{ __('Select an option') }}</option>
+                            <option value="palych">Palych.io</option>
+                        </select>
+                        @error('payment_system')
+                        <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <button type="submit" class="btn inline-flex justify-center btn-danger shadow-base2 mt-2">{{ __('Donate') }}</button>
+            </form>
         </div>
     </div>
 </x-app-layout>

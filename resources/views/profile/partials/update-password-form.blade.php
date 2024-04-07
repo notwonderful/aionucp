@@ -1,48 +1,73 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Update Password') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
-        </p>
+<div class="card-body flex flex-col p-6">
+    <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+        <div class="flex-1">
+            <div class="card-title text-slate-900 dark:text-white">{{ __('Update Password') }}</div>
+            <p class="mt-1 text-slate-900 dark:text-white">
+                {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            </p>
+        </div>
     </header>
-
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
-        @method('put')
-
+    </form>
+    @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
-        </div>
+            <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                {{ __('Your email address is unverified.') }}
 
-        <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-        </div>
+                <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                    {{ __('Click here to re-send the verification email.') }}
+                </button>
+            </p>
 
-        <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
-            @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+            @if (session('status') === 'verification-link-sent')
+                <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                    {{ __('A new verification link has been sent to your email address.') }}
+                </p>
             @endif
         </div>
+    @endif
+    <form method="post" action="{{ route('password.update') }}">
+        @csrf
+        @method('put')
+        <div class="card-text h-full space-y-4">
+            <div class="input-area">
+                <label for="current_password" class="form-label">{{ __('Current Password') }}</label>
+                <input id="current_password" name="current_password" type="password" class="form-control">
+                @error('current_password')
+                <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="card-text h-full space-y-4">
+            <div class="input-area">
+                <label for="password" class="form-label">{{ __('New Password') }}</label>
+                <input id="password" name="password" type="password" class="form-control">
+                @error('password')
+                <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="card-text h-full space-y-4">
+            <div class="input-area">
+                <label for="password_confirmation" class="form-label">{{ __('Confirm Password') }}</label>
+                <input id="password_confirmation" name="password_confirmation" type="password" class="form-control">
+                @error('password_confirmation')
+                <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <button type="submit" class="btn inline-flex justify-center btn-danger shadow-base2 mt-2">{{ __('Save') }}</button>
+        @if (session('status') === 'password-updated')
+            <p
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition
+                x-init="setTimeout(() => show = false, 2000)"
+                class="text-sm text-gray-600 dark:text-gray-400"
+            >{{ __('Saved.') }}</p>
+        @endif
     </form>
-</section>
+</div>
+
+

@@ -1,76 +1,41 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Membership') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <header>
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {{ __('Membership') }}
-                    </h2>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        {{ __('You can financially support our server and get bonuses for it.') }}
-                    </p>
-                </header>
-                <div class="max-w-xl">
-                    <form method="post" action="{{ route('membership') }}" class="mt-6 space-y-6">
-                        @csrf
-
-                        <div>
-                            <x-input-label for="membership_type" :value="__('Type')" />
-                            <x-select-input
-                                name="membership_type"
-                                :options="[
-                                    '1' => 'VIP',
-                                    '2' => 'PREMIUM',
-                                ]"
-                                :value="old('membership_type')"
-                                class="mt-1 block w-full"
-                            />
-                            <x-input-error :messages="$errors->get('membership_type')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="duration" :value="__('Duration')" />
-                            <x-select-input
-                                name="duration"
-                                    :options="[
-                                    '30' => __('30 days'),
-                                ]"
-                                :value="old('duration')"
-                                class="mt-1 block w-full"
-                            />
-                            <x-input-error :messages="$errors->get('duration')" class="mt-2" />
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Buy') }}</x-primary-button>
-
-                            @session('balance'))
-                                <p
-                                    x-data="{ show: true }"
-                                    x-show="show"
-                                    x-transition
-                                    class="text-sm text-red-600 dark:text-red-400"
-                                >{{ session('balance') }}</p>
-                            @endsession
-
-                            @session('success'))
-                                <p
-                                    x-data="{ show: true }"
-                                    x-show="show"
-                                    x-transition
-                                    class="text-sm text-green-600 dark:text-green-400"
-                                >{{ session('success') }}</p>
-                            @endsession
-                        </div>
-                    </form>
+    <div class="card">
+        <div class="card-body flex flex-col p-6">
+            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <div class="flex-1">
+                    <div class="card-title text-slate-900 dark:text-white">{{ __('Membership') }}</div>
                 </div>
-            </div>
+            </header>
+            <form method="post" action="{{ route('membership') }}">
+                @csrf
+                <div class="card-text h-full space-y-4">
+                    <div class="input-area">
+                        <label for="membership_type" class="form-label">{{ __('Membership') }}</label>
+                        <select id="membership_type" name="membership_type" class="form-control">
+                            @foreach(\App\Enums\Game\MembershipType::cases() as $membership)
+                                @if ($membership->value !== \App\Enums\Game\MembershipType::REGULAR->value)
+                                    <option value="{{ $membership->value }}" class="dark:bg-slate-700">{{ $membership->label() }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @error('membership_type')
+                        <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="input-area">
+                        <label for="duration" class="form-label">{{ __('Duration') }}</label>
+                        <select id="duration" name="duration" class="form-control">
+                            @foreach(\App\Enums\Game\MembershipDuration::cases() as $duration)
+                                <option value="{{ $duration->value }}" class="dark:bg-slate-700">{{ $duration->label() }}</option>
+                            @endforeach
+                        </select>
+                        @error('duration')
+                        <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <button type="submit" class="btn inline-flex justify-center btn-danger shadow-base2 mt-2">{{ __('Buy') }}</button>
+            </form>
         </div>
     </div>
 </x-app-layout>

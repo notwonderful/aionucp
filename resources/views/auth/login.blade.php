@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-auth-layout>
     @push('head')
         <script>
             function onSubmit(token) {
@@ -7,57 +7,41 @@
         </script>
     @endpush
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form id="loginForm" method="POST" action="{{ route('login') }}">
+    <form id="loginForm" class="space-y-4" action="{{ route('login') }}" method="POST">
         @csrf
-
-        <!-- Email Address -->
-        <div>
+        <div class="fromGroup">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full"
+                          type="email" name="email"
+                          :value="old('email')"
+                          required autofocus autocomplete="username" />
+
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
-
-        <!-- Password -->
-        <div class="mt-4">
+        <div class="fromGroup">
             <x-input-label for="password" :value="__('Password')" />
-
             <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+                          type="password"
+                          name="password"
+                          required autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-
-        <!-- Remember Me -->
-        <div class="mt-4 flex justify-between">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+        <div class="flex justify-between">
+            <label class="flex items-center cursor-pointer">
+                <input type="checkbox" class="hiddens" name="remember">
+                <span class="text-slate-500 dark:text-slate-400 text-sm leading-6 capitalize px-1">{{ __('Remember me') }}</span>
             </label>
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <a class="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium" href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
         </div>
-
-        <div class="flex items-center justify-end mt-4">
-
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('register') }}">
-                {{ __('Don\'t have an account?') }}
-            </a>
-
-            <x-primary-button class="ms-3 g-recaptcha"
-                              data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
-                              data-callback="onSubmit"
-                              data-action="submitLogin"
-            >
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
+        <button class="btn btn-dark block w-full text-center g-recaptcha"
+                type="submit"
+                data-sitekey="{{ config('services.recaptcha_v3.site_key') }}"
+                data-callback="onSubmit"
+                data-action="submitLogin">{{ __('Log in') }}</button>
     </form>
-</x-guest-layout>
+    <div class="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 mt-12 uppercase text-sm mt-2">
+         <a href="{{ route('register') }}" class="text-slate-900 dark:text-white font-medium hover:underline">{{ __('Don\'t have an account?') }}</a>
+    </div>
+
+</x-auth-layout>

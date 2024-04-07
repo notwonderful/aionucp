@@ -1,32 +1,75 @@
 <x-admin-layout>
-    <div class="max-h-[600px] overflow-y-auto bg-gray-100">
-        <div class="py-10">
-
-            <div class="px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-xl font-semibold text-gray-900">{{ __('Categories') }}</h1>
-                        <p class="mt-2 text-sm text-gray-700">A list of all the users in your account including their name, title, email and role.</p>
-                    </div>
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">{{ __('Add') }}</a>
-                    </div>
-                </div>
-                <div class="mt-8 flex flex-col">
-                    <div class="-my-2 -mx-4 sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle">
-                            <div class="shadow-sm ring-1 ring-black ring-opacity-5">
-                                <x-admin.data-table
-                                    :data="$categories"
-                                    :columns="[
-                                        ['key' => 'name', 'title' => __('Name'), 'type' => 'text'],
-                                    ]"
-                                    :actions="[
-                                        'title' => __('Edit'),
-                                        'url' => fn($category) => route('admin.categories.edit', $category),
-                                    ]"
-                                />
-                            </div>
+    <div class="card-body px-6 pb-6">
+        <div class="overflow-x-auto -mx-6 dashcode-data-table">
+            <span class=" col-span-8  hidden"></span>
+            <span class="  col-span-4 hidden"></span>
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden ">
+                    <div id="data-table_wrapper" class="dataTables_wrapper no-footer">
+                        <div class="min-w-full">
+                            <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 dataTable no-footer" id="data-table">
+                                <div class="flex justify-end mt-1.5">
+                                    <a href="{{ route('admin.categories.create') }}" class="btn inline-flex justify-center btn-outline-dark !bg-black-500 !text-white">
+                                  <span class="flex items-center">
+                                    <iconify-icon class="text-2xl ltr:mr-2 rtl:ml-2" icon="ic:round-plus"></iconify-icon>
+                                    <span>{{ __('Add') }}</span>
+                                  </span>
+                                    </a>
+                                </div>
+                                <thead class="bg-slate-200 dark:bg-slate-700">
+                                <tr>
+                                    <th scope="col" class="table-th sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1">
+                                        {{ __('Name') }}
+                                    </th>
+                                    <th scope="col" class="table-th sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1">
+                                        {{ __('Slug') }}
+                                    </th>
+                                    <th scope="col" class="table-th sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1">
+                                        {{ __('Parent') }}
+                                    </th>
+                                    <th scope="col" class="table-th sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1">
+                                        {{ __('Actions') }}
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+                                @forelse($categories as $category)
+                                    <tr class="odd">
+                                        <td class="table-td">{{ $category->name }}</td>
+                                        <td class="table-td">{{ $category->slug }}</td>
+                                        <td class="table-td">{{ $category->parent_id }}</td>
+                                        <td class="table-td ">
+                                            <div>
+                                                <div class="relative">
+                                                    <div class="dropdown relative">
+                                                        <button class="text-xl text-center block w-full " type="button" id="tableDropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <iconify-icon icon="heroicons-outline:dots-vertical"></iconify-icon>
+                                                        </button>
+                                                        <ul class=" dropdown-menu min-w-[120px] absolute text-sm text-slate-700 dark:text-white hidden bg-white dark:bg-slate-700
+                                  shadow z-[2] float-left overflow-hidden list-none text-left rounded-lg mt-1 m-0 bg-clip-padding border-none">
+                                                            <li>
+                                                                <a href="{{ route('admin.categories.edit', $category) }}" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
+                                      dark:hover:text-white">{{ __('Edit') }}</a>
+                                                            </li>
+                                                            <li>
+                                                                <form method="POST" action="{{ route('admin.categories.destroy', $category) }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                <a href="{{ route('admin.categories.destroy', $category) }}" class="text-slate-600 dark:text-white block font-Inter font-normal px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600
+                                      dark:hover:text-white"  onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Delete') }}</a>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    {{ __('Nothing to show') }}
+                                @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

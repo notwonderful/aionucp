@@ -1,51 +1,50 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Abyss') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="overflow-hidden overflow-x-auto p-6 bg-white dark:bg-gray-800 border-gray-700">
-                    <div class="min-w-full align-middle">
-                        <table class="min-w-full divide-y divide-gray-700 border border-gray-700">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 text-left">
-                                        <span class="text-xs leading-4 font-medium text-gray-400 uppercase tracking-wider">{{ __('Name') }}</span>
-                                    </th>
-                                    <th class="px-6 py-3 text-left">
-                                        <span class="text-xs leading-4 font-medium text-gray-400 uppercase tracking-wider">{{ __('Class') }}</span>
-                                    </th>
-                                    <th class="px-6 py-3 text-left">
-                                        <span class="text-xs leading-4 font-medium text-gray-400 uppercase tracking-wider">{{ __('Race') }}</span>
-                                    </th>
-                                    <th class="px-6 py-3 text-left">
-                                        <span class="text-xs leading-4 font-medium text-gray-400 uppercase tracking-wider">{{ __('Rank') }}</span>
-                                    </th>
-                                    <th class="px-6 py-3 text-left">
-                                        <span class="text-xs leading-4 font-medium text-gray-400 uppercase tracking-wider">{{ __('AP') }}</span>
-                                    </th>
-                                </tr>
+    <div class="card">
+        <header class=" card-header noborder">
+            <h4 class="card-title">
+                {{ __('Abyss') }}
+            </h4>
+        </header>
+        <div class="card-body px-6 pb-6">
+            <div class="overflow-x-auto -mx-6">
+                <div class="inline-block min-w-full align-middle">
+                    <div class="overflow-hidden ">
+                        <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
+                            <thead class="bg-slate-200 dark:bg-slate-700">
+                            <tr>
+                                <th scope="col" class=" table-th ">
+                                    {{ __('Name') }}
+                                </th>
+                                <th scope="col" class=" table-th ">
+                                    {{ __('Class') }}
+                                </th>
+                                <th scope="col" class=" table-th ">
+                                    {{ __('Race') }}
+                                </th>
+                                <th scope="col" class=" table-th ">
+                                    {{ __('Rank') }}
+                                </th>
+                                <th scope="col" class=" table-th ">
+                                    {{ __('AP') }}
+                                </th>
+                            </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                 @forelse($abyssRanks as $abyssRank)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-600 dark:text-gray-400">
+                                        <td class="table-td">
                                             {{ $abyssRank->player->name }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-600 dark:text-gray-400">
+                                        <td class="table-td">
                                             {{ $abyssRank->player->player_class }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-600 dark:text-gray-400">
+                                        <td class="table-td">
                                             {{ $abyssRank->player->race }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-600 dark:text-gray-400">
+                                        <td class="table-td">
                                             {{ $abyssRank->rank->getRankName() }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-600 dark:text-gray-400">
+                                        <td class="table-td">
                                             {{ $abyssRank->ap }}
                                         </td>
                                     </tr>
@@ -54,8 +53,6 @@
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
-                    <div class="mt-2">
                         {{ $abyssRanks->links() }}
                     </div>
                 </div>
