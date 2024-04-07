@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AbyssRank extends BaseGameModel
 {
-    public $table = 'abyss_rank';
+    protected $table = 'abyss_rank';
+
     protected $primaryKey = 'player_id';
 
     public function player(): BelongsTo
