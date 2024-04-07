@@ -58,6 +58,14 @@ class AionAccountService
             ->decrement('toll', $amount);
     }
 
+    public function setAccountBalance(int $userId, int $amount): void
+    {
+        AccountData::updateOrCreate(
+            ['id' => $userId],
+            ['toll' => $amount]
+        );
+    }
+
     public function getAccountPlayers(int $userId)
     {
         return Cache::remember("account_{$userId}_players", 300, function () use ($userId) {
