@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Enums\DonateStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Donate;
-use App\Models\Game\AccountData;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Exception;
@@ -79,9 +78,6 @@ class DonateController extends Controller
         $donate->update(['status' => DonateStatus::Success]);
 
         $user = User::find($donate->user_id);
-
-        $accountData = AccountData::query()->where('id', $user->aion_acc_id)->select('toll');
-
-        $accountData->increment('toll', $donate->amount);
+        $user->increment('balance', $donate->toll);
     }
 }
