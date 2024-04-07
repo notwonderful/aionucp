@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(DashboardController::class)->prefix('dashboard')->group(function(){
-        Route::get('/', 'create')->name('dashboard');
+        Route::get('/index', 'create')->name('dashboard');
         Route::post('players/{player}/teleport', 'teleport')->name('teleport');
     });
 
@@ -27,7 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('membership', [MembershipController::class, 'create'])->name('membership');
     Route::post('membership', [MembershipController::class, 'store'])->name('membership');
 
-    Route::resource('shop', ShopController::class);
+    Route::controller(ShopController::class)->prefix('shop')->as('shop.')->group(function () {
+        Route::get('/',  'index')->name('index');
+        Route::post('{product}/buy',  'buy')->name('buy');
+    });
 
     Route::controller(RatingController::class)->prefix('rating')->as('rating.')->group(function(){
         Route::get('abyss', 'abyss')->name('abyss');
