@@ -4,6 +4,8 @@ namespace App\Models\Game;
 
 class WebShop extends BaseGameModel
 {
+    protected $table = 'webshop';
+
     protected $fillable = [
         'recipient',
         'item_desc',
@@ -15,12 +17,4 @@ class WebShop extends BaseGameModel
         'shop_type',
         'time_received',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'time_received' => 'datetime',
-        ];
-    }
-
 }

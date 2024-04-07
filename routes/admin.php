@@ -15,4 +15,5 @@ Route::middleware(AdminMiddleware::class)
         Route::resource('users', UserController::class);
         Route::resource('categories', ProductCategoryController::class);
         Route::resource('products', ProductController::class);
-});
+        Route::resource('mail-items', MailItemController::class)->only(['index', 'store']);
+    });
