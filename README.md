@@ -19,7 +19,7 @@ AionUCP is a regular Laravel 11 application, so it can be installed on any serve
 - Step 1. `cp .env.example .env`
 - Step 2. Launch CLI and run the command `composer install` and `php artisan key:generate`
 - Step 3. Open `.env` and specify database credentials, etc
-- Step 4. Run the `php artisan migrate`, `npm install` and `npm run build`
+- Step 4. Run the `php artisan migrate` and `php artisan storage:link`
 - Step 5. Go to [Google Recaptcha Admin](https://www.google.com/recaptcha/admin/create) and create recaptcha v3 for your domain. Then specify the secret and client key inside the `.env` file.
 - Step 6. After finishing the setup, run the command `php artisan config:cache` for faster configuration loading
 
