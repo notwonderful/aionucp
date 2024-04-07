@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserRole;
 use App\Models\Game\AccountData;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -72,5 +73,33 @@ class User extends Authenticatable
                 ->where('id', $this->aion_acc_id)
                 ->value('toll') ?? 0;
         });
+    }
+
+    protected function decrement($column, $amount = 1, array $extra = []): Builder|AccountData|int|false
+    {
+        if ($column === 'balance') {
+            $balance = AccountData::where('id', $this->aion_acc_id)
+                ->select('toll');
+
+            $balance->decrement('toll', $amount);
+
+            return $balance;
+        }
+
+        return parent::decrement($column, $amount, $extra);
+    }
+
+    protected function increment($column, $amount = 1, array $extra = []): Builder|AccountData|int|false
+    {
+        if ($column === 'balance') {
+            $balance = AccountData::where('id', $this->aion_acc_id)
+                ->select('toll');
+
+            $balance->increment('toll', $amount);
+
+            return $balance;
+        }
+
+        return parent::increment($column, $amount, $extra);
     }
 }
