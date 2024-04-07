@@ -17,4 +17,9 @@ class ProductService
     {
         return ProductCategory::with('parent')->get();
     }
+
+    public function incrementSalesCount(Product $product): void
+    {
+        $product->increment('sales_count');
+    }
 }
