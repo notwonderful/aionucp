@@ -3,7 +3,7 @@
 ## Features
 
 - Login / Registration / Logout/ Password Recovery / Password Change and Email Change
-- Balance replenishment (only Palych.io)
+- Balance replenishment [Palych.io](https://palych.io) and [Payop.com](https://payop.com)
 - Currency conversion.
 - Membership Purchase
 - Character Unstuck
