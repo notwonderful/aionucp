@@ -96,5 +96,8 @@
     "Account information": "Информация об аккаунте",
     "Select your character": "Выберите своего персонажа",
     "Product bought successfully!": "Товар успешно куплен!",
-    "Search": "Поиск"
+    "Search": "Поиск",
+    "Something went wrong!": "Что-то пошло не так!",
+    "Wrong status": "Неправильный статус",
+    "Successful payment!": "Успешный платеж!"
 }

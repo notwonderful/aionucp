@@ -24,6 +24,11 @@ return [
         'token' => env('PALYCH_TOKEN'),
     ],
 
+    'payop' => [
+        'key' => env('PAYOP_PUBLIC_KEY'),
+        'secret' => env('PAYOP_SECRET_KEY'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

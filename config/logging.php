@@ -59,6 +59,13 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'payop' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/payop.log'),
+            'level' => env('LOG_LEVEL', 'info'),
+            'replace_placeholders' => true,
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),

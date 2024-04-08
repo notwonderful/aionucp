@@ -35,6 +35,7 @@
                         <select id="payment_system" name="payment_system" class="form-control">
                             <option value="">{{ __('Select an option') }}</option>
                             <option value="palych">Palych.io</option>
+                            <option value="payop">PayOp.com</option>
                         </select>
                         @error('payment_system')
                         <span class="font-Inter text-sm text-danger-500 pt-2 inline-block">{{ $message }}</span>
