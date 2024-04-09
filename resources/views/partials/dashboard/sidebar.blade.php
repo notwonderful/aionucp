@@ -54,8 +54,12 @@
                 {{ __('Shop') }}
             </x-sidebar-link>
 
-            <x-sidebar-link route="membership" icon="heroicons-outline:user-plus">
+            <x-sidebar-link route="membership" icon="heroicons-outline:users">
                 {{ __('Membership') }}
+            </x-sidebar-link>
+
+            <x-sidebar-link route="referral.index" icon="heroicons-outline:user-plus">
+                {{ __('Referral Program') }}
             </x-sidebar-link>
 
             @can('admin')

@@ -5,6 +5,7 @@ namespace App\Actions\Auth;
 use App\DataTransferObjects\UserData;
 use App\Models\User;
 use App\Services\AionAccountService;
+use App\Services\ReferralService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Hash;
 class RegisterUser
 {
     public function __construct(
-        protected AionAccountService $aionAccountService
+        protected AionAccountService $aionAccountService,
+        protected ReferralService $referralService
     ) {}
 
     public function handle(UserData $userData): RedirectResponse
@@ -32,6 +34,10 @@ class RegisterUser
             event(new Registered($user));
 
             Auth::login($user);
+
+            if (session()->has('ref_code')) {
+                $this->referralService->setReferral(session()->get('ref_code'), $user);
+            }
 
             return redirect(route('dashboard', absolute: false));
         });

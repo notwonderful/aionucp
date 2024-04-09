@@ -64,6 +64,13 @@ class User extends Authenticatable
         );
     }
 
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(
+            related: Referral::class,
+        );
+    }
+
     public function getBalanceAttribute()
     {
         $cacheKey = "account_balance_{$this->id}";
