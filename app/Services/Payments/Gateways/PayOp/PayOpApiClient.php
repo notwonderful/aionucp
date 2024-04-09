@@ -10,11 +10,8 @@ use stdClass;
 
 final readonly class PayOpApiClient
 {
-    public const STATUS_WAIT = 'wait';
-    public const STATUS_SUCCESS = 'success';
-    public const STATUS_ERROR = 'error';
     public const LANG_EN = 'en';
-    public const LANG_RU = 'ru';
+
     public function __construct(
         private string $publicKey,
         private string $secretKey,

@@ -4,8 +4,8 @@ namespace App\Enums;
 
 enum DonateStatus: string
 {
-    case Success = 'success';
-    case Pending = 'pending';
-    case Canceled = 'canceled';
-    case Failure = 'fail';
+    case SUCCESS = 'success';
+    case PENDING = 'pending';
+    case CANCELED = 'canceled';
+    case FAILURE = 'fail';
 }

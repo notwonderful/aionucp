@@ -14,7 +14,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->integer('toll');
             $table->string('currency');
-            $table->string('status')->default(DonateStatus::Pending->value);
+            $table->string('status')->default(DonateStatus::PENDING->value);
             $table->string('payment_system');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')

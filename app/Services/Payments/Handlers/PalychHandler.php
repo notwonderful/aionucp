@@ -28,13 +28,13 @@ class PalychHandler implements PaymentCallbackContract
             Log::channel('palych')->info("Donate Info: " . print_r($donate, 1));
 
             if ($method == 'FAIL') {
-                $donate->status = DonateStatus::Failure;
+                $donate->status = DonateStatus::FAILURE;
                 $donate->save();
             }
 
             if ($method == 'SUCCESS') {
-                if ($donate->status == DonateStatus::Pending) {
-                    $donate->status = DonateStatus::Success;
+                if ($donate->status == DonateStatus::PENDING) {
+                    $donate->status = DonateStatus::SUCCESS;
                     $donate->save();
 
                     $this->awardBalance($donate);

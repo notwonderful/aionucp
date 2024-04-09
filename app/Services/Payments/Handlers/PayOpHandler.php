@@ -22,7 +22,7 @@ class PayOpHandler implements PaymentCallbackContract
 
         Log::channel('payop')->info("PayOP PaymentHandler: " . json_encode($request->all(), JSON_PRETTY_PRINT));
 
-        if (! isset($result['invoice']) || ! isset($result['invoice']['status']) || $result['invoice']['status'] != DonateStatus::Success) {
+        if (! isset($result['invoice']) || ! isset($result['invoice']['status']) || $result['invoice']['status'] != DonateStatus::SUCCESS) {
             return back()->with('status', __('Wrong status'));
         }
 
@@ -31,8 +31,8 @@ class PayOpHandler implements PaymentCallbackContract
 
         Log::channel('payop')->info('PayOP Donate info:'.print_r($donate, 1));
 
-        if($donate->status === DonateStatus::Pending) {
-            $donate->status = DonateStatus::Success;
+        if($donate->status === DonateStatus::PENDING) {
+            $donate->status = DonateStatus::SUCCESS;
             $donate->save();
 
             $this->awardBalance($donate);
