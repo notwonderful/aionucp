@@ -48,6 +48,10 @@
             <x-sidebar-link route="admin.mail-items.index" icon="heroicons-outline:envelope">
                 {{ __('Mail Items') }}
             </x-sidebar-link>
+
+            <x-sidebar-link route="admin.bulk-email" icon="heroicons-outline:envelope">
+                {{ __('Bulk Email') }}
+            </x-sidebar-link>
         </ul>
     </div>
 </div>

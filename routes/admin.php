@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BulkEmailController;
 use App\Http\Controllers\Admin\MailItemController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
@@ -16,4 +17,7 @@ Route::middleware(AdminMiddleware::class)
         Route::resource('categories', ProductCategoryController::class);
         Route::resource('products', ProductController::class);
         Route::resource('mail-items', MailItemController::class)->only(['index', 'store']);
-    });
+
+        Route::get('bulk-email', [BulkEmailController::class, 'index'])->name('bulk-email');
+        Route::post('bulk-email', [BulkEmailController::class, 'sendBulkEmail'])->name('bulk-email');
+});
