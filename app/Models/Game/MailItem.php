@@ -15,6 +15,7 @@ class MailItem extends BaseGameModel
         'mail_title',
         'mail_message',
         'attached_item_id',
+        'attached_item_count',
         'attached_kinah_count',
         'express',
     ];
