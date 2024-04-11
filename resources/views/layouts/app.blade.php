@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('dashboard/css/SimpleBar.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/css/app.css') }}">
     <!-- END: Theme CSS-->
-    <script src="{{ asset('dashboard/js/settings.js') }}" async></script>
+    <script src="{{ asset('dashboard/js/settings.js') }}"></script>
 </head>
 
 <body class="font-inter" id="body_class">
