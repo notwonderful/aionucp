@@ -106,5 +106,12 @@
     "Number of registrations": "Количество регистраций",
     "Bulk Email": "Массовая e-mail рассылка",
     "Content": "Содержимое",
-    "Emails successfully sent!": "Письма успешно отправлены!"
+    "Emails successfully sent!": "Письма успешно отправлены!",
+    "Promo Codes": "Промокоды",
+    "Add promo code": "Добавить промокод",
+    "Not enough balance!": "Недостаточно баланса!",
+    "Activate promo code": "Активировать промокод",
+    "Activate": "Активировать",
+    "Code": "Код",
+    "Promo Code successfully activated!": "Промокод успешно активирован!"
 }

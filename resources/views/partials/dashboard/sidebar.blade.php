@@ -62,6 +62,10 @@
                 {{ __('Referral Program') }}
             </x-sidebar-link>
 
+            <x-sidebar-link route="promocode.index" icon="heroicons-outline:gift-top">
+                {{ __('Promo Codes') }}
+            </x-sidebar-link>
+
             @can('admin')
                 <x-sidebar-link route="admin.index" icon="heroicons-outline:cog-6-tooth">
                     {{ __('Admin Panel') }}

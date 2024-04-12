@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonateController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PromoCodeController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\ShopController;
@@ -39,6 +40,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('referral', [ReferralController::class, 'index'])->name('referral.index');
+
+    Route::resource('promocode', PromoCodeController::class)->except(['show', 'edit', 'destroy', 'update']);
+
+    Route::post('promocode/activate', [PromoCodeController::class, 'activate'])->name('promocode.activate');
+
 });
 
 require __DIR__.'/admin.php';
