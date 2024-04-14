@@ -11,6 +11,7 @@
 - Promo Codes
 - Mail Items
 - Bulk Email
+- Shop
 - Test coverage (currently not all tests are successful, as I literally threw together the user panel in a day and am just continuing today).
 - Account import. Very useful if you already have a game server and need to import existing game accounts into the WEB database. Please note that your users will need to use the password recovery function.
 
