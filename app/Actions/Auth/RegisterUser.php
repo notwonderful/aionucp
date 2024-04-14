@@ -10,7 +10,6 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class RegisterUser
 {
@@ -27,7 +26,7 @@ class RegisterUser
             $user = User::create([
                 'name' => $userData->name,
                 'email' => $userData->email,
-                'password' => Hash::make($userData->password),
+                'password' => $userData->password,
                 'aion_acc_id' => $aionAccountId,
             ]);
 
