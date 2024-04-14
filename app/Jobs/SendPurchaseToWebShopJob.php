@@ -25,6 +25,9 @@ class SendPurchaseToWebShopJob implements ShouldQueue
 
     public function handle(WebShopService $webShopService): void
     {
-        $webShopService->createWebShopItem($this->player, $this->product);
+        $webShopService->createWebShopItem(
+            $this->player->withoutRelations(),
+            $this->product->withoutRelations()
+        );
     }
 }
