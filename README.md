@@ -2,13 +2,15 @@
 
 ## Features
 
-- Login / Registration / Logout/ Password Recovery / Password Change and Email Change
+- Login / Registration / Logout / Password Recovery / Password Change and Email Change
 - Balance replenishment [Palych.io](https://palych.io) and [Payop.com](https://payop.com)
 - Currency conversion.
 - Membership Purchase
 - Character Unstuck
 - Referral Program
 - Promo Codes
+- Mail Items
+- Bulk Email
 - Test coverage (currently not all tests are successful, as I literally threw together the user panel in a day and am just continuing today).
 - Account import. Very useful if you already have a game server and need to import existing game accounts into the WEB database. Please note that your users will need to use the password recovery function.
 
