@@ -9,7 +9,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class RegisteredUserController extends Controller
+final class RegisteredUserController extends Controller
 {
     public function create(): View
     {

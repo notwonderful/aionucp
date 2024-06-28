@@ -7,7 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class EmailVerificationPromptController extends Controller
+final class EmailVerificationPromptController extends Controller
 {
     /**
      * Display the email verification prompt.
