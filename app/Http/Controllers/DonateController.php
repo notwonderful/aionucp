@@ -10,7 +10,7 @@ use App\Services\Payments\Gateways\PayOp\PayOpGateway;
 use App\Services\Payments\PaymentService;
 use Illuminate\View\View;
 
-class DonateController extends Controller
+final class DonateController extends Controller
 {
     public function create(): View
     {

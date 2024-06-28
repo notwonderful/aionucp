@@ -7,7 +7,7 @@ use App\Services\Payments\Handlers\PalychHandler;
 use App\Services\Payments\Handlers\PayOpHandler;
 use Illuminate\Http\Request;
 
-class PaymentCallbackController extends Controller
+final class PaymentCallbackController extends Controller
 {
     public function palych(Request $request, PalychHandler $palychHandler): void
     {

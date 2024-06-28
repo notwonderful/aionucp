@@ -6,7 +6,7 @@ use App\Actions\Game\GetAbyssRanks;
 use App\Actions\Game\GetLegions;
 use Illuminate\View\View;
 
-class RatingController extends Controller
+final class RatingController extends Controller
 {
     public function abyss(GetAbyssRanks $getAbyssRanks): View
     {

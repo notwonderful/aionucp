@@ -9,7 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ProductController extends Controller
+final class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -6,7 +6,7 @@ use App\Actions\GetReferralData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ReferralController extends Controller
+final class ReferralController extends Controller
 {
     public function index(GetReferralData $getReferralData): View
     {

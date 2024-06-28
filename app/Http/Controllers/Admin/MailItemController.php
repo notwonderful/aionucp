@@ -10,7 +10,7 @@ use App\Models\Game\Player;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class MailItemController extends Controller
+final class MailItemController extends Controller
 {
     public function index(): View
     {

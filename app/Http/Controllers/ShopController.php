@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ShopController extends Controller
+final class ShopController extends Controller
 {
     public function index(GetProductData $getShopData, GetPlayersAccount $getPlayersAccount): View
     {

@@ -9,7 +9,7 @@ use App\Models\PromoCode;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class PromoCodeController extends Controller
+final class PromoCodeController extends Controller
 {
     /**
      * Display a listing of the resource.

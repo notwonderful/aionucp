@@ -9,7 +9,7 @@ use App\Models\ProductCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ProductCategoryController extends Controller
+final class ProductCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.

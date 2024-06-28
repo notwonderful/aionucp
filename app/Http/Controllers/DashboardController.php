@@ -7,7 +7,7 @@ use App\Actions\Game\Player\TeleportPlayer;
 use App\Models\Game\Player;
 use Illuminate\View\View;
 
-class DashboardController extends Controller
+final class DashboardController extends Controller
 {
     public function create(GetAccountPlayers $getAccountPlayers): View
     {

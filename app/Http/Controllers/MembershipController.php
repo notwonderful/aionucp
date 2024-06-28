@@ -10,7 +10,7 @@ use App\Models\Game\AccountData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class MembershipController extends Controller
+final class MembershipController extends Controller
 {
     public function create(): View
     {

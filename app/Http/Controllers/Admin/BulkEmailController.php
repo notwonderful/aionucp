@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class BulkEmailController extends Controller
+final class BulkEmailController extends Controller
 {
     public function index(): View
     {
