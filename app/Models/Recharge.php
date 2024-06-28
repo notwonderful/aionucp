@@ -6,7 +6,7 @@ use App\Models\Game\Player;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Recharge extends Model
+final class Recharge extends Model
 {
     public $timestamps = false;
 
