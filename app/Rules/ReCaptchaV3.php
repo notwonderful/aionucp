@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
 final readonly class ReCaptchaV3 implements ValidationRule
@@ -19,6 +20,7 @@ final readonly class ReCaptchaV3 implements ValidationRule
      * @param string $attribute
      * @param mixed $value
      * @param Closure $fail
+     * @throws ConnectionException
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
