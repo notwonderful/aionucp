@@ -2,7 +2,7 @@
 
 namespace App\Models\Game;
 
-class WebShop extends BaseGameModel
+final class WebShop extends BaseGameModel
 {
     protected $table = 'webshop';
 

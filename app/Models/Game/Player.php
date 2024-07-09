@@ -5,7 +5,7 @@ namespace App\Models\Game;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Player extends BaseGameModel
+final class Player extends BaseGameModel
 {
     protected $fillable = [
         'x',

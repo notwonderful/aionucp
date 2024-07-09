@@ -5,7 +5,7 @@ namespace App\Models\Game;
 use App\Enums\Game\AbyssRankName;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class AbyssRank extends BaseGameModel
+final class AbyssRank extends BaseGameModel
 {
     protected $table = 'abyss_rank';
 

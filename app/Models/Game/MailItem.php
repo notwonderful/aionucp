@@ -2,7 +2,7 @@
 
 namespace App\Models\Game;
 
-class MailItem extends BaseGameModel
+final class MailItem extends BaseGameModel
 {
     protected $table = 'mail';
 

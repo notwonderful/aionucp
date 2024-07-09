@@ -6,7 +6,7 @@ use App\Enums\Game\MembershipType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class AccountData extends BaseGameModel
+final class AccountData extends BaseGameModel
 {
     use HasFactory;
 

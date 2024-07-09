@@ -2,7 +2,7 @@
 
 namespace App\Models\Game;
 
-class Inventory extends BaseGameModel
+final class Inventory extends BaseGameModel
 {
     protected $table = 'inventory';
 
