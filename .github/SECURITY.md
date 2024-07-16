@@ -9,7 +9,7 @@ We take all security bugs in `notwonderful/aionucp` seriously. Please follow the
 
 ### → How to Report a Vulnerability
 
-1. **GitHub Security Advisories**: Please report security issues directly through our GitHub Security Advisories page: [https://github.com/notwdonerful/aionucp/security/advisories/new](https://github.com/notwdonerful/aionucp/security/advisories/new). This ensures that sensitive information is handled confidentially.
+1. **GitHub Security Advisories**: Please report security issues directly through our GitHub Security Advisories page: [https://github.com/notwonderful/aionucp/security/advisories/new](https://github.com/notwonderful/aionucp/security/advisories/new). This ensures that sensitive information is handled confidentially.
 
 2. **Empty Security Issue**: After submitting through GitHub Security Advisories, please also create an empty security issue to alert us, as GitHub Advisories do not send automatic notifications. This can be done [here](https://github.com/notwonderful/aionucp/issues/new?assignees=notwonderful&labels=type%3A+bug%2Cpriority%3A+high%2Ctype%3A+security&projects=&template=3-security-report.yml&title=%5BSecurity%5D%3A+).
 
