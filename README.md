@@ -29,6 +29,6 @@ AionUCP is a regular Laravel 11 application, so it can be installed on any serve
 - Step 5. Go to [Google Recaptcha Admin](https://www.google.com/recaptcha/admin/create) and create recaptcha v3 for your domain. Then specify the secret and client key inside the `.env` file.
 - Step 6. After finishing the setup, run the command `php artisan config:cache` for faster configuration loading
 
-## Security Vulnerabilities
+## 🔒 Security Policy
 
-If you discover a security vulnerability within AionUCP, please send an message to my Telegram via [@notwonderful](https://t.me/notwonderful). All security vulnerabilities will be promptly addressed.
+This project has a [security policy](.github/SECURITY.md).
