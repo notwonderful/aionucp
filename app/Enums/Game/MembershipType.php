@@ -19,6 +19,9 @@ enum MembershipType: int
 
     public function cost(): int
     {
-        return config("membership.costs.{$this->name}");
+        /** @var int $cost */
+        $cost = config("membership.costs.{$this->name}");
+
+        return $cost;
     }
 }

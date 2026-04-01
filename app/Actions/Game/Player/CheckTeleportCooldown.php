@@ -17,6 +17,7 @@ class CheckTeleportCooldown
         $lastTeleport = $this->rechargeService->getLastTeleport($player);
 
         if ($lastTeleport) {
+            /** @var int $cooldownTime */
             $cooldownTime = config('teleport.cooldown_teleport_minutes');
             $date = strtotime(date('Y-m-d H:i:s'));
             $dateRecharge = strtotime($lastTeleport->date) + 60 * $cooldownTime;

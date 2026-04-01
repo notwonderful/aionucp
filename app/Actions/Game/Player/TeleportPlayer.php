@@ -27,6 +27,7 @@ class TeleportPlayer
             return $cooldownError;
         }
 
+        /** @var array{x: float, y: float, z: float, map: int} $teleportData */
         $teleportSuccess = $this->playerService->teleport(
             $player->account_id,
             $player->id,

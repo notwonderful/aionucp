@@ -10,13 +10,13 @@ class PromoCodeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'code' => ['required','string', 'min:5', 'max:1000'],
-            'toll' => ['required', 'int', 'min:10', 'max:10000', function ($attribute, $value, $fail) {
+            'toll' => ['required', 'int', 'min:10', 'max:10000', function (string $attribute, mixed $value, \Closure $fail) {
                 /** @var User $user */
                 $user = auth()->user();
                 if ($user->balance < $value) {

@@ -35,16 +35,21 @@ class AionAccountService
             ]);
     }
 
-    public function getAccountBalance(int $userId)
+    public function getAccountBalance(int $userId): int
     {
         $cacheKey = "account_balance_{$userId}";
 
-        return Cache::remember($cacheKey, 900, function () use ($userId) {
-            return AccountData::query()
+        /** @var int $balance */
+        $balance = Cache::remember($cacheKey, 900, function () use ($userId): int {
+            /** @var int|null $toll */
+            $toll = AccountData::query()
                 ->where('id', $userId)
-                ->select('toll')
-                ->value('toll') ?? 0;
+                ->value('toll');
+
+            return $toll ?? 0;
         });
+
+        return $balance;
     }
 
     public function decrementAccountBalance(int $userId, int $amount): void
@@ -66,7 +71,8 @@ class AionAccountService
         );
     }
 
-    public function getAccountPlayers(int $userId)
+    /** @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int, AccountData> */
+    public function getAccountPlayers(int $userId): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return Cache::remember("account_{$userId}_players", 300, function () use ($userId) {
             return AccountData::with('players')

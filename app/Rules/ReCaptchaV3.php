@@ -38,6 +38,7 @@ final readonly class ReCaptchaV3 implements ValidationRule
         }
 
         if ($siteVerify->successful()) {
+            /** @var array{success: bool, action?: string, score?: float} $body */
             $body = $siteVerify->json();
 
             if ($body['success'] !== true) {
@@ -45,12 +46,12 @@ final readonly class ReCaptchaV3 implements ValidationRule
                 return;
             }
 
-            if (! is_null($this->action) && $this->action !== $body['action']) {
+            if (! is_null($this->action) && $this->action !== ($body['action'] ?? null)) {
                 $fail('The action found in the form didn\'t match the Google reCAPTCHA action, please try again.');
                 return;
             }
 
-            if ( !is_null($this->minScore) && $this->minScore > $body['score']) {
+            if (! is_null($this->minScore) && $this->minScore > ($body['score'] ?? 0)) {
                 $fail('The Google reCAPTCHA verification score was too low, please try again.');
                 return;
             }

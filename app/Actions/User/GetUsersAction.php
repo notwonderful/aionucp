@@ -2,6 +2,7 @@
 
 namespace App\Actions\User;
 
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -11,6 +12,7 @@ class GetUsersAction
         protected UserService $userService
     ) {}
 
+    /** @return LengthAwarePaginator<int, User> */
     public function execute(): LengthAwarePaginator
     {
        return $this->userService->getUsers();

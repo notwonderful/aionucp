@@ -16,8 +16,11 @@ final class ShopController extends Controller
 {
     public function index(GetProductData $getShopData, GetPlayersAccount $getPlayersAccount): View
     {
+        $user = auth()->user();
+        assert($user instanceof \App\Models\User);
+
         $products = $getShopData->execute();
-        $players = $getPlayersAccount->execute(auth()->user()->aion_acc_id);
+        $players = $getPlayersAccount->execute($user->aion_acc_id);
 
         return view('pages.shop.create', compact('products', 'players'));
     }
@@ -39,13 +42,20 @@ final class ShopController extends Controller
         GetPlayer $getPlayer
     ): RedirectResponse
     {
-        $request->validate([
+        /** @var array<string, mixed> $validated */
+        $validated = $request->validate([
             'player_id' => ['required', 'integer'],
         ]);
 
         $user = auth()->user();
-        $player = $getPlayer->execute($user->aion_acc_id, $request->player_id);
+        assert($user instanceof \App\Models\User);
 
+        /** @var int $playerId */
+        $playerId = $validated['player_id'];
+
+        $player = $getPlayer->execute($user->aion_acc_id, $playerId);
+
+        /** @var \App\Models\Game\Player $player */
         $purchaseProductAction->execute($user, $player, $product);
 
         return redirect()->route('shop.index')

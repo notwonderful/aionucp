@@ -19,10 +19,18 @@ final class MembershipController extends Controller
 
     public function store(MembershipRequest $request, MembershipPurchaseAction $membershipPurchaseAction): RedirectResponse
     {
-        $account = AccountData::findOrFail(auth()->user()->aion_acc_id);
+        $user = auth()->user();
+        assert($user instanceof \App\Models\User);
 
-        $membershipType = MembershipType::from($request->validated('membership_type'));
-        $duration = MembershipDuration::from($request->validated('duration'));
+        $account = AccountData::findOrFail($user->aion_acc_id);
+
+        /** @var string $membershipTypeValue */
+        $membershipTypeValue = $request->validated('membership_type');
+        /** @var string $durationValue */
+        $durationValue = $request->validated('duration');
+
+        $membershipType = MembershipType::from($membershipTypeValue);
+        $duration = MembershipDuration::from($durationValue);
 
         if (! $membershipPurchaseAction->execute($account, $membershipType, $duration)) {
             return redirect()->back()->withErrors(['balance' => __('Not enough balance to purchase')]);

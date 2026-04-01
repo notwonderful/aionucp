@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 final class PromoCode extends Model
 {
+    /** @use HasFactory<\Database\Factories\PromoCodeFactory> */
     use HasFactory;
 
     protected $fillable = [

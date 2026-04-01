@@ -26,15 +26,20 @@ final class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request, UpdateUserEmail $updateUserEmail): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        assert($user instanceof \App\Models\User);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user->fill($request->validated());
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
-        $updateUserEmail->handle($request->user(), $request->validated('email'));
+        /** @var string $email */
+        $email = $request->validated('email');
+        $updateUserEmail->handle($user, $email);
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

@@ -16,7 +16,10 @@ final class PromoCodeController extends Controller
      */
     public function index(GetPromoCodeData $getPromoCodeData): View
     {
-        $promoCodes = $getPromoCodeData->execute(auth()->user());
+        $user = auth()->user();
+        assert($user instanceof \App\Models\User);
+
+        $promoCodes = $getPromoCodeData->execute($user);
 
         return view('pages.promocode.index', compact('promoCodes'));
     }
@@ -34,7 +37,12 @@ final class PromoCodeController extends Controller
      */
     public function store(PromoCodeRequest $request): RedirectResponse
     {
-        auth()->user()->decrement('balance', $request->toll);
+        $user = auth()->user();
+        assert($user instanceof \App\Models\User);
+
+        /** @var int|float $toll */
+        $toll = $request->toll;
+        $user->decrement('balance', $toll);
 
         PromoCode::query()->create($request->validated());
 
@@ -58,9 +66,14 @@ final class PromoCodeController extends Controller
             ->where('code', $request->validated())
             ->first();
 
+        assert($promoCode instanceof PromoCode);
+
         $promoCode->delete();
 
-        auth()->user()->increment('balance', $promoCode->toll);
+        $user = auth()->user();
+        assert($user instanceof \App\Models\User);
+
+        $user->increment('balance', $promoCode->toll);
 
         return back()->with('success', __('Promo Code successfully activated!'));
     }

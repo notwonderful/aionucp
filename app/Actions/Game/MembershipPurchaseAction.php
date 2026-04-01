@@ -25,7 +25,7 @@ class MembershipPurchaseAction
             return false;
         }
 
-        $account->membership = $membershipType->value;
+        $account->membership = $membershipType;
         $account->membership_expire = now()->addDays($duration->value);
         $account->save();
 

@@ -10,7 +10,10 @@ final class ReferralController extends Controller
 {
     public function index(GetReferralData $getReferralData): View
     {
-        $referral = $getReferralData->execute(auth()->user());
+        $user = auth()->user();
+        assert($user instanceof \App\Models\User);
+
+        $referral = $getReferralData->execute($user);
 
         return view('pages.referral.index', compact('referral'));
     }

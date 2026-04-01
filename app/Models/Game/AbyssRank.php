@@ -11,6 +11,7 @@ final class AbyssRank extends BaseGameModel
 
     protected $primaryKey = 'player_id';
 
+    /** @return BelongsTo<Player, $this> */
     public function player(): BelongsTo
     {
         return $this->belongsTo(

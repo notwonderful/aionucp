@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Referral extends Model
 {
+    /** @use HasFactory<\Database\Factories\ReferralFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -19,6 +20,7 @@ final class Referral extends Model
         'history'
     ];
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(

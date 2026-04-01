@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\Currency;
@@ -10,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Donate extends Model
 {
+    /** @use HasFactory<\Database\Factories\DonateFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -29,6 +32,7 @@ final class Donate extends Model
         ];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(

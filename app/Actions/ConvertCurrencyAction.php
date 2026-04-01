@@ -9,8 +9,11 @@ class ConvertCurrencyAction
 {
     public function execute(DonateRequest $request): float
     {
+        /** @var int|float $amount */
         $amount = $request->validated('amount');
-        $currency = Currency::from($request->validated('currency'));
+        /** @var string $currencyValue */
+        $currencyValue = $request->validated('currency');
+        $currency = Currency::from($currencyValue);
 
         return match ($currency) {
             Currency::RUB => round($amount * 10, 2),

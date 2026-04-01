@@ -4,12 +4,20 @@ namespace App\Traits\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin Model
+ * @property string|null $slug
+ */
 trait HasSlug
 {
     protected static function bootHasSlug(): void
     {
         static::creating(function (Model $model) {
-            $model->slug = $model->slug ?? str($model->{self::slugFrom()})->slug();
+            /** @var string|null $currentSlug */
+            $currentSlug = $model->getAttribute('slug');
+            /** @var string|null $slugSource */
+            $slugSource = $model->getAttribute(self::slugFrom());
+            $model->setAttribute('slug', $currentSlug ?? str($slugSource)->slug()->toString());
         });
     }
 

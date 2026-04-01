@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Enums\UserRole;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ class AdminMiddleware
     {
         $user = $request->user();
 
-        if ($user && $user->role === UserRole::ADMIN) {
+        if ($user instanceof User && $user->role === UserRole::ADMIN) {
             return $next($request);
         }
 

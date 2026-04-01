@@ -2,8 +2,8 @@
 
 namespace App\Actions\Auth;
 
+use App\Models\User;
 use App\Services\AionAccountService;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,7 +13,7 @@ class UpdateUserPassword
         protected AionAccountService $aionAccountService
     ) {}
 
-    public function handle(Authenticatable $user, string $newPassword): void
+    public function handle(User $user, string $newPassword): void
     {
         DB::transaction(function () use ($user, $newPassword) {
             $user->update([

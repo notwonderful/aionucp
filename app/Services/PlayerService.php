@@ -22,6 +22,7 @@ class PlayerService
             ]);
     }
 
+    /** @return Collection<int, Player> */
     public function getPlayersByAccountId(int $accountId): Collection
     {
         return Player::query()

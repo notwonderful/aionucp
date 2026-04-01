@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -11,7 +12,8 @@ class GetProductData
         protected ProductService $productService
     ) {}
 
-    public function execute(): Collection|array
+    /** @return Collection<int, Product> */
+    public function execute(): Collection
     {
         return $this->productService->getProducts();
     }

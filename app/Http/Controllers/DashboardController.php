@@ -11,12 +11,15 @@ final class DashboardController extends Controller
 {
     public function create(GetAccountPlayers $getAccountPlayers): View
     {
-        $accountInfo = $getAccountPlayers->execute(auth()->user()->aion_acc_id);
+        $user = auth()->user();
+        assert($user instanceof \App\Models\User);
+
+        $accountInfo = $getAccountPlayers->execute($user->aion_acc_id);
 
         return view('dashboard', compact('accountInfo'));
     }
 
-    public function teleport(Player $player, TeleportPlayer $teleportPlayer)
+    public function teleport(Player $player, TeleportPlayer $teleportPlayer): \Illuminate\Http\RedirectResponse
     {
         $teleportPlayer->execute($player);
 

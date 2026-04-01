@@ -10,7 +10,8 @@ class GetAccountPlayers
         protected AionAccountService $aionAccountService
     ) {}
 
-    public function execute(int $account)
+    /** @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int, \App\Models\Game\AccountData> */
+    public function execute(int $account): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return $this->aionAccountService->getAccountPlayers($account);
     }

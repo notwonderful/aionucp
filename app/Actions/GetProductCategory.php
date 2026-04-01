@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Models\ProductCategory as ProductCategoryModel;
 use App\Services\ProductService;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -11,7 +12,8 @@ class GetProductCategory
         protected ProductService $productService
     ) {}
 
-    public function execute(): Collection|array
+    /** @return Collection<int, ProductCategoryModel> */
+    public function execute(): Collection
     {
         return $this->productService->getProductCategories();
     }

@@ -14,7 +14,7 @@ class MailItemService
      */
     public function sendMailItem(string $playerName, int $itemId, int $itemQty): bool
     {
-        $player = Player::where('name', $playerName)->first();
+        $player = Player::where('name', $playerName)->firstOrFail();
 
         DB::transaction(function () use ($player, $itemId, $itemQty) {
             $uniqueItemId = $this->generateAttachedItemId();
@@ -31,10 +31,7 @@ class MailItemService
                 'authorize' => 0,
             ];
 
-            $addInventoryItem = Inventory::create($inventoryItemData);
-            if (! $addInventoryItem) {
-                throw new \Exception('Error adding items to inventory.');
-            }
+            Inventory::create($inventoryItemData);
 
             MailItem::create([
                 'sender_name' => 'Admin',
@@ -56,13 +53,17 @@ class MailItemService
 
     private function generateUniqueMailId(): int
     {
-        $mailLastId = MailItem::max('mail_unique_id');
-        return $mailLastId ? $mailLastId + 1 : 1;
+        /** @var int|null $maxId */
+        $maxId = MailItem::max('mail_unique_id');
+
+        return ($maxId ?? 0) + 1;
     }
 
     private function generateAttachedItemId(): int
     {
-        $inventoryLastId = Inventory::max('item_unique_id');
-        return $inventoryLastId ? $inventoryLastId + 1 : 1;
+        /** @var int|null $maxId */
+        $maxId = Inventory::max('item_unique_id');
+
+        return ($maxId ?? 0) + 1;
     }
 }

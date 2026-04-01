@@ -17,6 +17,7 @@ final class Recharge extends Model
         'date',
     ];
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(
@@ -24,6 +25,7 @@ final class Recharge extends Model
         );
     }
 
+    /** @return BelongsTo<Player, $this> */
     public function player(): BelongsTo
     {
         return $this->belongsTo(

@@ -35,7 +35,9 @@ class RegisterUser
             Auth::login($user);
 
             if (session()->has('ref_code')) {
-                $this->referralService->setReferral(session()->get('ref_code'), $user);
+                /** @var string $refCode */
+                $refCode = session()->get('ref_code');
+                $this->referralService->setReferral($refCode, $user);
             }
 
             return redirect(route('dashboard', absolute: false));

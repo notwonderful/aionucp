@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\Models\HasSlug;
@@ -17,6 +19,7 @@ final class ProductCategory extends Model
         'parent_id',
     ];
 
+    /** @return HasMany<Product, $this> */
     public function products(): HasMany
     {
         return $this->hasMany(
@@ -24,6 +27,7 @@ final class ProductCategory extends Model
         );
     }
 
+    /** @return BelongsTo<self, $this> */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(
@@ -32,6 +36,7 @@ final class ProductCategory extends Model
         );
     }
 
+    /** @return HasMany<self, $this> */
     public function children(): HasMany
     {
         return $this->hasMany(

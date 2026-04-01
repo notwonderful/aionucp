@@ -16,6 +16,8 @@ class SendBulkEmailJob implements ShouldQueue
 
     /**
      * Create a new job instance.
+     *
+     * @param  iterable<\App\Models\User>  $users
      */
     public function __construct(
         private readonly EmailBulkMessage $emailBulkMessage,

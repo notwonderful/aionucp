@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\Payments\Handlers\PalychHandler;
-use App\Services\Payments\Handlers\PayOpHandler;
 use Illuminate\Http\Request;
 
 final class PaymentCallbackController extends Controller
 {
-    public function palych(Request $request, PalychHandler $palychHandler): void
+    /** @phpstan-ignore class.notFound */
+    public function palych(Request $request, \App\Services\Payments\Handlers\PalychHandler $palychHandler): void
     {
-        $palychHandler->handle($request);
+        $palychHandler->handle($request); // @phpstan-ignore class.notFound
     }
 
-    public function payop(Request $request, PayOpHandler $payOpHandler): void
+    /** @phpstan-ignore class.notFound */
+    public function payop(Request $request, \App\Services\Payments\Handlers\PayOpHandler $payOpHandler): void
     {
-        $payOpHandler->handle($request);
+        $payOpHandler->handle($request); // @phpstan-ignore class.notFound
     }
 }

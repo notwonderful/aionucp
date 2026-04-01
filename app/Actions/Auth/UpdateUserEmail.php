@@ -2,8 +2,8 @@
 
 namespace App\Actions\Auth;
 
+use App\Models\User;
 use App\Services\AionAccountService;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\DB;
 
 class UpdateUserEmail
@@ -12,7 +12,7 @@ class UpdateUserEmail
         protected AionAccountService $aionAccountService
     ) {}
 
-    public function handle(Authenticatable $user, string $newEmail): void
+    public function handle(User $user, string $newEmail): void
     {
         DB::transaction(function () use ($user, $newEmail) {
             $user->update([

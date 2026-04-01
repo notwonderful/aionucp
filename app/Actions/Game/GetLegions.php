@@ -10,7 +10,8 @@ class GetLegions
         protected LegionService $legionService
     ) {}
 
-    public function execute()
+    /** @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int, \App\Models\Game\Legion> */
+    public function execute(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return $this->legionService->getLegions();
     }

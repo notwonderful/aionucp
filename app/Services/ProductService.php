@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductService
 {
-    public function getProducts(): Collection|array
+    /** @return Collection<int, Product> */
+    public function getProducts(): Collection
     {
         return Product::with('category')->get();
     }
 
-    public function getProductCategories(): Collection|array
+    /** @return Collection<int, ProductCategory> */
+    public function getProductCategories(): Collection
     {
         return ProductCategory::with('parent')->get();
     }

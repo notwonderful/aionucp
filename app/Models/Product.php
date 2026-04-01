@@ -28,9 +28,10 @@ final class Product extends Model
 
     public function getImageUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->image);
+        return Storage::disk('public')->url($this->image ?? '');
     }
 
+    /** @return BelongsTo<ProductCategory, $this> */
     public function category(): BelongsTo
     {
         return $this->belongsTo(

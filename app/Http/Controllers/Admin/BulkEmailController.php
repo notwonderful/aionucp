@@ -19,14 +19,17 @@ final class BulkEmailController extends Controller
 
     public function sendBulkEmail(Request $request, EmailBulkService $bulkEmailSender): RedirectResponse
     {
-        $request->validate([
+        /** @var array<string, string> $validated */
+        $validated = $request->validate([
             'email_content' => ['required', 'string']
         ]);
 
         $users = User::get();
 
+        $emailContent = $validated['email_content'];
+
         $bulkEmailSender->sendBulkEmail(
-            new EmailBulkMessage($request->email_content),
+            new EmailBulkMessage($emailContent),
             $users
         );
 

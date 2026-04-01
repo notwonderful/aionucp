@@ -44,7 +44,6 @@ enum AbyssRankName: int
              self::GREAT_GENERAL => __('Great General'),
              self::COMMANDER => __('Commander'),
              self::SUPREME_COMMANDER => __('Supreme Commander'),
-             default => '-',
          };
      }
 }

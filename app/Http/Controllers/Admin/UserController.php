@@ -28,7 +28,9 @@ final class UserController extends Controller
      */
     public function show(User $user): View
     {
-        return view('pages.admin.users.show', compact('user'));
+        /** @var view-string $view */
+        $view = 'pages.admin.users.show';
+        return view($view, compact('user'));
     }
 
     /**
@@ -49,10 +51,13 @@ final class UserController extends Controller
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
 
-            $updateUserEmail->handle($user, $request->validated('email'));
+            /** @var string $email */
+            $email = $request->validated('email');
+            $updateUserEmail->handle($user, $email);
         }
 
         if (array_key_exists('balance', $request->validated())) {
+            /** @var int $newBalance */
             $newBalance = $request->validated('balance');
             $aionAccountService->setAccountBalance($user->aion_acc_id, $newBalance);
         }
