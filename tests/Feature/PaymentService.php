@@ -12,7 +12,7 @@ test('payment service creates a new donation record and processes the payment', 
         ->once()
         ->andReturn(redirect('/payment-success'));
 
-    $paymentService = new PaymentService();
+    $paymentService = new PaymentService;
 
     $response = $paymentService->createPayment(
         amount: 666,
@@ -44,7 +44,7 @@ test('donate controller selects the correct payment gateway', function () {
         ->once()
         ->andReturn(redirect('/another-payment-success'));
 
-    $controller = new DonateController();
+    $controller = new DonateController;
 
     $palychRequest = mock(DonateRequest::class);
     $palychRequest->shouldReceive('validated')

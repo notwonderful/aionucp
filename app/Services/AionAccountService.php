@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DataTransferObjects\UserData;
 use App\Models\Game\AccountData;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 
 class AionAccountService
@@ -71,8 +72,8 @@ class AionAccountService
         );
     }
 
-    /** @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int, AccountData> */
-    public function getAccountPlayers(int $userId): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    /** @return LengthAwarePaginator<int, AccountData> */
+    public function getAccountPlayers(int $userId): LengthAwarePaginator
     {
         return Cache::remember("account_{$userId}_players", 300, function () use ($userId) {
             return AccountData::with('players')
@@ -87,7 +88,7 @@ class AionAccountService
             ->where('name', $name)
             ->select('ip_force')
             ->update([
-               'ip_force' => 1,
+                'ip_force' => 1,
             ]);
     }
 

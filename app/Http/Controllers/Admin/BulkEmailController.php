@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Mail\EmailBulkMessage;
 use App\Models\User;
 use App\Services\EmailBulkService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 final class BulkEmailController extends Controller
 {
@@ -21,7 +21,7 @@ final class BulkEmailController extends Controller
     {
         /** @var array<string, string> $validated */
         $validated = $request->validate([
-            'email_content' => ['required', 'string']
+            'email_content' => ['required', 'string'],
         ]);
 
         $users = User::get();

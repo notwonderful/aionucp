@@ -23,7 +23,7 @@ final class Product extends Model
     ];
 
     protected $appends = [
-        'image_url'
+        'image_url',
     ];
 
     public function getImageUrlAttribute(): string

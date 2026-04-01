@@ -20,4 +20,4 @@ Route::middleware(AdminMiddleware::class)
 
         Route::get('bulk-email', [BulkEmailController::class, 'index'])->name('bulk-email');
         Route::post('bulk-email', [BulkEmailController::class, 'sendBulkEmail'])->name('bulk-email');
-});
+    });

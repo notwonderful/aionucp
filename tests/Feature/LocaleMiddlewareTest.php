@@ -15,7 +15,7 @@ it('sets locale from session', function () {
     $request = Request::create('/', 'GET');
     $request->setLaravelSession(app('session.store'));
 
-    $middleware = new LocaleMiddleware();
+    $middleware = new LocaleMiddleware;
     $middleware->handle($request, function () {});
 
     expect(Session::get('locale'))->toBe('ru');
@@ -27,7 +27,7 @@ it('sets locale from browser for russian', function () {
     ]);
     $request->setLaravelSession(app('session.store'));
 
-    $middleware = new LocaleMiddleware();
+    $middleware = new LocaleMiddleware;
     $middleware->handle($request, function () {});
 
     expect(Session::get('locale'))->toBe('ru');
@@ -39,7 +39,7 @@ it('sets locale from browser for other languages', function () {
     ]);
     $request->setLaravelSession(app('session.store'));
 
-    $middleware = new LocaleMiddleware();
+    $middleware = new LocaleMiddleware;
     $middleware->handle($request, function () {});
 
     expect(Session::get('locale'))->toBe('en');

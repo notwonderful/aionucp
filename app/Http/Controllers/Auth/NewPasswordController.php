@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\AionAccountService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 final class NewPasswordController extends Controller
@@ -26,7 +28,7 @@ final class NewPasswordController extends Controller
     /**
      * Handle an incoming new password request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(Request $request, AionAccountService $aionAccountService): RedirectResponse
     {
@@ -41,7 +43,7 @@ final class NewPasswordController extends Controller
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (\App\Models\User $user) use ($request, $aionAccountService) {
+            function (User $user) use ($request, $aionAccountService) {
                 /** @var string $password */
                 $password = $request->password;
 
@@ -63,6 +65,6 @@ final class NewPasswordController extends Controller
         return $status == Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+                        ->withErrors(['email' => __($status)]);
     }
 }

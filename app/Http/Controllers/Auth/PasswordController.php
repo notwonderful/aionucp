@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\Auth\UpdateUserPassword;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -22,7 +23,7 @@ final class PasswordController extends Controller
         ]);
 
         $user = $request->user();
-        assert($user instanceof \App\Models\User);
+        assert($user instanceof User);
 
         $updateUserPassword->handle($user, $validated['password']);
 

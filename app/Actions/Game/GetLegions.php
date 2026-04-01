@@ -2,7 +2,9 @@
 
 namespace App\Actions\Game;
 
+use App\Models\Game\Legion;
 use App\Services\LegionService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GetLegions
 {
@@ -10,8 +12,8 @@ class GetLegions
         protected LegionService $legionService
     ) {}
 
-    /** @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<int, \App\Models\Game\Legion> */
-    public function execute(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    /** @return LengthAwarePaginator<int, Legion> */
+    public function execute(): LengthAwarePaginator
     {
         return $this->legionService->getLegions();
     }

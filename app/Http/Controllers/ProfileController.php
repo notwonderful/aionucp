@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Auth\UpdateUserEmail;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -27,7 +28,7 @@ final class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request, UpdateUserEmail $updateUserEmail): RedirectResponse
     {
         $user = $request->user();
-        assert($user instanceof \App\Models\User);
+        assert($user instanceof User);
 
         $user->fill($request->validated());
 

@@ -46,8 +46,8 @@ final class DonateController extends Controller
     protected function getPaymentGateway(string $paymentSystem): PaymentGatewayContract
     {
         return match ($paymentSystem) { // @phpstan-ignore return.type
-            'palych' => new PalychGateway(), // @phpstan-ignore class.notFound
-            'payop' => new PayOpGateway(), // @phpstan-ignore class.notFound
+            'palych' => new PalychGateway, // @phpstan-ignore class.notFound
+            'payop' => new PayOpGateway, // @phpstan-ignore class.notFound
             default => throw new \InvalidArgumentException("Unsupported payment system: $paymentSystem"),
         };
     }

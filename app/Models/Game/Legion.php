@@ -2,7 +2,4 @@
 
 namespace App\Models\Game;
 
-final class Legion extends BaseGameModel
-{
-
-}
+final class Legion extends BaseGameModel {}

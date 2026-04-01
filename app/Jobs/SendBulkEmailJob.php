@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\EmailBulkMessage;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -17,7 +18,7 @@ class SendBulkEmailJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  iterable<\App\Models\User>  $users
+     * @param  iterable<User>  $users
      */
     public function __construct(
         private readonly EmailBulkMessage $emailBulkMessage,

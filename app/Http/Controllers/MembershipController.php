@@ -7,6 +7,7 @@ use App\Enums\Game\MembershipDuration;
 use App\Enums\Game\MembershipType;
 use App\Http\Requests\MembershipRequest;
 use App\Models\Game\AccountData;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -20,7 +21,7 @@ final class MembershipController extends Controller
     public function store(MembershipRequest $request, MembershipPurchaseAction $membershipPurchaseAction): RedirectResponse
     {
         $user = auth()->user();
-        assert($user instanceof \App\Models\User);
+        assert($user instanceof User);
 
         $account = AccountData::findOrFail($user->aion_acc_id);
 

@@ -17,7 +17,7 @@ final class Referral extends Model
         'processed_aion_acc_ids',
         'earned',
         'count',
-        'history'
+        'history',
     ];
 
     /** @return BelongsTo<User, $this> */

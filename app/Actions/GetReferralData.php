@@ -12,7 +12,7 @@ class GetReferralData
         protected ReferralService $referralService
     ) {}
 
-    public function execute(User $user): Referral|null
+    public function execute(User $user): ?Referral
     {
         return $this->referralService->getReferralAccountInfo($user);
     }

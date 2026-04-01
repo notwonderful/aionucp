@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property string $email
  * @property int $toll
- * @property \App\Enums\Game\MembershipType $membership
+ * @property MembershipType $membership
  * @property string|null $membership_expire
  */
 final class AccountData extends BaseGameModel

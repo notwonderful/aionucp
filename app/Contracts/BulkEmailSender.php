@@ -3,11 +3,12 @@
 namespace App\Contracts;
 
 use App\Mail\EmailBulkMessage;
+use App\Models\User;
 
 interface BulkEmailSender
 {
     /**
-     * @param  iterable<\App\Models\User>  $users
+     * @param  iterable<User>  $users
      */
     public function sendBulkEmail(EmailBulkMessage $emailBulkMessage, iterable $users): void;
 }

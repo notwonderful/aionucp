@@ -22,7 +22,8 @@ class AccountDataFactory extends Factory
 
     private function fakeName(): string
     {
-        $name = $this->faker->firstName() . $this->faker->lastName();
+        $name = $this->faker->firstName().$this->faker->lastName();
+
         return Str::lower(str_replace(' ', '', $name));
     }
 

@@ -15,6 +15,6 @@ class GetUsersAction
     /** @return LengthAwarePaginator<int, User> */
     public function execute(): LengthAwarePaginator
     {
-       return $this->userService->getUsers();
+        return $this->userService->getUsers();
     }
 }

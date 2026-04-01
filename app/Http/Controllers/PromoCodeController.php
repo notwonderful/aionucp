@@ -6,6 +6,7 @@ use App\Actions\GetPromoCodeData;
 use App\Http\Requests\PromoCodeActivateRequest;
 use App\Http\Requests\PromoCodeRequest;
 use App\Models\PromoCode;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -17,7 +18,7 @@ final class PromoCodeController extends Controller
     public function index(GetPromoCodeData $getPromoCodeData): View
     {
         $user = auth()->user();
-        assert($user instanceof \App\Models\User);
+        assert($user instanceof User);
 
         $promoCodes = $getPromoCodeData->execute($user);
 
@@ -38,7 +39,7 @@ final class PromoCodeController extends Controller
     public function store(PromoCodeRequest $request): RedirectResponse
     {
         $user = auth()->user();
-        assert($user instanceof \App\Models\User);
+        assert($user instanceof User);
 
         /** @var int|float $toll */
         $toll = $request->toll;
@@ -59,7 +60,6 @@ final class PromoCodeController extends Controller
         return back()->with('status', __('Promo code successfully updated!'));
     }
 
-
     public function activate(PromoCodeActivateRequest $request): RedirectResponse
     {
         $promoCode = PromoCode::query()
@@ -71,7 +71,7 @@ final class PromoCodeController extends Controller
         $promoCode->delete();
 
         $user = auth()->user();
-        assert($user instanceof \App\Models\User);
+        assert($user instanceof User);
 
         $user->increment('balance', $promoCode->toll);
 

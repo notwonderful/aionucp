@@ -9,6 +9,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::controller(PaymentCallbackController::class)->prefix('payments/callback')->group(function () {
-    Route::post('palych','palych');
-    Route::post('payop','payop');
+    Route::post('palych', 'palych');
+    Route::post('payop', 'payop');
 });

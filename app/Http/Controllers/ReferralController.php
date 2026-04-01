@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\GetReferralData;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -11,7 +12,7 @@ final class ReferralController extends Controller
     public function index(GetReferralData $getReferralData): View
     {
         $user = auth()->user();
-        assert($user instanceof \App\Models\User);
+        assert($user instanceof User);
 
         $referral = $getReferralData->execute($user);
 

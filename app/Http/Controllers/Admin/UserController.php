@@ -30,6 +30,7 @@ final class UserController extends Controller
     {
         /** @var view-string $view */
         $view = 'pages.admin.users.show';
+
         return view($view, compact('user'));
     }
 

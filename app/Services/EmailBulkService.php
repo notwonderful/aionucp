@@ -5,11 +5,12 @@ namespace App\Services;
 use App\Contracts\BulkEmailSender;
 use App\Jobs\SendBulkEmailJob;
 use App\Mail\EmailBulkMessage;
+use App\Models\User;
 
 class EmailBulkService implements BulkEmailSender
 {
     /**
-     * @param  iterable<\App\Models\User>  $users
+     * @param  iterable<User>  $users
      */
     public function sendBulkEmail(EmailBulkMessage $emailBulkMessage, iterable $users): void
     {

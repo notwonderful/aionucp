@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @mixin Model
+ *
  * @property string|null $slug
  */
 trait HasSlug

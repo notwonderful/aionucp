@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Actions\Game\SendMailItemAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\MailItemRequest;
-use App\Models\Game\MailItem;
-use App\Models\Game\Player;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
