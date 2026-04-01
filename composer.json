@@ -7,20 +7,20 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "dedoc/scramble": "^0.13.17",
         "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
-        "spatie/laravel-permission": "^7.2"
+        "spatie/laravel-permission": "^7.2",
+        "spatie/laravel-query-builder": "^7.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.0",
         "laravel/boost": "^2.4",
-        "laravel/breeze": "^2.0",
         "laravel/pail": "^1.2.5",
         "laravel/pint": "^1.27",
-        "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^4.0",
@@ -44,13 +44,11 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan migrate --force",
-            "npm install --ignore-scripts",
-            "npm run build"
+            "@php artisan migrate --force"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" --names=server,queue,logs --kill-others"
         ],
         "test": [
             "@php artisan config:clear --ansi",
@@ -70,8 +68,7 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
-        ],
-        "pre-package-uninstall": []
+        ]
     },
     "extra": {
         "laravel": {

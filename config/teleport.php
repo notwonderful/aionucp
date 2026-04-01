@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'elyos' => [
         'x' => env('TELEPORT_ELYOS_X'),

@@ -1,19 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Game\Player;
 
+use App\Exceptions\TeleportCooldownException;
 use App\Models\Game\Player;
 use App\Services\RechargeService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 
-class CheckTeleportCooldown
+final class CheckTeleportCooldown
 {
     public function __construct(
         protected RechargeService $rechargeService,
     ) {}
 
-    public function execute(Player $player): ?RedirectResponse
+    /**
+     * @throws TeleportCooldownException
+     */
+    public function execute(Player $player): void
     {
         $lastTeleport = $this->rechargeService->getLastTeleport($player);
 
@@ -23,10 +28,8 @@ class CheckTeleportCooldown
             $nextTeleportAt = Carbon::parse($lastTeleport->date)->addMinutes($cooldownMinutes);
 
             if ($nextTeleportAt->isFuture()) {
-                return redirect()->back()->with('error', __('Error! It will be possible to teleport again after :time', ['time' => $nextTeleportAt->diffForHumans()]));
+                throw new TeleportCooldownException($nextTeleportAt);
             }
         }
-
-        return null;
     }
 }

@@ -6,13 +6,14 @@ namespace App\Models;
 
 use App\Enums\Currency;
 use App\Enums\DonateStatus;
+use Database\Factories\DonateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Donate extends Model
 {
-    /** @use HasFactory<\Database\Factories\DonateFactory> */
+    /** @use HasFactory<DonateFactory> */
     use HasFactory;
 
     protected $fillable = [

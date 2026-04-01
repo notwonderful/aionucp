@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Game;
 
 use App\Enums\Game\AbyssRankName;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property AbyssRankName $rank
+ * @property int $player_id
+ */
 final class AbyssRank extends BaseGameModel
 {
     protected $table = 'abyss_rank';

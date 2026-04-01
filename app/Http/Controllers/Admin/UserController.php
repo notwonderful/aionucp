@@ -1,51 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Actions\Auth\UpdateUserEmail;
 use App\Actions\User\GetUsersAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\AionAccountService;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 final class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(GetUsersAction $getUsersAction): View
+    public function index(GetUsersAction $getUsersAction): AnonymousResourceCollection
     {
         $users = $getUsersAction->execute();
 
-        return view('pages.admin.users.index', compact('users'));
+        return UserResource::collection($users);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user): View
+    public function show(User $user): UserResource
     {
-        /** @var view-string $view */
-        $view = 'pages.admin.users.show';
-
-        return view($view, compact('user'));
+        return new UserResource($user);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user): View
-    {
-        return view('pages.admin.users.edit', compact('user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UserRequest $request, User $user, UpdateUserEmail $updateUserEmail, AionAccountService $aionAccountService): RedirectResponse
+    public function update(UserRequest $request, User $user, UpdateUserEmail $updateUserEmail, AionAccountService $aionAccountService): JsonResponse
     {
         $user->fill($request->validated());
 
@@ -65,6 +48,9 @@ final class UserController extends Controller
 
         $user->save();
 
-        return back()->with('success', __('The user has been successfully updated!'));
+        return response()->json([
+            'message' => __('The user has been successfully updated!'),
+            'user' => new UserResource($user),
+        ]);
     }
 }

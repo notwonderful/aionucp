@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Game\Player;
 
+use App\Exceptions\TeleportCooldownException;
 use App\Models\Game\Player;
 use App\Services\PlayerService;
 use App\Services\RechargeService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Config;
+use InvalidArgumentException;
+use RuntimeException;
 
-class TeleportPlayer
+final class TeleportPlayer
 {
     public function __construct(
         protected PlayerService $playerService,
@@ -16,26 +20,27 @@ class TeleportPlayer
         protected CheckTeleportCooldown $checkTeleportCooldown
     ) {}
 
-    public function execute(Player $player): RedirectResponse
+    /**
+     * @throws TeleportCooldownException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     */
+    public function execute(Player $player): void
     {
-        $cooldownError = $this->checkTeleportCooldown->execute($player);
-
-        if ($cooldownError) {
-            return $cooldownError;
-        }
+        $this->checkTeleportCooldown->execute($player);
 
         $race = strtolower($player->race);
         $allowedRaces = ['elyos', 'asmodians'];
 
         if (! in_array($race, $allowedRaces, true)) {
-            return redirect()->back()->with('error', __('Invalid race.'));
+            throw new InvalidArgumentException('Invalid race.');
         }
 
         /** @var array{x: float, y: float, z: float, map: int}|null $teleportData */
         $teleportData = Config::get("teleport.{$race}");
 
         if (! $teleportData) {
-            return redirect()->back()->with('error', __('Teleport configuration not found.'));
+            throw new RuntimeException('Teleport configuration not found.');
         }
 
         $teleportSuccess = $this->playerService->teleport(
@@ -47,12 +52,10 @@ class TeleportPlayer
             $teleportData['map']
         );
 
-        if ($teleportSuccess) {
-            $this->rechargeService->createTeleportRecharge($player->id);
-
-            return redirect()->back()->with('success', __('Ваш персонаж успешно телепортирован!'));
+        if (! $teleportSuccess) {
+            throw new RuntimeException('Teleport failed.');
         }
 
-        return redirect()->back()->with('error', __('Что-то пошло не так!'));
+        $this->rechargeService->createTeleportRecharge($player->id);
     }
 }

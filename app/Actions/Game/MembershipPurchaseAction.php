@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Game;
 
 use App\Enums\Game\MembershipDuration;

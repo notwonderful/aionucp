@@ -1,75 +1,67 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
-use App\Actions\GetProductData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\QueryBuilder;
 
 final class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(GetProductData $getProductCategory): View
+    public function index(): AnonymousResourceCollection
     {
-        $products = $getProductCategory->execute();
+        $products = QueryBuilder::for(Product::class)
+            ->allowedFilters('name', 'category_id')
+            ->allowedSorts('name', 'price', 'created_at')
+            ->allowedIncludes('category')
+            ->paginate();
 
-        return view('pages.admin.products.index', compact('products'));
+        return ProductResource::collection($products);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(GetProductData $products): View
-    {
-        return view('pages.admin.products.form', compact('products'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ProductRequest $request): RedirectResponse
+    public function store(ProductRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
 
         if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')->store('images/products', 'public');
+            $validatedData['image'] = $request->file('image')?->store('images/products', 'public');
         }
 
-        Product::create($validatedData);
+        $product = Product::create($validatedData);
 
-        return redirect()->back()->with('success', __('The product has been successfully created!'));
+        return response()->json([
+            'message' => __('The product has been successfully created!'),
+            'product' => new ProductResource($product),
+        ], 201);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product): View
+    public function show(Product $product): ProductResource
     {
-        return view('pages.admin.products.form', compact('product'));
+        return new ProductResource($product->load('category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(ProductRequest $request, Product $product): RedirectResponse
+    public function update(ProductRequest $request, Product $product): JsonResponse
     {
         $product->update($request->validated());
 
-        return back()->with('success', 'The product has been successfully updated!');
+        return response()->json([
+            'message' => __('The product has been successfully updated!'),
+            'product' => new ProductResource($product),
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(Product $product): JsonResponse
     {
         $product->delete();
 
-        return back()->with('success', 'The product has been successfully deleted!');
+        return response()->json([
+            'message' => __('The product has been successfully deleted!'),
+        ]);
     }
 }

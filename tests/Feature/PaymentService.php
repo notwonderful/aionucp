@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\DonateController;
 use App\Http\Requests\DonateRequest;
 use App\Services\Payments\Contracts\PaymentGatewayContract;

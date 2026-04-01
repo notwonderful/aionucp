@@ -3,6 +3,7 @@
     "rules": {
         "fully_qualified_strict_types": {
             "import_symbols": true
-        }
+        },
+        "declare_strict_types": true
     }
 }

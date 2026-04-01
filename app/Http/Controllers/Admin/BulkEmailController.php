@@ -1,23 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\EmailBulkMessage;
 use App\Models\User;
 use App\Services\EmailBulkService;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 final class BulkEmailController extends Controller
 {
-    public function index(): View
-    {
-        return view('pages.admin.bulk-email');
-    }
-
-    public function sendBulkEmail(Request $request, EmailBulkService $bulkEmailSender): RedirectResponse
+    public function sendBulkEmail(Request $request, EmailBulkService $bulkEmailSender): JsonResponse
     {
         /** @var array<string, string> $validated */
         $validated = $request->validate([
@@ -33,6 +29,8 @@ final class BulkEmailController extends Controller
             $users
         );
 
-        return back()->with('status', __('Emails successfully sent!'));
+        return response()->json([
+            'message' => __('Emails successfully sent!'),
+        ]);
     }
 }

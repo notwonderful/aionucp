@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Enums\UserRole;
 use App\Models\Game\AccountData;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,7 +16,6 @@ use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
- * @property UserRole $role
  * @property int $aion_acc_id
  */
 final class User extends Authenticatable
@@ -25,8 +23,8 @@ final class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory;
 
-    use Notifiable;
     use HasRoles;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -37,7 +35,6 @@ final class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
         'aion_acc_id',
     ];
 
@@ -61,7 +58,6 @@ final class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => UserRole::class,
         ];
     }
 

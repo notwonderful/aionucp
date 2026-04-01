@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Auth;
 
 use App\DataTransferObjects\UserData;
+use App\Enums\UserRole;
 use App\Models\User;
 use App\Services\AionAccountService;
 use App\Services\ReferralService;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class RegisterUser
+final class RegisterUser
 {
     public function __construct(
         protected AionAccountService $aionAccountService,
         protected ReferralService $referralService
     ) {}
 
-    public function handle(UserData $userData): RedirectResponse
+    public function handle(UserData $userData, ?string $refCode = null): User
     {
-        return DB::transaction(function () use ($userData) {
+        return DB::transaction(function () use ($userData, $refCode) {
             $aionAccountId = $this->aionAccountService->create($userData);
 
             $user = User::create([
@@ -28,19 +30,17 @@ class RegisterUser
                 'email' => $userData->email,
                 'password' => $userData->password,
                 'aion_acc_id' => $aionAccountId,
-            ]);
+            ])->assignRole(UserRole::MEMBER);
 
             event(new Registered($user));
 
             Auth::login($user);
 
-            if (session()->has('ref_code')) {
-                /** @var string $refCode */
-                $refCode = session()->get('ref_code');
+            if ($refCode !== null) {
                 $this->referralService->setReferral($refCode, $user);
             }
 
-            return redirect(route('dashboard', absolute: false));
+            return $user;
         });
     }
 }

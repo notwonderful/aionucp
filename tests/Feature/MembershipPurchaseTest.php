@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Actions\Game\MembershipPurchaseAction;
 use App\Enums\Game\MembershipDuration;
 use App\Enums\Game\MembershipType;

@@ -1,69 +1,61 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
-use App\Actions\GetProductCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductCategoryRequest;
+use App\Http\Resources\ProductCategoryResource;
 use App\Models\ProductCategory;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\QueryBuilder;
 
 final class ProductCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(GetProductCategory $getProductCategory): View
+    public function index(): AnonymousResourceCollection
     {
-        $categories = $getProductCategory->execute();
+        $categories = QueryBuilder::for(ProductCategory::class)
+            ->allowedFilters('name')
+            ->allowedSorts('name', 'created_at')
+            ->allowedIncludes('products', 'parent', 'children')
+            ->paginate();
 
-        return view('pages.admin.categories.index', compact('categories'));
+        return ProductCategoryResource::collection($categories);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(GetProductCategory $categories): View
+    public function store(ProductCategoryRequest $request): JsonResponse
     {
-        return view('pages.admin.categories.form', compact('categories'));
+        $category = ProductCategory::create($request->validated());
+
+        return response()->json([
+            'message' => __('The product category has been successfully created!'),
+            'category' => new ProductCategoryResource($category),
+        ], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ProductCategoryRequest $request): RedirectResponse
+    public function show(ProductCategory $category): ProductCategoryResource
     {
-        ProductCategory::create($request->validated());
-
-        return redirect()->route('categories.index')->with('success', 'The product category has been successfully created!');
+        return new ProductCategoryResource($category->load(['products', 'parent', 'children']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ProductCategory $category): View
-    {
-        return view('pages.admin.categories.form', compact('category'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(ProductCategoryRequest $request, ProductCategory $category): RedirectResponse
+    public function update(ProductCategoryRequest $request, ProductCategory $category): JsonResponse
     {
         $category->update($request->validated());
 
-        return back()->with('success', 'The product category has been successfully updated!');
+        return response()->json([
+            'message' => __('The product category has been successfully updated!'),
+            'category' => new ProductCategoryResource($category),
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ProductCategory $category): RedirectResponse
+    public function destroy(ProductCategory $category): JsonResponse
     {
         $category->delete();
 
-        return back()->with('success', 'The product category has been successfully deleted!');
+        return response()->json([
+            'message' => __('The product category has been successfully deleted!'),
+        ]);
     }
 }
