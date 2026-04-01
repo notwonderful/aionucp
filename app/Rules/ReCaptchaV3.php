@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use Closure;
@@ -11,7 +13,7 @@ final readonly class ReCaptchaV3 implements ValidationRule
 {
     public function __construct(
         private ?string $action = null,
-        private ?float  $minScore = null
+        private ?float  $minScore = 0.5
     ) {}
 
     /**
@@ -43,7 +45,7 @@ final readonly class ReCaptchaV3 implements ValidationRule
                 return;
             }
 
-            if (! is_null($this->action) && $this->action != $body['action']) {
+            if (! is_null($this->action) && $this->action !== $body['action']) {
                 $fail('The action found in the form didn\'t match the Google reCAPTCHA action, please try again.');
                 return;
             }
