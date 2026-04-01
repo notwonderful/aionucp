@@ -14,7 +14,7 @@ class SendMailItemAction
     /**
      * @throws \Exception
      */
-    public function execute(MailItemRequest $request): bool
+    public function execute(MailItemRequest $request): void
     {
         /** @var string $name */
         $name = $request->validated('name');
@@ -23,6 +23,6 @@ class SendMailItemAction
         /** @var int $itemQty */
         $itemQty = $request->validated('item_qty');
 
-        return $this->mailItemService->sendMailItem($name, $itemId, $itemQty);
+        $this->mailItemService->sendMailItem($name, $itemId, $itemQty);
     }
 }

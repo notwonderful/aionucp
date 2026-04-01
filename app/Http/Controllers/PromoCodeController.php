@@ -8,6 +8,7 @@ use App\Http\Requests\PromoCodeRequest;
 use App\Models\PromoCode;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 final class PromoCodeController extends Controller
@@ -41,13 +42,15 @@ final class PromoCodeController extends Controller
         $user = auth()->user();
         assert($user instanceof User);
 
-        /** @var int|float $toll */
-        $toll = $request->toll;
-        $user->decrement('balance', $toll);
+        DB::transaction(function () use ($request, $user) {
+            /** @var int|float $toll */
+            $toll = $request->toll;
+            $user->decrement('balance', $toll);
 
-        PromoCode::query()->create($request->validated());
+            PromoCode::query()->create($request->validated());
+        });
 
-        return back()->with('status', __('Promo code successfully updated!'));
+        return back()->with('success', __('Promo code successfully created!'));
     }
 
     /**
@@ -62,18 +65,18 @@ final class PromoCodeController extends Controller
 
     public function activate(PromoCodeActivateRequest $request): RedirectResponse
     {
-        $promoCode = PromoCode::query()
-            ->where('code', $request->validated())
-            ->first();
-
-        assert($promoCode instanceof PromoCode);
-
-        $promoCode->delete();
-
         $user = auth()->user();
         assert($user instanceof User);
 
-        $user->increment('balance', $promoCode->toll);
+        DB::transaction(function () use ($request, $user) {
+            $promoCode = PromoCode::query()
+                ->where('code', $request->validated())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $user->increment('balance', $promoCode->toll);
+            $promoCode->delete();
+        });
 
         return back()->with('success', __('Promo Code successfully activated!'));
     }

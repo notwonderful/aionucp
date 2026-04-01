@@ -9,11 +9,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class SendBulkEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+
+    /** @var list<int> */
+    public array $backoff = [1, 5, 10];
 
     /**
      * Create a new job instance.
@@ -34,5 +41,12 @@ class SendBulkEmailJob implements ShouldQueue
             Mail::to($user->email)
                 ->send(clone $this->emailBulkMessage);
         }
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        Log::error('SendBulkEmailJob failed', [
+            'exception' => $exception->getMessage(),
+        ]);
     }
 }

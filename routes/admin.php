@@ -6,10 +6,9 @@ use App\Http\Controllers\Admin\MailItemController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(AdminMiddleware::class)
+Route::middleware('role:admin')
     ->prefix('admin')->as('admin.')->group(function () {
 
         Route::get('/', (AdminController::class))->name('index');

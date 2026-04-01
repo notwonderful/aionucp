@@ -12,14 +12,14 @@ class MailItemService
     /**
      * @throws \Exception
      */
-    public function sendMailItem(string $playerName, int $itemId, int $itemQty): bool
+    public function sendMailItem(string $playerName, int $itemId, int $itemQty): void
     {
         $player = Player::where('name', $playerName)->firstOrFail();
 
         DB::transaction(function () use ($player, $itemId, $itemQty) {
             $uniqueItemId = $this->generateAttachedItemId();
 
-            $inventoryItemData = [
+            Inventory::create([
                 'item_unique_id' => $uniqueItemId,
                 'item_id' => $itemId,
                 'item_skin' => $itemId,
@@ -29,9 +29,7 @@ class MailItemService
                 'item_location' => 127,
                 'enchant' => 0,
                 'authorize' => 0,
-            ];
-
-            Inventory::create($inventoryItemData);
+            ]);
 
             MailItem::create([
                 'sender_name' => 'Admin',
@@ -44,11 +42,7 @@ class MailItemService
                 'attached_kinah_count' => 0,
                 'express' => 1,
             ]);
-
-            return true;
         });
-
-        return false;
     }
 
     private function generateUniqueMailId(): int

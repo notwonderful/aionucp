@@ -17,12 +17,8 @@ final class MailItemController extends Controller
 
     public function store(MailItemRequest $request, SendMailItemAction $sendMailItemAction): RedirectResponse
     {
-        $success = $sendMailItemAction->execute($request);
+        $sendMailItemAction->execute($request);
 
-        if ($success) {
-            return back()->with('success', __('The item has been successfully sent by mail!'));
-        }
-
-        return back()->with('error', __('An error occurred while sending the item by mail.'));
+        return back()->with('success', __('The item has been successfully sent by mail!'));
     }
 }
