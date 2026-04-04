@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\TicketStatus;
+use App\Events\TicketMessageSent;
+use App\Events\TicketStatusChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ticket\StoreTicketMessageRequest;
 use App\Http\Requests\Ticket\StoreTicketRequest;
@@ -60,15 +63,24 @@ final class TicketController extends Controller
         ], 201);
     }
 
-    public function show(Ticket $ticket): JsonResponse
+    public function show(Request $request, Ticket $ticket): JsonResponse
     {
         Gate::authorize('view', $ticket);
 
-        $ticket->load(['category', 'messages.user']);
+        $ticket->load('category');
+
+        $messages = $ticket->messages()
+            ->with('user')
+            ->latest()
+            ->cursorPaginate(50);
 
         return response()->json([
             'data' => new TicketResource($ticket),
-            'messages' => TicketMessageResource::collection($ticket->messages),
+            'messages' => TicketMessageResource::collection($messages),
+            'pagination' => [
+                'next_cursor' => $messages->nextCursor()?->encode(),
+                'has_more' => $messages->hasMorePages(),
+            ],
         ]);
     }
 
@@ -86,7 +98,10 @@ final class TicketController extends Controller
 
         if ($ticket->status === TicketStatus::OPEN) {
             $ticket->update(['status' => TicketStatus::WAITING]);
+            TicketStatusChanged::dispatch($ticket);
         }
+
+        TicketMessageSent::dispatch($message);
 
         return response()->json([
             'data' => new TicketMessageResource($message->load('user')),
@@ -98,6 +113,8 @@ final class TicketController extends Controller
         Gate::authorize('close', $ticket);
 
         $ticket->close();
+
+        TicketStatusChanged::dispatch($ticket);
 
         return response()->json([
             'message' => __('Ticket closed.'),

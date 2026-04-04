@@ -16,6 +16,9 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
       recaptchaSiteKey: process.env.NUXT_PUBLIC_RECAPTCHA_SITE_KEY || '',
+      reverbKey: process.env.NUXT_PUBLIC_REVERB_KEY || 'aionucp-key',
+      reverbHost: process.env.NUXT_PUBLIC_REVERB_HOST || 'aionucp.local',
+      reverbPort: process.env.NUXT_PUBLIC_REVERB_PORT || '8080',
     },
   },
 
@@ -35,6 +38,10 @@ export default defineNuxtConfig({
       },
       '/sanctum': {
         target: 'http://aionucp.local/sanctum',
+        changeOrigin: true,
+      },
+      '/broadcasting': {
+        target: 'http://aionucp.local/broadcasting',
         changeOrigin: true,
       },
     },

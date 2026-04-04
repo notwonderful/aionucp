@@ -79,8 +79,11 @@
           </div>
 
           <template v-else>
-            <div ref="messagesContainer" class="flex-1 overflow-y-auto px-5 py-4">
+            <div ref="messagesContainer" class="flex-1 overflow-y-auto px-5 py-4" @scroll="onMessagesScroll">
               <div class="mx-auto max-w-2xl space-y-4">
+                <div v-if="loadingMore" class="flex justify-center py-2">
+                  <svg class="h-5 w-5 animate-spin text-white/20" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+                </div>
                 <div v-for="msg in messages" :key="msg.id"
                   :class="['flex', msg.user.is_admin ? 'justify-start' : 'justify-end']">
                   <div :class="['max-w-[80%] rounded-2xl px-4 py-2.5',
@@ -188,12 +191,15 @@ const newTicket = reactive({ subject: '', category_id: 0, body: '' })
 const activeDetail = ref<TicketItem | null>(null)
 const messages = ref<TicketMsg[]>([])
 const detailStatus = ref<'idle' | 'pending' | 'success'>('idle')
+const nextCursor = ref<string | null>(null)
+const loadingMore = ref(false)
 
 watch(activeTicketId, async (id) => {
   if (!id) {
     activeDetail.value = null
     messages.value = []
     detailStatus.value = 'idle'
+    nextCursor.value = null
     router.replace({ query: {} })
     return
   }
@@ -201,12 +207,19 @@ watch(activeTicketId, async (id) => {
   await fetchDetail(id)
 })
 
+interface TicketShowResponse {
+  data: TicketItem
+  messages: TicketMsg[]
+  pagination: { next_cursor: string | null; has_more: boolean }
+}
+
 async function fetchDetail(id: string) {
   detailStatus.value = 'pending'
   try {
-    const res = await $api<{ data: TicketItem; messages: TicketMsg[] }>(`/tickets/${id}`)
+    const res = await $api<TicketShowResponse>(`/tickets/${id}`)
     activeDetail.value = res.data
-    messages.value = res.messages
+    messages.value = [...res.messages].reverse()
+    nextCursor.value = res.pagination.next_cursor
     detailStatus.value = 'success'
     scrollToBottom()
   } catch {
@@ -216,9 +229,64 @@ async function fetchDetail(id: string) {
   }
 }
 
+async function loadOlderMessages() {
+  if (!activeTicketId.value || !nextCursor.value || loadingMore.value) return
+  loadingMore.value = true
+  try {
+    const container = messagesContainer.value
+    const prevHeight = container?.scrollHeight ?? 0
+
+    const res = await $api<TicketShowResponse>(`/tickets/${activeTicketId.value}?cursor=${nextCursor.value}`)
+    messages.value = [...[...res.messages].reverse(), ...messages.value]
+    nextCursor.value = res.pagination.next_cursor
+
+    nextTick(() => {
+      if (container) container.scrollTop = container.scrollHeight - prevHeight
+    })
+  } catch { /* ignore */ } finally {
+    loadingMore.value = false
+  }
+}
+
+function onMessagesScroll(e: Event) {
+  const el = e.target as HTMLElement
+  if (el.scrollTop < 100 && nextCursor.value) loadOlderMessages()
+}
+
 if (activeTicketId.value) {
   fetchDetail(activeTicketId.value)
 }
+
+const { $echo } = useNuxtApp()
+let echoChannel: ReturnType<typeof $echo.private> | null = null
+
+watch(activeTicketId, (id, oldId) => {
+  if (oldId && echoChannel) {
+    $echo?.leave(`tickets.${oldId}`)
+    echoChannel = null
+  }
+  if (id && $echo) {
+    echoChannel = $echo.private(`tickets.${id}`)
+      .listen('.message.sent', (e: { message: TicketMsg }) => {
+        const exists = messages.value.some(m => m.id === e.message.id)
+        if (!exists) {
+          messages.value.push(e.message)
+          scrollToBottom()
+        }
+        refreshTickets()
+      })
+      .listen('.status.changed', (e: { status: string }) => {
+        if (activeDetail.value) activeDetail.value.status = e.status
+        refreshTickets()
+      })
+  }
+})
+
+onUnmounted(() => {
+  if (activeTicketId.value && $echo) {
+    $echo.leave(`tickets.${activeTicketId.value}`)
+  }
+})
 
 function selectTicket(id: string) {
   activeTicketId.value = id
@@ -234,17 +302,33 @@ function scrollToBottom() {
 
 async function sendMessage() {
   if (!messageText.value || messageText.value === '<p></p>' || !activeTicketId.value) return
+
+  const tempId = Date.now()
+  const body = messageText.value
+  const { user } = useAuth()
+
+  messages.value.push({
+    id: tempId,
+    user: { id: user.value!.id, name: user.value!.name, is_admin: false },
+    body,
+    created_at: new Date().toISOString(),
+  })
+  messageText.value = ''
+  scrollToBottom()
+
   sending.value = true
   try {
     await fetchCsrfCookie()
-    await $api(`/tickets/${activeTicketId.value}/reply`, {
+    const res = await $api<{ data: TicketMsg }>(`/tickets/${activeTicketId.value}/reply`, {
       method: 'POST',
-      body: { body: messageText.value },
+      body: { body },
     })
-    messageText.value = ''
-    await fetchDetail(activeTicketId.value)
-    await refreshTickets()
-  } catch { /* handled by API */ } finally {
+    const idx = messages.value.findIndex(m => m.id === tempId)
+    if (idx !== -1) messages.value[idx] = res.data
+    refreshTickets()
+  } catch {
+    messages.value = messages.value.filter(m => m.id !== tempId)
+  } finally {
     sending.value = false
   }
 }

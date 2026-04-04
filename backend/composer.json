@@ -10,6 +10,7 @@
         "dedoc/scramble": "^0.13.17",
         "intervention/image": "^4.0",
         "laravel/framework": "^13.0",
+        "laravel/reverb": "^1.10",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "spatie/laravel-permission": "^7.2",
