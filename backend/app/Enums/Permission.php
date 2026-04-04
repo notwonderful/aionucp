@@ -31,6 +31,11 @@ enum Permission: string
     case SERVERS_EDIT = 'servers.edit';
     case SERVERS_DELETE = 'servers.delete';
 
+    // Tickets
+    case TICKETS_VIEW = 'tickets.view';
+    case TICKETS_REPLY = 'tickets.reply';
+    case TICKETS_CLOSE = 'tickets.close';
+
     // Mail Items
     case MAIL_ITEMS_SEND = 'mail-items.send';
 
@@ -57,6 +62,9 @@ enum Permission: string
             self::SERVERS_CREATE => __('Create Servers'),
             self::SERVERS_EDIT => __('Edit Servers'),
             self::SERVERS_DELETE => __('Delete Servers'),
+            self::TICKETS_VIEW => __('View Tickets'),
+            self::TICKETS_REPLY => __('Reply to Tickets'),
+            self::TICKETS_CLOSE => __('Close Tickets'),
             self::MAIL_ITEMS_SEND => __('Send Mail Items'),
             self::BULK_EMAIL_SEND => __('Send Bulk Email'),
         };

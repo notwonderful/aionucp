@@ -3,6 +3,7 @@ interface User {
   name: string
   email: string
   balance?: number
+  roles?: string[]
   [key: string]: unknown
 }
 
@@ -22,6 +23,10 @@ export function useAuth() {
   }
 
   const isAuthenticated = computed(() => !!user.value)
+  const isAdmin = computed(() => {
+    const roles = user.value?.roles ?? []
+    return roles.some(r => ['super-admin', 'admin', 'content-manager'].includes(r))
+  })
 
   function clearUser() {
     user.value = null
@@ -36,5 +41,5 @@ export function useAuth() {
     }
   }
 
-  return { user, isAuthenticated, fetchUser, clearUser, logout }
+  return { user, isAuthenticated, isAdmin, fetchUser, clearUser, logout }
 }

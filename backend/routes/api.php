@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MailItemController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServerController;
+use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
@@ -156,4 +157,15 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
 
     Route::post('bulk-email', [BulkEmailController::class, 'sendBulkEmail'])
         ->middleware('permission:'.Permission::BULK_EMAIL_SEND->value);
+
+    Route::prefix('tickets')->middleware('permission:'.Permission::TICKETS_VIEW->value)->group(function () {
+        Route::get('/', [AdminTicketController::class, 'index']);
+        Route::get('{ticket}', [AdminTicketController::class, 'show']);
+        Route::post('{ticket}/reply', [AdminTicketController::class, 'reply'])
+            ->middleware('permission:'.Permission::TICKETS_REPLY->value);
+        Route::post('{ticket}/close', [AdminTicketController::class, 'close'])
+            ->middleware('permission:'.Permission::TICKETS_CLOSE->value);
+        Route::post('{ticket}/open', [AdminTicketController::class, 'open'])
+            ->middleware('permission:'.Permission::TICKETS_CLOSE->value);
+    });
 });

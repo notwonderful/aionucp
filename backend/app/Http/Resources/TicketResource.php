@@ -19,6 +19,11 @@ final class TicketResource extends JsonResource
             'subject' => $this->subject,
             'status' => $this->status,
             'priority' => $this->priority,
+            'user' => $this->when($this->relationLoaded('user'), fn () => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+            ]),
             'category' => new TicketCategoryResource($this->whenLoaded('category')),
             'last_message' => new TicketMessageResource($this->whenLoaded('latestMessage')),
             'messages_count' => $this->whenCounted('messages'),
