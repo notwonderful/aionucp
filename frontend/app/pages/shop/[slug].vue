@@ -2,7 +2,7 @@
   <div>
     <NuxtLink to="/shop" class="inline-flex items-center gap-2 text-[13px] font-medium text-white/25 transition-colors hover:text-white/50">
       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
-      Back to shop
+      {{ $t('shop.backToShop') }}
     </NuxtLink>
 
     <div v-if="status === 'pending'" class="mt-6 grid gap-8 lg:grid-cols-2">
@@ -15,7 +15,7 @@
     </div>
 
     <div v-else-if="!product" class="mt-16 text-center">
-      <p class="text-[14px] font-medium text-white/30">Product not found</p>
+      <p class="text-[14px] font-medium text-white/30">{{ $t('shop.productNotFound') }}</p>
     </div>
 
     <div v-else class="mt-6 grid gap-8 lg:grid-cols-2">
@@ -45,35 +45,35 @@
 
         <div class="mt-6 flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
           <div>
-            <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">Price</div>
+            <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">{{ $t('shop.price') }}</div>
             <div class="mt-1 font-display text-3xl font-extrabold tabular-nums text-red-400">{{ product.toll }}</div>
-            <div class="mt-0.5 text-[11px] text-white/15">Toll Points</div>
+            <div class="mt-0.5 text-[11px] text-white/15">{{ $t('common.tollPoints') }}</div>
           </div>
           <div class="h-10 w-px bg-white/[0.06]" />
           <div>
-            <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">Sold</div>
+            <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">{{ $t('shop.sold') }}</div>
             <div class="mt-1 font-display text-xl font-bold tabular-nums text-white/50">{{ product.sales_count }}</div>
-            <div class="mt-0.5 text-[11px] text-white/15">times</div>
+            <div class="mt-0.5 text-[11px] text-white/15">{{ $t('shop.times') }}</div>
           </div>
         </div>
 
         <div class="mt-6">
-          <label class="mb-1.5 block text-[12px] font-medium text-white/40">Send to character</label>
+          <label class="mb-1.5 block text-[12px] font-medium text-white/40">{{ $t('shop.sendToCharacter') }}</label>
           <select
             v-model="selectedPlayerId"
             class="w-full appearance-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-[14px] text-white outline-none transition-all duration-300 focus:border-red-500/30 focus:bg-white/[0.05] focus:ring-1 focus:ring-red-500/20"
           >
-            <option value="" disabled class="bg-surface-overlay text-white/40">Select a character</option>
+            <option value="" disabled class="bg-surface-overlay text-white/40">{{ $t('shop.selectCharacter') }}</option>
             <option v-for="player in players" :key="player.id" :value="player.id" class="bg-surface-overlay">
               {{ player.name }} — {{ player.player_class }}
             </option>
           </select>
           <p v-if="players.length === 0 && status !== 'pending'" class="mt-1.5 text-[12px] text-white/20">
-            No characters found. Log into the game to create one.
+            {{ $t('shop.noCharactersFound') }}
           </p>
         </div>
 
-        <AppButton :loading="purchasing" loading-text="Processing..." :disabled="!selectedPlayerId" block @click="showConfirm = true">Purchase for {{ product.toll }} Toll</AppButton>
+        <AppButton :loading="purchasing" :loading-text="$t('donate.processing')" :disabled="!selectedPlayerId" block @click="showConfirm = true">{{ $t('shop.purchaseFor', { amount: product.toll }) }}</AppButton>
 
         <AlertMessage :message="successMessage" variant="success" />
         <AlertMessage :message="errorMessage" variant="error" />
@@ -82,7 +82,7 @@
 
     <!-- Similar products -->
     <div v-if="product && relatedProducts.length" class="mt-12">
-      <h2 class="mb-5 font-display text-lg font-bold uppercase tracking-wider">Similar items</h2>
+      <h2 class="mb-5 font-display text-lg font-bold uppercase tracking-wider">{{ $t('shop.similarItems') }}</h2>
       <div class="grid gap-4 sm:grid-cols-2">
         <NuxtLink
           v-for="item in relatedProducts" :key="item.id"
@@ -109,14 +109,14 @@
             <div class="truncate text-[13px] font-semibold leading-tight transition-colors group-hover:text-white">{{ item.name }}</div>
             <div class="mt-2 flex items-baseline gap-1">
               <span class="font-display text-[15px] font-bold tabular-nums text-red-400">{{ item.toll }}</span>
-              <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/40">Toll</span>
+              <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/40">{{ $t('common.toll') }}</span>
             </div>
           </div>
         </NuxtLink>
       </div>
     </div>
 
-    <AppModal :open="showConfirm" title="Confirm Purchase" @close="showConfirm = false">
+    <AppModal :open="showConfirm" :title="$t('shop.confirmPurchase')" @close="showConfirm = false">
       <template #icon>
         <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-red-600/10">
           <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
@@ -125,27 +125,27 @@
 
       <div class="space-y-3 rounded-lg border border-white/[0.04] bg-white/[0.02] p-4">
         <div class="flex items-center justify-between">
-          <span class="text-[12px] text-white/30">Item</span>
+          <span class="text-[12px] text-white/30">{{ $t('shop.item') }}</span>
           <span class="text-[13px] font-semibold">{{ product?.name }}</span>
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-[12px] text-white/30">Quantity</span>
+          <span class="text-[12px] text-white/30">{{ $t('shop.quantity') }}</span>
           <span class="text-[13px] font-medium text-white/60">x{{ product?.item_qty }}</span>
         </div>
         <div class="h-px bg-white/[0.04]" />
         <div class="flex items-center justify-between">
-          <span class="text-[12px] text-white/30">Price</span>
-          <span class="font-display text-[15px] font-bold tabular-nums text-red-400">{{ product?.toll }} Toll</span>
+          <span class="text-[12px] text-white/30">{{ $t('shop.price') }}</span>
+          <span class="font-display text-[15px] font-bold tabular-nums text-red-400">{{ product?.toll }} {{ $t('common.toll') }}</span>
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-[12px] text-white/30">Recipient</span>
+          <span class="text-[12px] text-white/30">{{ $t('shop.recipient') }}</span>
           <span class="text-[13px] font-medium text-white/60">{{ selectedPlayerName }}</span>
         </div>
       </div>
 
       <template #footer>
-        <AppButton variant="secondary" @click="showConfirm = false">Cancel</AppButton>
-        <AppButton :loading="purchasing" loading-text="Processing..." @click="handlePurchase">Confirm</AppButton>
+        <AppButton variant="secondary" @click="showConfirm = false">{{ $t('common.cancel') }}</AppButton>
+        <AppButton :loading="purchasing" :loading-text="$t('donate.processing')" @click="handlePurchase">{{ $t('common.confirm') }}</AppButton>
       </template>
     </AppModal>
   </div>
@@ -158,6 +158,7 @@ interface Category { id: number; name: string; slug: string; parent_id: number |
 interface Product { id: number; name: string; slug: string; description: string; toll: number; item_id: number; item_qty: number; image_url: string; sales_count: number; category: Category | null }
 interface Player { id: number; name: string; race: string; player_class: string; online: boolean }
 
+const { t } = useI18n()
 const route = useRoute()
 const { $api, fetchCsrfCookie } = useApi()
 const { fetchUser } = useAuth()
@@ -203,12 +204,12 @@ async function handlePurchase() {
       body: { player_id: Number(selectedPlayerId.value) },
     })
     showConfirm.value = false
-    successMessage.value = `${product.value.name} has been sent to ${selectedPlayerName.value}!`
+    successMessage.value = t('shop.sentTo', { item: product.value.name, character: selectedPlayerName.value })
     await fetchUser()
   } catch (e: unknown) {
     showConfirm.value = false
     const err = e as { data?: { message?: string } }
-    errorMessage.value = err.data?.message || 'Purchase failed. Please try again.'
+    errorMessage.value = err.data?.message || t('shop.purchaseFailed')
   } finally {
     purchasing.value = false
   }

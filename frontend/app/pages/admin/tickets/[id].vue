@@ -2,11 +2,11 @@
   <div>
     <NuxtLink to="/admin/tickets" class="inline-flex items-center gap-2 text-[13px] font-medium text-white/25 transition-colors hover:text-white/50">
       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
-      Back to tickets
+      {{ $t('admin.backToTickets') }}
     </NuxtLink>
 
     <div v-if="!ticket" class="mt-8">
-      <EmptyState title="Ticket not found" />
+      <EmptyState :title="$t('admin.ticketNotFound')" />
     </div>
 
     <template v-else>
@@ -27,8 +27,8 @@
           </div>
         </div>
         <div class="flex gap-2">
-          <AppButton v-if="ticket.status !== 'closed'" variant="secondary" @click="handleClose">Close ticket</AppButton>
-          <AppButton v-else variant="secondary" @click="handleOpen">Reopen</AppButton>
+          <AppButton v-if="ticket.status !== 'closed'" variant="secondary" @click="handleClose">{{ $t('admin.closeTicket') }}</AppButton>
+          <AppButton v-else variant="secondary" @click="handleOpen">{{ $t('admin.reopen') }}</AppButton>
         </div>
       </div>
 
@@ -47,10 +47,10 @@
       </div>
 
       <div v-if="ticket.status !== 'closed'" class="mt-6">
-        <label class="mb-1.5 block text-[12px] font-medium text-white/40">Reply as admin</label>
-        <LazyRichEditor v-model="replyBody" placeholder="Type your reply..." />
+        <label class="mb-1.5 block text-[12px] font-medium text-white/40">{{ $t('admin.replyAsAdmin') }}</label>
+        <LazyRichEditor v-model="replyBody" :placeholder="$t('admin.replyPlaceholder')" />
         <div class="mt-3">
-          <AppButton :loading="sending" loading-text="Sending..." :disabled="!replyBody || replyBody === '<p></p>'" @click="handleReply">Send reply</AppButton>
+          <AppButton :loading="sending" :loading-text="$t('admin.sending')" :disabled="!replyBody || replyBody === '<p></p>'" @click="handleReply">{{ $t('admin.sendReply') }}</AppButton>
         </div>
         <AlertMessage :message="error" variant="error" />
       </div>
@@ -65,6 +65,7 @@ interface TicketUser { id: number; name: string; email?: string; is_admin: boole
 interface TicketMsg { id: number; user: TicketUser; body: string; created_at: string }
 interface TicketDetail { id: string; subject: string; status: string; user: { id: number; name: string; email: string } | null; category: { id: number; name: string } | null; messages_count: number }
 
+const { t } = useI18n()
 const route = useRoute()
 const { $api, fetchCsrfCookie } = useApi()
 const { datetime: formatTime } = useDate()
@@ -102,7 +103,7 @@ async function handleReply() {
     if (ticket.value) ticket.value.status = 'open'
   } catch (e: unknown) {
     const err = e as { data?: { message?: string } }
-    error.value = err.data?.message || 'Failed to send reply.'
+    error.value = err.data?.message || t('admin.replyFailed')
   } finally {
     sending.value = false
   }

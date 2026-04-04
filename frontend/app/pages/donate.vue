@@ -2,12 +2,12 @@
   <div>
     <div class="mb-8 flex items-end justify-between">
       <div>
-        <h1 class="font-display text-2xl font-extrabold uppercase tracking-tight lg:text-3xl">Donate</h1>
-        <p class="mt-1 text-[13px] text-white/25">Top up your Toll balance to unlock items & features</p>
+        <h1 class="font-display text-2xl font-extrabold uppercase tracking-tight lg:text-3xl">{{ $t('donate.title') }}</h1>
+        <p class="mt-1 text-[13px] text-white/25">{{ $t('donate.subtitle') }}</p>
       </div>
       <div class="hidden items-center gap-2 rounded-lg bg-red-600/10 px-3.5 py-2 sm:flex">
         <span class="font-display text-[15px] font-bold tabular-nums text-red-400">{{ user?.balance ?? 0 }}</span>
-        <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/50">Toll</span>
+        <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/50">{{ $t('common.toll') }}</span>
       </div>
     </div>
 
@@ -54,12 +54,12 @@
       <div class="lg:col-span-2">
         <div class="rounded-xl border border-white/[0.04] bg-white/[0.02]">
           <div class="border-b border-white/[0.04] px-6 py-4">
-            <h2 class="font-display text-[15px] font-bold uppercase tracking-wider">Order</h2>
+            <h2 class="font-display text-[15px] font-bold uppercase tracking-wider">{{ $t('donate.order') }}</h2>
           </div>
 
           <div class="space-y-5 px-6 py-5">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/40">Amount (Toll Points)</label>
+              <label class="mb-1.5 block text-[12px] font-medium text-white/40">{{ $t('donate.amountLabel') }}</label>
               <input
                 v-model.number="amount" type="number" min="10" step="10"
                 placeholder="100"
@@ -78,12 +78,12 @@
 
             <div v-if="amount" class="space-y-2 rounded-lg border border-white/[0.04] bg-white/[0.015] p-4">
               <div v-if="selectedMethod" class="flex items-center justify-between">
-                <span class="text-[12px] text-white/30">Payment method</span>
+                <span class="text-[12px] text-white/30">{{ $t('donate.paymentMethod') }}</span>
                 <span class="text-[13px] font-medium text-white/60">{{ selectedMethod.name }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-[12px] text-white/30">You receive</span>
-                <span class="font-display text-[15px] font-bold tabular-nums text-red-400">{{ amount }} Toll</span>
+                <span class="text-[12px] text-white/30">{{ $t('donate.youReceive') }}</span>
+                <span class="font-display text-[15px] font-bold tabular-nums text-red-400">{{ amount }} {{ $t('common.toll') }}</span>
               </div>
               <div class="h-px bg-white/[0.04]" />
               <div class="flex items-center justify-between">
@@ -102,16 +102,16 @@
 
             <div class="flex items-start gap-2.5 rounded-lg bg-amber-500/5 px-4 py-3">
               <svg class="mt-0.5 h-4 w-4 shrink-0 text-amber-400/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
-              <p class="text-[11px] leading-relaxed text-amber-400/50">The final amount may vary due to payment processor fees and currency exchange rates.</p>
+              <p class="text-[11px] leading-relaxed text-amber-400/50">{{ $t('donate.finalAmountWarning') }}</p>
             </div>
 
             <AlertMessage :message="successMessage" variant="success" />
             <AlertMessage :message="errorMessage" variant="error" />
 
-            <AppButton :loading="loading" loading-text="Processing..." :disabled="!selectedMethod || !amount || amount < 10" block @click="handleDonate">Proceed to payment</AppButton>
+            <AppButton :loading="loading" :loading-text="$t('donate.processing')" :disabled="!selectedMethod || !amount || amount < 10" block @click="handleDonate">{{ $t('donate.proceedToPayment') }}</AppButton>
 
             <p class="text-center text-[11px] leading-relaxed text-white/15">
-              By proceeding you agree to our <NuxtLink to="/terms" class="text-white/25 underline underline-offset-2 hover:text-white/40">Terms of Service</NuxtLink>. All payments are non-refundable.
+              {{ $t('donate.termsNotice') }}
             </p>
           </div>
         </div>
@@ -123,6 +123,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
+const { t } = useI18n()
 const { $api, fetchCsrfCookie } = useApi()
 const { user } = useAuth()
 
@@ -135,8 +136,8 @@ interface PaymentMethod {
 }
 
 const groups = [
-  { id: 'international', name: 'International' },
-  { id: 'ru', name: 'Russia / CIS' },
+  { id: 'international', name: t('donate.international') },
+  { id: 'ru', name: t('donate.russiaCis') },
 ]
 
 const methods: PaymentMethod[] = [

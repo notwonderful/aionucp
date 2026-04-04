@@ -2,12 +2,12 @@
   <div>
     <div class="mb-8 flex items-end justify-between">
       <div>
-        <h1 class="font-display text-2xl font-extrabold uppercase tracking-tight lg:text-3xl">Shop</h1>
-        <p class="mt-1 text-[13px] text-white/25">Spend your Toll Points on items, gear & consumables</p>
+        <h1 class="font-display text-2xl font-extrabold uppercase tracking-tight lg:text-3xl">{{ $t('shop.title') }}</h1>
+        <p class="mt-1 text-[13px] text-white/25">{{ $t('shop.subtitle') }}</p>
       </div>
       <div class="hidden items-center gap-2 rounded-lg bg-red-600/10 px-3.5 py-2 sm:flex">
         <span class="font-display text-[15px] font-bold tabular-nums text-red-400">{{ user?.balance ?? 0 }}</span>
-        <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/50">Toll</span>
+        <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/50">{{ $t('common.toll') }}</span>
       </div>
     </div>
 
@@ -67,9 +67,9 @@
           <div class="mt-2.5 flex items-baseline justify-between">
             <div class="flex items-baseline gap-1">
               <span class="font-display text-[16px] font-bold tabular-nums text-red-400">{{ product.toll }}</span>
-              <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/40">Toll</span>
+              <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/40">{{ $t('common.toll') }}</span>
             </div>
-            <span v-if="product.sales_count" class="text-[11px] text-white/15">{{ product.sales_count }} sold</span>
+            <span v-if="product.sales_count" class="text-[11px] text-white/15">{{ product.sales_count }} {{ $t('shop.sold') }}</span>
           </div>
         </div>
       </NuxtLink>
@@ -79,8 +79,8 @@
       <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.03]">
         <svg class="h-5 w-5 text-white/15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72" /></svg>
       </div>
-      <p class="text-[14px] font-medium text-white/30">No products found</p>
-      <p class="mt-1 text-[12px] text-white/15">Try selecting a different category</p>
+      <p class="text-[14px] font-medium text-white/30">{{ $t('shop.noProducts') }}</p>
+      <p class="mt-1 text-[12px] text-white/15">{{ $t('shop.noProductsHint') }}</p>
     </div>
   </div>
 </template>
@@ -91,6 +91,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 interface Category { id: number; name: string; slug: string; parent_id: number | null }
 interface Product { id: number; name: string; slug: string; description: string; toll: number; item_id: number; item_qty: number; image_url: string; sales_count: number; category: Category | null }
 
+const { t } = useI18n()
 const { $api } = useApi()
 const { user } = useAuth()
 
@@ -112,7 +113,7 @@ const categories = computed(() => {
 })
 
 const categoryTabs = computed(() => [
-  { id: null, name: 'All', count: allProducts.value.length },
+  { id: null, name: t('shop.all'), count: allProducts.value.length },
   ...categories.value,
 ])
 

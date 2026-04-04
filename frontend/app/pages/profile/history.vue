@@ -13,7 +13,7 @@
           {{ f.label }}
         </button>
       </div>
-      <span class="text-[12px] text-white/15">{{ filteredTransactions.length }} transactions</span>
+      <span class="text-[12px] text-white/15">{{ filteredTransactions.length }} {{ $t('history.transactions') }}</span>
     </div>
 
     <div v-if="filteredTransactions.length" class="rounded-xl border border-white/[0.04] bg-white/[0.02] overflow-hidden">
@@ -21,10 +21,10 @@
         <table class="w-full">
           <thead>
             <tr class="border-b border-white/[0.04]">
-              <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-white/20">Type</th>
-              <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-white/20">Description</th>
-              <th class="px-5 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-white/20">Amount</th>
-              <th class="px-5 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-white/20">Date</th>
+              <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-white/20">{{ $t('history.type') }}</th>
+              <th class="px-5 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-white/20">{{ $t('history.description') }}</th>
+              <th class="px-5 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-white/20">{{ $t('history.amount') }}</th>
+              <th class="px-5 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-white/20">{{ $t('history.date') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -49,11 +49,13 @@
       </div>
     </div>
 
-    <EmptyState v-else title="No transactions yet" subtitle="Your purchase and donation history will appear here" />
+    <EmptyState v-else :title="$t('history.noTransactions')" :subtitle="$t('history.noTransactionsDesc')" />
   </div>
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
 interface Transaction {
   id: number
   type: 'purchase' | 'donate' | 'promo' | 'refund'
@@ -62,12 +64,12 @@ interface Transaction {
   date: string
 }
 
-const filters = [
-  { label: 'All', value: 'all' },
-  { label: 'Purchases', value: 'purchase' },
-  { label: 'Donations', value: 'donate' },
-  { label: 'Promo Codes', value: 'promo' },
-]
+const filters = computed(() => [
+  { label: t('history.all'), value: 'all' },
+  { label: t('history.purchases'), value: 'purchase' },
+  { label: t('history.donations'), value: 'donate' },
+  { label: t('history.promoCodes'), value: 'promo' },
+])
 
 const activeFilter = ref('all')
 
@@ -84,7 +86,7 @@ const transactions = reactive<Transaction[]>([
 const filteredTransactions = computed(() =>
   activeFilter.value === 'all'
     ? transactions
-    : transactions.filter(t => t.type === activeFilter.value),
+    : transactions.filter(tx => tx.type === activeFilter.value),
 )
 
 const typeClasses: Record<string, string> = {

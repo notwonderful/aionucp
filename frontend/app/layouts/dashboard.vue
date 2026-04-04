@@ -39,7 +39,7 @@
                 : 'text-white/30 hover:bg-white/[0.03] hover:text-white/60']"
             @click="sidebarOpen = false">
             <component :is="IconAdminTickets" class="h-[18px] w-[18px] shrink-0" />
-            Admin Panel
+            {{ $t('layout.adminPanel') }}
             <span v-if="isActiveNav('/admin')" class="ml-auto h-1.5 w-1.5 rounded-full bg-red-500" />
           </NuxtLink>
         </template>
@@ -49,12 +49,12 @@
       <div class="space-y-2 border-t border-white/[0.04] p-3">
         <NuxtLink to="/" class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-[13px] font-medium text-white/20 transition-colors hover:bg-white/[0.03] hover:text-white/40">
           <svg class="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-          Back to site
+          {{ $t('layout.backToSite') }}
         </NuxtLink>
         <button @click="showLogoutModal = true"
           class="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-[13px] font-medium text-red-400/60 transition-all duration-300 hover:bg-red-600/10 hover:text-red-400">
           <svg class="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
-          Logout
+          {{ $t('layout.logout') }}
         </button>
       </div>
     </aside>
@@ -74,7 +74,7 @@
         <div class="flex items-center gap-3">
           <div class="flex items-center gap-2 rounded-lg bg-red-600/10 px-3 py-1.5">
             <span class="font-display text-[14px] font-bold tabular-nums text-red-400">{{ user?.balance ?? 0 }}</span>
-            <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/50">Toll</span>
+            <span class="text-[10px] font-medium uppercase tracking-wider text-red-400/50">{{ $t('common.toll') }}</span>
           </div>
           <div class="h-5 w-px bg-white/[0.06]" />
           <div class="relative">
@@ -85,8 +85,8 @@
             <Transition name="dropdown">
               <div v-if="notifOpen" class="absolute right-0 top-full z-50 mt-2 w-80 rounded-xl border border-white/[0.06] bg-surface-light shadow-2xl">
                 <div class="flex items-center justify-between border-b border-white/[0.04] px-4 py-3">
-                  <span class="font-display text-[13px] font-bold uppercase tracking-wider">Notifications</span>
-                  <button v-if="unreadCount" @click="markAllRead" class="text-[11px] font-medium text-white/20 transition-colors hover:text-red-400">Mark all read</button>
+                  <span class="font-display text-[13px] font-bold uppercase tracking-wider">{{ $t('layout.notifications') }}</span>
+                  <button v-if="unreadCount" @click="markAllRead" class="text-[11px] font-medium text-white/20 transition-colors hover:text-red-400">{{ $t('layout.markAllRead') }}</button>
                 </div>
                 <div>
                   <NuxtLink v-for="n in recentNotifications" :key="n.id"
@@ -106,10 +106,10 @@
                     <span v-if="!n.read_at" class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" />
                   </NuxtLink>
                 </div>
-                <div v-if="!notifications.length" class="px-4 py-8 text-center text-[12px] text-white/20">No notifications</div>
+                <div v-if="!notifications.length" class="px-4 py-8 text-center text-[12px] text-white/20">{{ $t('layout.noNotifications') }}</div>
                 <NuxtLink v-if="notifications.length" to="/profile/history" @click="notifOpen = false"
                   class="block border-t border-white/[0.04] px-4 py-3 text-center text-[12px] font-medium text-white/20 transition-colors hover:bg-white/[0.03] hover:text-white/40">
-                  View all activity
+                  {{ $t('layout.viewAllActivity') }}
                 </NuxtLink>
               </div>
             </Transition>
@@ -125,20 +125,20 @@
       </main>
     </div>
 
-    <AppModal :open="showLogoutModal" title="Log out" size="sm" @close="showLogoutModal = false">
+    <AppModal :open="showLogoutModal" :title="$t('layout.logout')" size="sm" @close="showLogoutModal = false">
       <template #icon>
         <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-red-600/10">
           <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
         </div>
       </template>
-      <p class="text-[13px] leading-relaxed text-white/40">Are you sure you want to log out of your account?</p>
+      <p class="text-[13px] leading-relaxed text-white/40">{{ $t('layout.logoutDesc') }}</p>
       <template #footer>
         <button @click="showLogoutModal = false"
           class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] py-3 font-display text-[12px] font-bold uppercase tracking-widest text-white/40 transition-all duration-300 hover:bg-white/[0.06] hover:text-white/60">
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button @click="confirmLogout" class="logout-confirm flex-1 rounded-lg py-3 font-display text-[12px] font-bold uppercase tracking-widest transition-all duration-300 hover:shadow-[0_0_30px_rgba(220,60,60,0.2)] active:scale-[0.98]">
-          Log out
+          {{ $t('layout.logout') }}
         </button>
       </template>
     </AppModal>

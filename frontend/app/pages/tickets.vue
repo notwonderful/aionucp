@@ -7,7 +7,7 @@
           activeTicketId && 'ticket-list--collapsed']"
       >
         <div class="flex items-center justify-between border-b border-white/[0.04] px-5 py-4">
-          <h1 class="font-display text-[15px] font-bold uppercase tracking-wider">Tickets</h1>
+          <h1 class="font-display text-[15px] font-bold uppercase tracking-wider">{{ $t('tickets.title') }}</h1>
           <button @click="openCreateModal" class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600/15 text-red-400 transition-colors hover:bg-red-600/25">
             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
           </button>
@@ -43,7 +43,7 @@
             <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.03]">
               <svg class="h-5 w-5 text-white/15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
             </div>
-            <p class="text-[13px] text-white/25">No tickets yet</p>
+            <p class="text-[13px] text-white/25">{{ $t('tickets.noTickets') }}</p>
           </div>
         </div>
       </div>
@@ -54,9 +54,9 @@
           <div class="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl border border-white/[0.04] bg-white/[0.02]">
             <svg class="h-9 w-9 text-white/10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
           </div>
-          <p class="font-display text-[16px] font-bold uppercase tracking-wider text-white/25">Need help?</p>
-          <p class="mt-2 max-w-xs text-[13px] leading-relaxed text-white/15">Create a support ticket and our team will get back to you as soon as possible.</p>
-          <AppButton class="mt-6" @click="openCreateModal">Create a ticket</AppButton>
+          <p class="font-display text-[16px] font-bold uppercase tracking-wider text-white/25">{{ $t('tickets.needHelp') }}</p>
+          <p class="mt-2 max-w-xs text-[13px] leading-relaxed text-white/15">{{ $t('tickets.needHelpDesc') }}</p>
+          <AppButton class="mt-6" @click="openCreateModal">{{ $t('tickets.createTicket') }}</AppButton>
         </div>
 
         <template v-else>
@@ -101,7 +101,7 @@
             <div v-if="activeDetail?.status !== 'closed'" class="border-t border-white/[0.04] px-5 py-4">
               <div class="flex gap-3">
                 <div class="flex-1">
-                  <LazyRichEditor v-model="messageText" placeholder="Type a message..." :toolbar="true" />
+                  <LazyRichEditor v-model="messageText" :placeholder="$t('tickets.typeMessage')" :toolbar="true" />
                 </div>
                 <button type="button" @click="sendMessage" :disabled="!messageText || messageText === '<p></p>' || sending"
                   class="send-btn flex shrink-0 items-start justify-center rounded-lg bg-red-600 text-white transition-all duration-300 hover:bg-red-500 active:scale-95 disabled:opacity-30 disabled:pointer-events-none" style="padding-top: 13px">
@@ -111,14 +111,14 @@
               </div>
             </div>
             <div v-else class="border-t border-white/[0.04] px-5 py-4 text-center text-[12px] text-white/20">
-              This ticket is closed
+              {{ $t('tickets.ticketClosed') }}
             </div>
           </template>
         </template>
       </div>
     </div>
 
-    <AppModal :open="showCreateModal" title="New Ticket" size="lg" @close="showCreateModal = false">
+    <AppModal :open="showCreateModal" :title="$t('tickets.newTicket')" size="lg" @close="showCreateModal = false">
       <template #icon>
         <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-red-600/10">
           <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
@@ -126,10 +126,10 @@
       </template>
 
       <form @submit.prevent="handleCreateTicket" class="space-y-4">
-        <FormInput v-model="newTicket.subject" label="Subject" required placeholder="Brief description of your issue" />
+        <FormInput v-model="newTicket.subject" :label="$t('tickets.subject')" required :placeholder="$t('tickets.subjectPlaceholder')" />
 
         <div>
-          <label class="mb-1.5 block text-[12px] font-medium text-white/40">Category</label>
+          <label class="mb-1.5 block text-[12px] font-medium text-white/40">{{ $t('tickets.category') }}</label>
           <select
             v-model="newTicket.category_id"
             class="w-full appearance-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-[14px] text-white outline-none transition-all duration-300 focus:border-red-500/30 focus:bg-white/[0.05] focus:ring-1 focus:ring-red-500/20"
@@ -139,15 +139,15 @@
         </div>
 
         <div>
-          <label class="mb-1.5 block text-[12px] font-medium text-white/40">Message</label>
-          <LazyRichEditor v-model="newTicket.body" placeholder="Describe your issue in detail..." />
+          <label class="mb-1.5 block text-[12px] font-medium text-white/40">{{ $t('tickets.message') }}</label>
+          <LazyRichEditor v-model="newTicket.body" :placeholder="$t('tickets.messagePlaceholder')" />
         </div>
 
         <AlertMessage :message="createError" variant="error" />
 
         <div class="flex gap-3 pt-1">
-          <AppButton variant="secondary" @click="showCreateModal = false">Cancel</AppButton>
-          <AppButton type="submit" :loading="creating" loading-text="Creating..." :disabled="!newTicket.subject.trim() || !newTicket.body || newTicket.body === '<p></p>'">Submit</AppButton>
+          <AppButton variant="secondary" @click="showCreateModal = false">{{ $t('common.cancel') }}</AppButton>
+          <AppButton type="submit" :loading="creating" :loading-text="$t('tickets.creating')" :disabled="!newTicket.subject.trim() || !newTicket.body || newTicket.body === '<p></p>'">{{ $t('tickets.submit') }}</AppButton>
         </div>
       </form>
     </AppModal>

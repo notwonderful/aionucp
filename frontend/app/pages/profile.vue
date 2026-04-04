@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="mb-8">
-      <h1 class="font-display text-2xl font-extrabold uppercase tracking-tight lg:text-3xl">Settings</h1>
-      <p class="mt-1 text-[13px] text-white/25">Account, security & transaction history</p>
+      <h1 class="font-display text-2xl font-extrabold uppercase tracking-tight lg:text-3xl">{{ $t('profile.settings') }}</h1>
+      <p class="mt-1 text-[13px] text-white/25">{{ $t('profile.settingsDesc') }}</p>
     </div>
 
     <div class="mb-6 flex gap-2 overflow-x-auto pb-1">
@@ -40,11 +40,13 @@ const IconHistory = () => h('svg', { fill: 'none', viewBox: '0 0 24 24', stroke:
   h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' }),
 ])
 
-const tabs = [
-  { label: 'Profile', to: '/profile', icon: IconUser },
-  { label: 'Security', to: '/profile/security', icon: IconShield },
-  { label: 'History', to: '/profile/history', icon: IconHistory },
-]
+const { t } = useI18n()
+
+const tabs = computed(() => [
+  { label: t('profile.profileTab'), to: '/profile', icon: IconUser },
+  { label: t('profile.securityTab'), to: '/profile/security', icon: IconShield },
+  { label: t('profile.historyTab'), to: '/profile/history', icon: IconHistory },
+])
 
 function isActive(to: string) {
   if (to === '/profile') return route.path === '/profile' || route.path === '/profile/'

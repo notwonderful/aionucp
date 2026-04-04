@@ -11,26 +11,26 @@
     <!-- Stat cards -->
     <div class="grid gap-3 sm:grid-cols-3">
       <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
-        <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">Balance</div>
+        <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">{{ $t('dashboard.balance') }}</div>
         <div class="mt-2 font-display text-3xl font-extrabold tabular-nums text-red-400">{{ user?.balance ?? 0 }}</div>
-        <div class="mt-1 text-[11px] text-white/15">Toll Points</div>
+        <div class="mt-1 text-[11px] text-white/15">{{ $t('common.tollPoints') }}</div>
       </div>
       <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
-        <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">Characters</div>
+        <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">{{ $t('dashboard.characters') }}</div>
         <div class="mt-2 font-display text-3xl font-extrabold tabular-nums text-white">{{ allPlayers.length }}</div>
-        <div class="mt-1 text-[11px] text-white/15">Total on account</div>
+        <div class="mt-1 text-[11px] text-white/15">{{ $t('dashboard.totalOnAccount') }}</div>
       </div>
       <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
-        <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">Membership</div>
-        <div class="mt-2 font-display text-lg font-bold text-white/40">Free</div>
-        <div class="mt-1 text-[11px] text-white/15">No active subscription</div>
+        <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">{{ $t('dashboard.membership') }}</div>
+        <div class="mt-2 font-display text-lg font-bold text-white/40">{{ $t('dashboard.free') }}</div>
+        <div class="mt-1 text-[11px] text-white/15">{{ $t('dashboard.noSubscription') }}</div>
       </div>
     </div>
 
     <!-- Characters -->
     <div class="mt-10">
       <div class="mb-4 flex items-center justify-between">
-        <h2 class="font-display text-lg font-bold uppercase tracking-wider">Characters</h2>
+        <h2 class="font-display text-lg font-bold uppercase tracking-wider">{{ $t('dashboard.characters') }}</h2>
         <span class="text-[11px] text-white/15">{{ allPlayers.length }} total</span>
       </div>
 
@@ -44,8 +44,8 @@
         <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.03]">
           <svg class="h-5 w-5 text-white/15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
         </div>
-        <p class="text-[14px] font-medium text-white/30">No characters yet</p>
-        <p class="mt-1 text-[12px] text-white/15">Log into the game to create your first character</p>
+        <p class="text-[14px] font-medium text-white/30">{{ $t('dashboard.noCharactersYet') }}</p>
+        <p class="mt-1 text-[12px] text-white/15">{{ $t('dashboard.createFirstCharacter') }}</p>
       </div>
 
       <!-- Characters list -->
@@ -74,9 +74,9 @@
                 <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
-              Online
+              {{ $t('common.online') }}
             </span>
-            <span v-else class="text-[11px] text-white/15">Offline</span>
+            <span v-else class="text-[11px] text-white/15">{{ $t('common.offline') }}</span>
           </div>
         </div>
       </div>
@@ -90,8 +90,8 @@
           <svg class="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72" /></svg>
         </div>
         <div>
-          <div class="text-[14px] font-semibold transition-colors group-hover:text-red-400">Toll Shop</div>
-          <div class="mt-0.5 text-[12px] text-white/20">Cosmetics, mounts & more</div>
+          <div class="text-[14px] font-semibold transition-colors group-hover:text-red-400">{{ $t('dashboard.tollShop') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('dashboard.shopDesc') }}</div>
         </div>
       </NuxtLink>
       <button @click="showPromoModal = true"
@@ -100,8 +100,8 @@
           <svg class="h-4 w-4 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
         </div>
         <div>
-          <div class="text-[14px] font-semibold transition-colors group-hover:text-gold-400">Promo Code</div>
-          <div class="mt-0.5 text-[12px] text-white/20">Activate a code for rewards</div>
+          <div class="text-[14px] font-semibold transition-colors group-hover:text-gold-400">{{ $t('dashboard.promoCode') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('dashboard.promoDesc') }}</div>
         </div>
       </button>
       <NuxtLink to="/profile"
@@ -110,8 +110,8 @@
           <svg class="h-4 w-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
         </div>
         <div>
-          <div class="text-[14px] font-semibold transition-colors group-hover:text-white/80">Account settings</div>
-          <div class="mt-0.5 text-[12px] text-white/20">Email, password, security</div>
+          <div class="text-[14px] font-semibold transition-colors group-hover:text-white/80">{{ $t('dashboard.accountSettings') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('dashboard.settingsDesc') }}</div>
         </div>
       </NuxtLink>
     </div>
@@ -123,18 +123,18 @@
             <svg class="h-5 w-5 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
           </div>
           <div>
-            <div class="text-[14px] font-semibold text-white/60">Have questions or need help?</div>
-            <div class="mt-0.5 text-[12px] text-white/20">Our support team is ready to assist you</div>
+            <div class="text-[14px] font-semibold text-white/60">{{ $t('dashboard.needHelp') }}</div>
+            <div class="mt-0.5 text-[12px] text-white/20">{{ $t('dashboard.needHelpDesc') }}</div>
           </div>
         </div>
         <NuxtLink to="/tickets"
           class="shrink-0 rounded-lg border border-white/[0.06] bg-white/[0.03] px-6 py-2.5 font-display text-[12px] font-bold uppercase tracking-widest text-white/40 transition-all duration-300 hover:bg-white/[0.06] hover:text-white/60">
-          Contact support
+          {{ $t('dashboard.contactSupport') }}
         </NuxtLink>
       </div>
     </div>
 
-    <AppModal :open="showPromoModal" title="Promo Code" @close="closePromoModal">
+    <AppModal :open="showPromoModal" :title="$t('dashboard.promoCode')" @close="closePromoModal">
       <template #icon>
         <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-gold-500/10">
           <svg class="h-5 w-5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
@@ -143,7 +143,7 @@
 
       <form @submit.prevent="handleActivatePromo" class="space-y-4">
         <div>
-          <label class="mb-1.5 block text-[12px] font-medium text-white/40">Enter your code</label>
+          <label class="mb-1.5 block text-[12px] font-medium text-white/40">{{ $t('dashboard.enterYourCode') }}</label>
           <input
             v-model="promoCode" type="text" required
             placeholder="XXXX-XXXX-XXXX"
@@ -155,14 +155,14 @@
         <AlertMessage :message="promoError" variant="error" />
 
         <div class="flex gap-3">
-          <AppButton variant="secondary" @click="closePromoModal">Cancel</AppButton>
+          <AppButton variant="secondary" @click="closePromoModal">{{ $t('common.cancel') }}</AppButton>
           <button type="submit" :disabled="!promoCode.trim() || promoLoading"
             class="flex-1 rounded-lg bg-gold-500 py-3 font-display text-[12px] font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-gold-400 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none">
             <span v-if="promoLoading" class="inline-flex items-center gap-2">
               <svg class="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
-              Activating...
+              {{ $t('dashboard.activating') }}
             </span>
-            <span v-else>Activate</span>
+            <span v-else>{{ $t('dashboard.activate') }}</span>
           </button>
         </div>
       </form>
