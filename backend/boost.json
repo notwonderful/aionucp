@@ -1,0 +1,13 @@
+{
+    "agents": [
+        "claude_code"
+    ],
+    "packages": [
+        "barryvdh/laravel-debugbar"
+    ],
+    "skills": [
+        "laravel-best-practices",
+        "pest-testing",
+        "tailwindcss-development"
+    ]
+}

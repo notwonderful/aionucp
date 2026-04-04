@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap');
+
+@theme {
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --color-surface: #0d0b0e;
+  --color-surface-dark: #0a0912;
+  --color-surface-light: #141218;
+  --color-surface-overlay: #1a1720;
+  --color-surface-card: #110f16;
+  --color-gold-50: #fdf8e8;
+  --color-gold-100: #f5ebc5;
+  --color-gold-200: #e8d48e;
+  --color-gold-300: #d4b95a;
+  --color-gold-400: #c9a84c;
+  --color-gold-500: #b8942e;
+  --color-gold-600: #9a7a22;
+  --color-gold-700: #7a611b;
+  --color-gold-800: #5c4915;
+  --color-gold-900: #3d300e;
+}
+
+button, [role="button"], a[href], select, summary, input[type="submit"], input[type="button"], input[type="reset"] {
+  cursor: pointer;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.6); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out both;
+}
+@utility animate-shimmer {
+  animation: shimmer 3s infinite linear;
+}
+@utility animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+@utility animate-float {
+  animation: float 4s ease-in-out infinite;
+}
