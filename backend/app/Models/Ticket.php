@@ -66,4 +66,12 @@ final class Ticket extends Model
             'closed_at' => now(),
         ]);
     }
+
+    public function reopen(): void
+    {
+        $this->update([
+            'status' => TicketStatus::OPEN,
+            'closed_at' => null,
+        ]);
+    }
 }

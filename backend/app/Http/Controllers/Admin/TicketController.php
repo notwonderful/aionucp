@@ -100,10 +100,7 @@ final class TicketController extends Controller
 
     public function open(Ticket $ticket): JsonResponse
     {
-        $ticket->update([
-            'status' => TicketStatus::OPEN,
-            'closed_at' => null,
-        ]);
+        $ticket->reopen();
 
         TicketStatusChanged::dispatch($ticket);
 
