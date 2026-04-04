@@ -32,6 +32,6 @@ const classes = computed(() => [
 </script>
 
 <style scoped>
-.app-btn-primary { background: #dc2626; color: white; }
-.app-btn-primary:hover { background: #ef4444; box-shadow: 0 0 30px rgba(220, 60, 60, 0.2); }
+.app-btn-primary { background: var(--color-primary); color: white; }
+.app-btn-primary:hover { background: var(--color-primary-hover); box-shadow: 0 0 30px rgba(220, 60, 60, 0.2); }
 </style>

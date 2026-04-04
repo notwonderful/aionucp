@@ -4,6 +4,8 @@
 @theme {
   --font-body: 'DM Sans', sans-serif;
   --font-display: 'Syne', sans-serif;
+  --color-primary: #dc2626;
+  --color-primary-hover: #ef4444;
   --color-surface: #0d0b0e;
   --color-surface-dark: #0a0912;
   --color-surface-light: #141218;
