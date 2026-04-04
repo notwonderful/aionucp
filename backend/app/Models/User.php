@@ -60,8 +60,12 @@ final class User extends Authenticatable
     /** @return HasMany<Referral, $this> */
     public function referrals(): HasMany
     {
-        return $this->hasMany(
-            related: Referral::class,
-        );
+        return $this->hasMany(Referral::class);
+    }
+
+    /** @return HasMany<Ticket, $this> */
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
     }
 }
