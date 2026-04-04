@@ -72,23 +72,29 @@
                   <span class="font-display text-[13px] font-bold uppercase tracking-wider">Notifications</span>
                   <button v-if="unreadCount" @click="markAllRead" class="text-[11px] font-medium text-white/20 transition-colors hover:text-red-400">Mark all read</button>
                 </div>
-                <div class="max-h-80 overflow-y-auto">
-                  <div v-for="n in notifications" :key="n.id"
-                    :class="['flex gap-3 border-b border-white/[0.04] px-4 py-3 transition-colors', n.read ? '' : 'bg-white/[0.02]']">
+                <div>
+                  <NuxtLink v-for="n in recentNotifications" :key="n.id"
+                    :to="nLink(n)" @click="notifOpen = false"
+                    :class="['flex gap-3 border-b border-white/[0.04] px-4 py-3 transition-colors hover:bg-white/[0.03]', !n.read_at ? 'bg-white/[0.02]' : '']">
                     <div :class="['mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
-                      n.type === 'purchase' ? 'bg-red-600/10' : n.type === 'ticket' ? 'bg-emerald-500/10' : 'bg-white/[0.04]']">
-                      <svg v-if="n.type === 'purchase'" class="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
-                      <svg v-else-if="n.type === 'ticket'" class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                      nType(n) === 'purchase' ? 'bg-red-600/10' : nType(n) === 'ticket' ? 'bg-emerald-500/10' : nType(n) === 'promo' ? 'bg-gold-500/10' : 'bg-white/[0.04]']">
+                      <svg v-if="nType(n) === 'purchase'" class="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
+                      <svg v-else-if="nType(n) === 'ticket'" class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                      <svg v-else-if="nType(n) === 'promo'" class="h-4 w-4 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21" /></svg>
                       <svg v-else class="h-4 w-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" /></svg>
                     </div>
                     <div class="min-w-0 flex-1">
-                      <p class="text-[12px] leading-relaxed text-white/50">{{ n.text }}</p>
-                      <span class="mt-1 block text-[10px] text-white/15">{{ n.time }}</span>
+                      <p class="text-[12px] leading-relaxed text-white/50">{{ nText(n) }}</p>
+                      <span class="mt-1 block text-[10px] text-white/15">{{ formatNotifTime(n.created_at) }}</span>
                     </div>
-                    <span v-if="!n.read" class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" />
-                  </div>
+                    <span v-if="!n.read_at" class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" />
+                  </NuxtLink>
                 </div>
                 <div v-if="!notifications.length" class="px-4 py-8 text-center text-[12px] text-white/20">No notifications</div>
+                <NuxtLink v-if="notifications.length" to="/profile/history" @click="notifOpen = false"
+                  class="block border-t border-white/[0.04] px-4 py-3 text-center text-[12px] font-medium text-white/20 transition-colors hover:bg-white/[0.03] hover:text-white/40">
+                  View all activity
+                </NuxtLink>
               </div>
             </Transition>
           </div>
@@ -132,16 +138,46 @@ const sidebarOpen = ref(false)
 const notifOpen = ref(false)
 const showLogoutModal = ref(false)
 
-interface Notification { id: number; type: 'purchase' | 'ticket' | 'system'; text: string; time: string; read: boolean }
+interface Notification { id: string; type: string; data: { type?: string; text?: string; subject?: string; preview?: string; sender?: string; [key: string]: unknown }; read_at: string | null; created_at: string }
 
-const notifications = reactive<Notification[]>([
-  { id: 1, type: 'ticket', text: 'Support replied to your ticket "Missing items after purchase"', time: '2 hours ago', read: false },
-  { id: 2, type: 'purchase', text: 'You purchased Stormwing Mount for 500 Toll', time: '1 day ago', read: false },
-  { id: 3, type: 'system', text: 'Welcome to AionUCP! Set up your profile to get started.', time: '3 days ago', read: true },
-])
+const { $api, fetchCsrfCookie } = useApi()
+const notifications = ref<Notification[]>([])
+const unreadCount = ref(0)
 
-const unreadCount = computed(() => notifications.filter(n => !n.read).length)
-function markAllRead() { notifications.forEach(n => { n.read = true }) }
+async function fetchNotifications() {
+  try {
+    const res = await $api<{ data: Notification[]; unread_count: number }>('/notifications')
+    notifications.value = res.data
+    unreadCount.value = res.unread_count
+  } catch { /* ignore */ }
+}
+
+async function markAllRead() {
+  await fetchCsrfCookie()
+  await $api('/notifications/read', { method: 'POST' })
+  notifications.value.forEach(n => { n.read_at = new Date().toISOString() })
+  unreadCount.value = 0
+}
+
+fetchNotifications()
+
+onMounted(() => {
+  const { $echo } = useNuxtApp()
+  if (!$echo || !user.value) return
+
+  $echo.private(`App.Models.User.${user.value.id}`)
+    .notification((n: Notification) => {
+      notifications.value.unshift(n)
+      unreadCount.value++
+    })
+})
+
+onUnmounted(() => {
+  const { $echo } = useNuxtApp()
+  if ($echo && user.value) {
+    $echo.leave(`App.Models.User.${user.value.id}`)
+  }
+})
 
 // Inline icon components
 const IconDashboard = () => h('svg', { fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.5' }, [
@@ -172,6 +208,33 @@ const navItems = [
   { label: 'Tickets', to: '/tickets', iconComponent: IconTickets },
   { label: 'Profile', to: '/profile', iconComponent: IconProfile },
 ]
+
+const recentNotifications = computed(() => notifications.value.slice(0, 3))
+
+function nLink(n: Notification): string {
+  const type = nType(n)
+  if (type === 'ticket' && n.data?.ticket_id) return `/tickets?id=${n.data.ticket_id}`
+  if (type === 'purchase') return '/shop'
+  if (type === 'promo') return '/profile/history'
+  return '/profile/history'
+}
+
+function nType(n: Notification): string {
+  return n.data?.type || ''
+}
+
+function nText(n: Notification): string {
+  if (!n.data) return ''
+  return n.data.text || n.data.preview || n.data.subject || ''
+}
+
+function formatNotifTime(date: string) {
+  const d = new Date(date)
+  const diff = Date.now() - d.getTime()
+  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`
+  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
+  return d.toLocaleDateString('en', { month: 'short', day: 'numeric' })
+}
 
 async function confirmLogout() {
   showLogoutModal.value = false

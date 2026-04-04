@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Contracts\GameServerContract;
 use App\Jobs\SendPurchaseToWebShopJob;
+use App\Notifications\ShopPurchase;
 use App\Models\Game\Player;
 use App\Models\Product;
 use App\Models\User;
@@ -26,6 +27,7 @@ final class PurchaseProductAction
             $this->gameServer->decrementBalance($user->aion_acc_id, $product->toll);
             $this->productService->incrementSalesCount($product);
             dispatch(new SendPurchaseToWebShopJob($player, $product))->afterCommit();
+            $user->notify(new ShopPurchase($product));
         });
     }
 }

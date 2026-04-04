@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PromoCodeController;
 use App\Http\Controllers\Api\RatingController;
 use App\Http\Controllers\Api\ReferralController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\UploadController;
@@ -117,6 +118,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Uploads
     Route::post('uploads/image', [UploadController::class, 'image'])
         ->middleware('throttle:10,1');
+
+    // Notifications
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::post('notifications/read', [NotificationController::class, 'markAsRead']);
+    Route::post('notifications/{id}/read', [NotificationController::class, 'markOneAsRead']);
 
 });
 

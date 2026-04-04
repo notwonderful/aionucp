@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Contracts\GameServerContract;
 use App\Models\PromoCode;
 use App\Models\User;
+use App\Notifications\PromoCodeActivated;
 use Illuminate\Support\Facades\DB;
 
 final class ActivatePromoCodeAction
@@ -24,6 +25,7 @@ final class ActivatePromoCodeAction
                 ->firstOrFail();
 
             $this->gameServer->incrementBalance($user->aion_acc_id, $promoCode->toll);
+            $user->notify(new PromoCodeActivated($code, $promoCode->toll));
             $promoCode->delete();
         });
     }

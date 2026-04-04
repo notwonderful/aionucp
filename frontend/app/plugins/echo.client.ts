@@ -14,13 +14,19 @@ export default defineNuxtPlugin(() => {
     wssPort: Number(config.public.reverbPort),
     forceTLS: false,
     enabledTransports: ['ws', 'wss'],
-    authEndpoint: '/api/broadcasting/auth',
+    authEndpoint: '/broadcasting/auth',
     auth: {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
+        'X-XSRF-TOKEN': getXsrfToken(),
       },
     },
   })
 
   return { provide: { echo } }
 })
+
+function getXsrfToken(): string {
+  const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/)
+  return match ? decodeURIComponent(match[1]) : ''
+}

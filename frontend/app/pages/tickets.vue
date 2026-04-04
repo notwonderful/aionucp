@@ -257,35 +257,39 @@ if (activeTicketId.value) {
   fetchDetail(activeTicketId.value)
 }
 
-const { $echo } = useNuxtApp()
-let echoChannel: ReturnType<typeof $echo.private> | null = null
+let echoChannel: any = null
+
+function subscribeToTicket(id: string) {
+  const { $echo } = useNuxtApp()
+  if (!$echo) return
+  echoChannel = $echo.private(`tickets.${id}`)
+    .listen('.message.sent', (e: { message: TicketMsg }) => {
+      const exists = messages.value.some(m => m.id === e.message.id)
+      if (!exists) {
+        messages.value.push(e.message)
+        scrollToBottom()
+      }
+      refreshTickets()
+    })
+    .listen('.status.changed', (e: { status: string }) => {
+      if (activeDetail.value) activeDetail.value.status = e.status
+      refreshTickets()
+    })
+}
+
+function unsubscribeFromTicket(id: string) {
+  const { $echo } = useNuxtApp()
+  $echo?.leave(`tickets.${id}`)
+  echoChannel = null
+}
 
 watch(activeTicketId, (id, oldId) => {
-  if (oldId && echoChannel) {
-    $echo?.leave(`tickets.${oldId}`)
-    echoChannel = null
-  }
-  if (id && $echo) {
-    echoChannel = $echo.private(`tickets.${id}`)
-      .listen('.message.sent', (e: { message: TicketMsg }) => {
-        const exists = messages.value.some(m => m.id === e.message.id)
-        if (!exists) {
-          messages.value.push(e.message)
-          scrollToBottom()
-        }
-        refreshTickets()
-      })
-      .listen('.status.changed', (e: { status: string }) => {
-        if (activeDetail.value) activeDetail.value.status = e.status
-        refreshTickets()
-      })
-  }
+  if (oldId) unsubscribeFromTicket(oldId)
+  if (id) subscribeToTicket(id)
 })
 
 onUnmounted(() => {
-  if (activeTicketId.value && $echo) {
-    $echo.leave(`tickets.${activeTicketId.value}`)
-  }
+  if (activeTicketId.value) unsubscribeFromTicket(activeTicketId.value)
 })
 
 function selectTicket(id: string) {

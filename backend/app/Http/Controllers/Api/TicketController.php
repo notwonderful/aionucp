@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\TicketStatus;
 use App\Events\TicketMessageSent;
 use App\Events\TicketStatusChanged;
+use App\Notifications\TicketReplied;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ticket\StoreTicketMessageRequest;
 use App\Http\Requests\Ticket\StoreTicketRequest;
@@ -102,6 +103,10 @@ final class TicketController extends Controller
         }
 
         TicketMessageSent::dispatch($message);
+
+        if ($user->id !== $ticket->user_id) {
+            $ticket->user->notify(new TicketReplied($ticket, $message));
+        }
 
         return response()->json([
             'data' => new TicketMessageResource($message->load('user')),
