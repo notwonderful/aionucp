@@ -149,6 +149,7 @@
 import { h } from 'vue'
 
 const { user, isAdmin, logout } = useAuth()
+const { relative: formatNotifTime } = useDate()
 const route = useRoute()
 const sidebarOpen = ref(false)
 const notifOpen = ref(false)
@@ -263,16 +264,6 @@ function nText(n: Notification): string {
   return n.data.text || n.data.preview || n.data.subject || ''
 }
 
-function formatNotifTime(date: string) {
-  if (!date) return 'Just now'
-  const d = new Date(date)
-  if (isNaN(d.getTime())) return 'Just now'
-  const diff = Date.now() - d.getTime()
-  if (diff < 3600000) return `${Math.max(1, Math.floor(diff / 60000))}m ago`
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
-  return d.toLocaleDateString('en', { month: 'short', day: 'numeric' })
-}
-
 async function confirmLogout() {
   showLogoutModal.value = false
   await logout()
@@ -290,8 +281,8 @@ onMounted(() => {
 
 <style scoped>
 .notif-badge { line-height: 1; }
-.logout-confirm { background: #dc2626; color: white; }
-.logout-confirm:hover { background: #ef4444; }
+.logout-confirm { background: var(--color-primary); color: white; }
+.logout-confirm:hover { background: var(--color-primary-hover); }
 .dropdown-enter-active, .dropdown-leave-active { transition: opacity 0.15s ease, transform 0.15s ease; }
 .dropdown-enter-from, .dropdown-leave-to { opacity: 0; transform: translateY(-4px); }
 </style>
