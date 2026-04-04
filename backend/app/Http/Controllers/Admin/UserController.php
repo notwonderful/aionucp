@@ -73,4 +73,14 @@ final class UserController extends Controller
             'message' => __('Role updated successfully.'),
         ]);
     }
+
+    public function roles(): JsonResponse
+    {
+        $roles = collect(UserRole::cases())->map(fn (UserRole $r) => [
+            'value' => $r->value,
+            'label' => $r->label(),
+        ]);
+
+        return response()->json(['data' => $roles]);
+    }
 }

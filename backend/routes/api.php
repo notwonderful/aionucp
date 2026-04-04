@@ -145,6 +145,9 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
     Route::put('users/{user}/role', [AdminUserController::class, 'assignRole'])
         ->middleware('permission:'.Permission::USERS_ROLES_MANAGE->value);
 
+    Route::get('roles', [AdminUserController::class, 'roles'])
+        ->middleware('permission:'.Permission::USERS_VIEW->value);
+
     Route::apiResource('categories', ProductCategoryController::class)
         ->middleware('permission:'.Permission::CATEGORIES_VIEW->value);
 
