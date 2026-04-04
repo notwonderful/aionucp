@@ -93,10 +93,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Shop
     Route::get('shop', [ShopController::class, 'index']);
-    Route::post('shop/{product}/buy', [ShopController::class, 'buy']);
+    Route::post('shop/{product}/buy', [ShopController::class, 'buy'])
+        ->middleware('throttle:10,1');
 
     // Membership
-    Route::post('membership', [MembershipController::class, 'store']);
+    Route::post('membership', [MembershipController::class, 'store'])
+        ->middleware('throttle:3,1');
 
     // Referral
     Route::get('referral', [ReferralController::class, 'index']);
