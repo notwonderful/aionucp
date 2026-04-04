@@ -164,6 +164,7 @@ interface TicketItem { id: string; subject: string; status: string; priority: st
 interface Category { id: number; name: string; slug: string }
 
 const { $api, fetchCsrfCookie } = useApi()
+const { relative: formatDate, time: formatTime } = useDate()
 
 const { data: ticketsData, status: ticketsStatus, refresh: refreshTickets } = useAsyncData('tickets', () =>
   $api<{ data: TicketItem[] }>('/tickets'),
@@ -370,19 +371,6 @@ function stripHtml(html: string) {
   return html.replace(/<[^>]*>/g, '').slice(0, 100)
 }
 
-function formatDate(date: string) {
-  const d = new Date(date)
-  const now = new Date()
-  const diff = now.getTime() - d.getTime()
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
-  if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`
-  return d.toLocaleDateString('en', { month: 'short', day: 'numeric' })
-}
-
-function formatTime(date: string) {
-  return new Date(date).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit' })
-}
 </script>
 
 <style scoped>

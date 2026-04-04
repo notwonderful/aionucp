@@ -1,0 +1,184 @@
+{
+  "hero": {
+    "title1": "Return to",
+    "title2": "Atreia",
+    "desc": "Classic 3.9 Aion on dedicated European servers. No pay-to-win, no custom imbalances — the experience you remember.",
+    "cta": "Start playing",
+    "explore": "Explore the realm"
+  },
+  "nav": {
+    "realm": "Realm",
+    "news": "News",
+    "rankings": "Rankings",
+    "siege": "Siege",
+    "wiki": "Wiki",
+    "start": "Start",
+    "signin": "Sign in",
+    "play": "Play Free"
+  },
+  "stats": {
+    "online": "Online",
+    "accounts": "Accounts",
+    "patch": "Patch",
+    "uptime": "Uptime"
+  },
+  "realm": {
+    "eyebrow": "What defines us",
+    "title": "Built for the ones who remember"
+  },
+  "feat": {
+    "classic": { "title": "Authentic classic 3.9", "desc": "No custom modifications. The same Aion you fell in love with — every quest, every instance, every mechanic faithful to the original." },
+    "pvp": { "title": "Active Abyss warfare", "desc": "Daily sieges, Dredgion, and open-world fights around the clock." },
+    "fair": { "title": "Zero pay-to-win", "desc": "Cosmetics shop only. Every item earned through gameplay." },
+    "rates": { "title": "Fair mid-rate", "desc": "Balanced progression. Not too fast, not too slow." },
+    "servers": { "title": "EU dedicated", "desc": "High-performance infrastructure. Sub-30ms for EU players." },
+    "team": { "title": "Active dev team", "desc": "Weekly patches, monthly events. The server grows with its community." }
+  },
+  "news": {
+    "eyebrow": "Dispatches",
+    "title": "From the frontlines",
+    "all": "All news"
+  },
+  "rankings": {
+    "eyebrow": "Leaderboard",
+    "title": "Top Daevas",
+    "rank": "Rank",
+    "character": "Character",
+    "race": "Race",
+    "class": "Class",
+    "score": "Score",
+    "status": "Status"
+  },
+  "tab": {
+    "pvp": "PvP",
+    "abyss": "Abyss",
+    "online": "Online"
+  },
+  "siege": {
+    "eyebrow": "War council",
+    "title": "Siege schedule"
+  },
+  "cta": {
+    "title1": "Your war begins",
+    "title2": "at the tower",
+    "desc": "Pick your side. Ascend as a Daeva. The Abyss does not wait.",
+    "button": "Create free account"
+  },
+  "server": {
+    "status": "Server online"
+  },
+  "steps": {
+    "title": "Start in 5 minutes",
+    "1": { "title": "Create account", "desc": "Quick registration. Email and password — that's it." },
+    "2": { "title": "Download client", "desc": "Lightweight launcher, auto-patching. ~8 GB." },
+    "3": { "title": "Enter Atreia", "desc": "Pick Elyos or Asmodian. Your war begins." }
+  },
+  "factions": {
+    "title": "Choose your side",
+    "elyos": "Elyos",
+    "asmodian": "Asmodians"
+  },
+  "community": {
+    "title": "Join the community",
+    "desc": "Active Discord with 2,000+ members. Guilds recruiting, siege coordination, trade chat.",
+    "cta": "Join Discord"
+  },
+  "announce": {
+    "text": "Patch 3.9.7 is live — Dredgion fixes, class balance, new events.",
+    "link": "Read more"
+  },
+  "download": {
+    "title": "Download & play",
+    "size": "Client size: ~8.2 GB",
+    "cta": "Download client",
+    "launcher": "Launcher auto-patches to latest version",
+    "req": "System requirements",
+    "os": "Windows 7 / 10 / 11",
+    "cpu": "Intel i3 / AMD Ryzen 3",
+    "ram": "4 GB RAM",
+    "gpu": "GeForce GTX 660 / Radeon HD 7850"
+  },
+  "faq": {
+    "title": "Questions & answers",
+    "q1": "What are the server rates?",
+    "a1": "Mid-rate: x3 EXP, x3 Kinah, x2 Drop, x2 AP. Enough to enjoy the journey without months of grind.",
+    "q2": "Is there pay-to-win?",
+    "a2": "No. The shop sells cosmetics, mounts, and convenience items only. No gear, no stones, no enchants.",
+    "q3": "How do I start playing?",
+    "a3": "Register on the site, download the client (~8 GB), launch and log in. Takes about 5 minutes plus download time.",
+    "q4": "Which patch version is the server?",
+    "a4": "Classic 3.9 — the most beloved era of Aion. All instances, sieges, and mechanics from this patch are working.",
+    "q5": "Where is the server located?",
+    "a5": "Dedicated servers in Germany. Average ping for EU players: 15-40ms."
+  },
+  "classes": {
+    "title": "Choose your class",
+    "desc": "Each class has a unique role on the battlefield. Pick wisely."
+  },
+  "timer": {
+    "next": "Next siege",
+    "days": "d",
+    "hours": "h",
+    "min": "m",
+    "sec": "s"
+  },
+  "wiki": {
+    "title": "Server info",
+    "desc": "Everything you need to know before entering Atreia.",
+    "rates": "Rates",
+    "general": "General",
+    "pvp": "PvP & Abyss",
+    "craft": "Craft & Economy",
+    "instances": "Instances",
+    "other": "Other",
+    "back": "Back to home"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "desc": "All times GMT+1 (CET). Fortress vulnerability windows and battleground queues.",
+    "sieges": "Sieges",
+    "dredgion": "Dredgion",
+    "rifts": "Rifts",
+    "time": "Time",
+    "day": "Day",
+    "direction": "Direction",
+    "back": "Back to home"
+  },
+  "rank": {
+    "title": "Rankings",
+    "desc": "The strongest Daevas and most powerful Legions of Atreia.",
+    "abyss": "Abyss ranking",
+    "legions": "Legions",
+    "statistics": "Statistics",
+    "name": "Name",
+    "race": "Race",
+    "class": "Class",
+    "ap": "AP",
+    "kills": "Kills",
+    "level": "Level",
+    "onlineNow": "Online now",
+    "totalChars": "Total characters",
+    "byClass": "Characters by class",
+    "byRace": "Race balance",
+    "back": "Back to home"
+  },
+  "start": {
+    "title": "Start playing",
+    "desc": "From zero to Atreia in under 10 minutes.",
+    "s1": { "title": "Create your account", "desc": "Quick registration — email and password. No phone number, no verification delays. Your account is ready instantly.", "cta": "Register now" },
+    "s2": { "title": "Download the client", "desc": "Our lightweight launcher downloads and patches the game automatically. Total size: ~8.2 GB. Average download time: 15-30 minutes on a decent connection.", "cta": "Download launcher" },
+    "s3": { "title": "Launch and play", "desc": "Open the launcher, log in with your credentials, and hit Play. Choose Elyos or Asmodian, create your character, and enter Atreia." },
+    "req": { "title": "System requirements", "min": "Minimum", "rec": "Recommended" },
+    "faq": {
+      "title": "Common issues",
+      "q1": "Launcher won't start",
+      "a1": "Run as Administrator. Make sure antivirus is not blocking the file. Add the launcher folder to antivirus exceptions.",
+      "q2": "Game crashes on character selection",
+      "a2": "Update your GPU drivers. If using an AMD card, disable Radeon Anti-Lag. Try running in windowed mode first.",
+      "q3": "High ping / lag",
+      "a3": "Server is in Frankfurt, Germany. If your ping is above 100ms, try a gaming VPN like ExitLag or Mudfish. Disable background downloads.",
+      "q4": "SendLog error on launch",
+      "a4": "Delete the bin32/aion.bin.old file in your game folder. If it persists, run File Repair in the launcher."
+    }
+  }
+}

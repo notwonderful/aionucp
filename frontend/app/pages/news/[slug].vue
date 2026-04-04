@@ -54,17 +54,13 @@ definePageMeta({ layout: 'default' })
 const { lang } = useLang()
 const route = useRoute()
 const { getAll, getBySlug } = useNews()
+const { full: formatDate } = useDate()
 
 const article = getBySlug(route.params.slug as string)
 const allArticles = getAll()
 const currentIndex = allArticles.findIndex(a => a.slug === route.params.slug)
 const prevArticle = currentIndex > 0 ? allArticles[currentIndex - 1] : null
 const nextArticle = currentIndex < allArticles.length - 1 ? allArticles[currentIndex + 1] : null
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString(lang.value === 'ru' ? 'ru-RU' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-}
 
 // Simple markdown-ish renderer (## headers, **bold**, - lists, paragraphs)
 const renderedBody = computed(() => {

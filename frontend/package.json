@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^10.2.4",
     "@tailwindcss/vite": "^4.2.2",
     "@tiptap/extension-code-block-lowlight": "^3.22.1",
     "@tiptap/extension-image": "^3.22.1",

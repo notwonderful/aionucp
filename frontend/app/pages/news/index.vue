@@ -53,13 +53,9 @@ definePageMeta({ layout: 'default' })
 
 const { lang } = useLang()
 const { getAll } = useNews()
+const { full: formatDate } = useDate()
 
 const articles = getAll()
 const featured = articles[0]
 const rest = articles.slice(1)
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString(lang.value === 'ru' ? 'ru-RU' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-}
 </script>

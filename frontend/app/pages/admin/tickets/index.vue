@@ -43,6 +43,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 interface TicketItem { id: string; subject: string; status: string; user: { id: number; name: string; email: string } | null; category: { id: number; name: string } | null; messages_count: number; updated_at: string }
 
 const { $api } = useApi()
+const { relative: formatDate } = useDate()
 
 const statusFilters = [
   { label: 'All', value: '' },
@@ -77,12 +78,4 @@ const { data: ticketsData, status } = useAsyncData(
 )
 
 const tickets = computed(() => ticketsData.value?.data ?? [])
-
-function formatDate(date: string) {
-  const d = new Date(date)
-  const diff = Date.now() - d.getTime()
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
-  return d.toLocaleDateString('en', { month: 'short', day: 'numeric' })
-}
 </script>

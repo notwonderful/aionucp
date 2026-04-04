@@ -67,6 +67,7 @@ interface TicketDetail { id: string; subject: string; status: string; user: { id
 
 const route = useRoute()
 const { $api, fetchCsrfCookie } = useApi()
+const { datetime: formatTime } = useDate()
 
 const ticket = ref<TicketDetail | null>(null)
 const messages = ref<TicketMsg[]>([])
@@ -117,10 +118,6 @@ async function handleOpen() {
   await fetchCsrfCookie()
   await $api(`/admin/tickets/${route.params.id}/open`, { method: 'POST' })
   if (ticket.value) ticket.value.status = 'open'
-}
-
-function formatTime(date: string) {
-  return new Date(date).toLocaleString('en', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 </script>
 

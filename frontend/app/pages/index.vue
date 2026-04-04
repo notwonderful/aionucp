@@ -27,8 +27,8 @@
 
             <!-- Title — massive Syne -->
             <h1 class="font-display text-[clamp(3rem,9vw,8rem)] font-extrabold uppercase leading-[0.85] tracking-tighter">
-              {{ t('hero.title.1') }}<br>
-              <span class="text-red-500">{{ t('hero.title.2') }}</span>
+              {{ t('hero.title1') }}<br>
+              <span class="text-red-500">{{ t('hero.title2') }}</span>
             </h1>
 
             <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/40 italic">
@@ -428,7 +428,7 @@
 
       <div class="relative mx-auto max-w-xl px-6 text-center">
         <h2 class="font-display text-4xl font-extrabold uppercase tracking-tighter lg:text-6xl">
-          {{ t('cta.title.1') }}<br><span class="text-red-500">{{ t('cta.title.2') }}</span>
+          {{ t('cta.title1') }}<br><span class="text-red-500">{{ t('cta.title2') }}</span>
         </h2>
         <p class="mx-auto mt-4 max-w-sm text-[14px] italic text-white/30">{{ t('cta.desc') }}</p>
         <NuxtLink to="/register"
