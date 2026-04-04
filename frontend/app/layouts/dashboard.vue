@@ -183,6 +183,8 @@ onMounted(() => {
 
   $echo.private(`App.Models.User.${user.value.id}`)
     .notification((n: Notification) => {
+      if (!n.created_at) n.created_at = new Date().toISOString()
+      if (!n.data && n.type) n.data = n as any
       notifications.value.unshift(n)
       unreadCount.value++
     })
@@ -262,9 +264,11 @@ function nText(n: Notification): string {
 }
 
 function formatNotifTime(date: string) {
+  if (!date) return 'Just now'
   const d = new Date(date)
+  if (isNaN(d.getTime())) return 'Just now'
   const diff = Date.now() - d.getTime()
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`
+  if (diff < 3600000) return `${Math.max(1, Math.floor(diff / 60000))}m ago`
   if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`
   return d.toLocaleDateString('en', { month: 'short', day: 'numeric' })
 }
