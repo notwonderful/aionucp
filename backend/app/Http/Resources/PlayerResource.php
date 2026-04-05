@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\Game\PlayerLevel;
 use App\Models\Game\Player;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -11,9 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Player */
 final class PlayerResource extends JsonResource
 {
-    /**
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [
@@ -21,6 +20,7 @@ final class PlayerResource extends JsonResource
             'name' => $this->name,
             'race' => $this->race,
             'player_class' => $this->player_class,
+            'level' => $this->when(isset($this->exp), fn () => PlayerLevel::fromExp((int) $this->exp)),
             'online' => $this->online,
         ];
     }

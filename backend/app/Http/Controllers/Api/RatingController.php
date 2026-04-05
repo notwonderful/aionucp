@@ -8,12 +8,18 @@ use App\Contracts\GameServerContract;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AbyssRankResource;
 use App\Http\Resources\LegionResource;
+use App\Http\Resources\PlayerResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 
 final class RatingController extends Controller
 {
+    public function online(GameServerContract $gameServer): AnonymousResourceCollection
+    {
+        return PlayerResource::collection($gameServer->getOnlinePlayers());
+    }
+
     public function abyss(GameServerContract $gameServer): AnonymousResourceCollection
     {
         return AbyssRankResource::collection($gameServer->getAbyssRanks());

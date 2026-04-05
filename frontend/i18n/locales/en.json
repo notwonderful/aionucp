@@ -587,6 +587,8 @@
     "byRace": "Race balance",
     "back": "Back to home",
     "rank": "Rank",
+    "online": "Online players",
+    "noOnline": "No players currently online.",
     "weeklyOnline": "Weekly online",
     "hourlyOnline": "Average online by hour",
     "peakOnline": "Peak online",

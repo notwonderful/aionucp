@@ -27,8 +27,45 @@
     <!-- Content -->
     <div class="mx-auto max-w-[1280px] px-6 py-12">
 
+      <!-- ONLINE PLAYERS -->
+      <div v-if="activeTab === 'online'">
+        <div v-if="onlineLoading" class="space-y-3">
+          <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-lg bg-white/[0.03]" />
+        </div>
+        <table v-else class="w-full">
+          <thead>
+            <tr class="border-b border-white/[0.06]">
+              <th class="py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15">#</th>
+              <th class="py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15">{{ t('rank.name') }}</th>
+              <th class="hidden py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15 sm:table-cell">{{ t('rank.race') }}</th>
+              <th class="hidden py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15 md:table-cell">{{ t('rank.class') }}</th>
+              <th class="py-3 text-right text-[10px] font-bold uppercase tracking-widest text-white/15">{{ t('rank.level') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(player, i) in onlineData" :key="player.id" class="border-b border-white/[0.03] transition-colors hover:bg-white/[0.015]">
+              <td class="py-4 pr-4">
+                <span class="font-display text-lg font-extrabold tabular-nums text-white/15">{{ String(((onlinePage - 1) * 15) + i + 1).padStart(2, '0') }}</span>
+              </td>
+              <td class="py-4 pr-4 text-[14px] font-medium">{{ player.name }}</td>
+              <td class="hidden py-4 pr-4 text-[13px] text-white/30 sm:table-cell">{{ player.race }}</td>
+              <td class="hidden py-4 pr-4 text-[13px] text-white/30 md:table-cell">{{ player.player_class }}</td>
+              <td class="py-4 text-right font-display text-[14px] font-bold tabular-nums text-red-400/70">{{ player.level }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p v-if="!onlineLoading && onlineData.length === 0" class="py-12 text-center text-[14px] text-white/20">{{ t('rank.noOnline') }}</p>
+        <div v-if="onlineMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
+          <button v-for="p in onlineMeta.last_page" :key="p" @click="onlinePage = p"
+            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
+              onlinePage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
+            {{ p }}
+          </button>
+        </div>
+      </div>
+
       <!-- ABYSS RANKINGS -->
-      <div v-if="activeTab === 'abyss'">
+      <div v-else-if="activeTab === 'abyss'">
         <div v-if="abyssLoading" class="space-y-3">
           <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-lg bg-white/[0.03]" />
         </div>
@@ -146,9 +183,10 @@ definePageMeta({ layout: 'default' })
 
 const { t } = useI18n()
 const { $api } = useApi()
-const activeTab = ref('abyss')
+const activeTab = ref('online')
 
 const tabs = [
+  { key: 'online', labelKey: 'rank.online' },
   { key: 'abyss', labelKey: 'rank.abyss' },
   { key: 'legions', labelKey: 'rank.legions' },
   { key: 'statistics', labelKey: 'rank.statistics' },
@@ -157,6 +195,27 @@ const tabs = [
 function formatNum(n: number): string {
   return n?.toLocaleString('en-US') ?? '0'
 }
+
+// Online players
+const onlineData = ref<any[]>([])
+const onlineLoading = ref(true)
+const onlinePage = ref(1)
+const onlineMeta = ref({ last_page: 1 })
+
+async function fetchOnline() {
+  onlineLoading.value = true
+  try {
+    const res = await $api<{ data: any[]; meta: any }>(`/rating/online?page=${onlinePage.value}`)
+    onlineData.value = res.data
+    onlineMeta.value = res.meta ?? { last_page: 1 }
+  } catch (e) {
+    console.error('Failed to load online players:', e)
+  } finally {
+    onlineLoading.value = false
+  }
+}
+
+watch(onlinePage, () => fetchOnline())
 
 // Abyss data
 const abyssData = ref<any[]>([])
@@ -243,7 +302,8 @@ const hourlyChartSeries = computed(() => {
 // Fetch data
 onMounted(async () => {
   try {
-    const [abyss, legion, statsRes, historyRes] = await Promise.all([
+    const [, abyss, legion, statsRes, historyRes] = await Promise.all([
+      fetchOnline(),
       $api<{ data: any[] }>('/rating/abyss'),
       $api<{ data: any[] }>('/rating/legion'),
       $api<{ data: any }>('/rating/stats'),

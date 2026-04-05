@@ -59,6 +59,9 @@ interface GameServerContract
     public function sendMailItem(string $playerName, int $itemId, int $itemQty): void;
 
     // Rankings
+    /** @return LengthAwarePaginator<int, Player> */
+    public function getOnlinePlayers(): LengthAwarePaginator;
+
     /** @return LengthAwarePaginator<int, AbyssRank> */
     public function getAbyssRanks(): LengthAwarePaginator;
 

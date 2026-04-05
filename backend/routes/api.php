@@ -92,6 +92,7 @@ Route::get('wiki', [WikiController::class, 'index']);
 Route::get('settings/download', [SettingsController::class, 'download']);
 
 Route::prefix('rating')->group(function () {
+    Route::get('online', [RatingController::class, 'online']);
     Route::get('abyss', [RatingController::class, 'abyss']);
     Route::get('legion', [RatingController::class, 'legion']);
     Route::get('stats', [RatingController::class, 'stats']);

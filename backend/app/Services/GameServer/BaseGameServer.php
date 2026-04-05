@@ -265,6 +265,16 @@ abstract class BaseGameServer implements GameServerContract
         });
     }
 
+    /** @return LengthAwarePaginator<int, Player> */
+    public function getOnlinePlayers(): LengthAwarePaginator
+    {
+        return $this->query(Player::class)
+            ->where('online', 1)
+            ->select(['id', 'name', 'race', 'player_class', 'exp', 'online'])
+            ->orderBy('name')
+            ->paginate();
+    }
+
     /** @return LengthAwarePaginator<int, AbyssRank> */
     public function getAbyssRanks(): LengthAwarePaginator
     {
