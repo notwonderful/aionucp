@@ -40,7 +40,7 @@
 
     <p class="text-center text-[13px] text-white/30">
       {{ $t('auth.alreadyHaveAccount') }}
-      <NuxtLink to="/login" class="font-medium text-red-400 transition-colors hover:text-red-300">{{ $t('auth.signIn') }}</NuxtLink>
+      <NuxtLink :to="localePath('/login')" class="font-medium text-red-400 transition-colors hover:text-red-300">{{ $t('auth.signIn') }}</NuxtLink>
     </p>
   </div>
 </template>
@@ -49,6 +49,7 @@
 definePageMeta({ layout: 'auth', middleware: 'guest' })
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const form = reactive({ name: '', email: '', password: '', password_confirmation: '', ref_code: '' })
 const { $api, fetchCsrfCookie } = useApi()
 const { getToken } = useRecaptcha()

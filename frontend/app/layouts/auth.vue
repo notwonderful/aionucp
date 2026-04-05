@@ -3,7 +3,7 @@
     <!-- Left — form side -->
     <div class="flex flex-1 flex-col justify-between px-6 py-8 sm:px-12 lg:px-20">
       <!-- Top: logo -->
-      <NuxtLink to="/" class="group inline-flex items-center gap-2.5 self-start">
+      <NuxtLink :to="localePath('/')" class="group inline-flex items-center gap-2.5 self-start">
         <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600/15 ring-1 ring-red-500/20 transition-all duration-300 group-hover:bg-red-600/25">
           <svg class="h-3.5 w-3.5 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
@@ -19,8 +19,8 @@
       <div class="flex items-center justify-between text-[11px] text-white/15">
         <span>&copy; {{ new Date().getFullYear() }} AionUCP</span>
         <div class="flex gap-4">
-          <NuxtLink to="/terms" class="transition-colors hover:text-white/30">Terms</NuxtLink>
-          <NuxtLink to="/privacy" class="transition-colors hover:text-white/30">Privacy</NuxtLink>
+          <NuxtLink :to="localePath('/terms')" class="transition-colors hover:text-white/30">Terms</NuxtLink>
+          <NuxtLink :to="localePath('/privacy')" class="transition-colors hover:text-white/30">Privacy</NuxtLink>
         </div>
       </div>
     </div>
@@ -44,3 +44,7 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const localePath = useLocalePath()
+</script>

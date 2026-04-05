@@ -12,7 +12,7 @@
         <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600/15 ring-1 ring-red-500/20">
           <svg class="h-3.5 w-3.5 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
-        <NuxtLink to="/dashboard" class="font-display text-lg font-extrabold tracking-tight">AION<span class="text-red-500">UCP</span></NuxtLink>
+        <NuxtLink :to="localePath('/dashboard')" class="font-display text-lg font-extrabold tracking-tight">AION<span class="text-red-500">UCP</span></NuxtLink>
       </div>
 
       <!-- Nav -->
@@ -32,9 +32,9 @@
 
         <template v-if="isAdmin">
           <div class="my-4 border-t border-white/[0.04]" />
-          <NuxtLink to="/admin"
+          <NuxtLink :to="localePath('/admin')"
             :class="['group flex items-center gap-3 rounded-lg px-4 py-2.5 text-[13px] font-medium transition-all duration-300',
-              isActiveNav('/admin')
+              isActiveNav(localePath('/admin'))
                 ? 'bg-red-600/10 text-white'
                 : 'text-white/30 hover:bg-white/[0.03] hover:text-white/60']"
             @click="sidebarOpen = false">
@@ -47,7 +47,7 @@
 
       <!-- Bottom -->
       <div class="space-y-2 border-t border-white/[0.04] p-3">
-        <NuxtLink to="/" class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-[13px] font-medium text-white/20 transition-colors hover:bg-white/[0.03] hover:text-white/40">
+        <NuxtLink :to="localePath('/')" class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-[13px] font-medium text-white/20 transition-colors hover:bg-white/[0.03] hover:text-white/40">
           <svg class="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
           {{ $t('layout.backToSite') }}
         </NuxtLink>
@@ -107,7 +107,7 @@
                   </NuxtLink>
                 </div>
                 <div v-if="!notifications.length" class="px-4 py-8 text-center text-[12px] text-white/20">{{ $t('layout.noNotifications') }}</div>
-                <NuxtLink v-if="notifications.length" to="/profile/history" @click="notifOpen = false"
+                <NuxtLink v-if="notifications.length" :to="localePath('/profile/history')" @click="notifOpen = false"
                   class="block border-t border-white/[0.04] px-4 py-3 text-center text-[12px] font-medium text-white/20 transition-colors hover:bg-white/[0.03] hover:text-white/40">
                   {{ $t('layout.viewAllActivity') }}
                 </NuxtLink>
@@ -151,6 +151,7 @@ import { h } from 'vue'
 const { user, isAdmin, logout } = useAuth()
 const { relative: formatNotifTime } = useDate()
 const route = useRoute()
+const localePath = useLocalePath()
 const sidebarOpen = ref(false)
 const notifOpen = ref(false)
 const showLogoutModal = ref(false)
@@ -220,12 +221,12 @@ const IconDonate = () => h('svg', { fill: 'none', viewBox: '0 0 24 24', stroke: 
 ])
 
 const navItems = [
-  { label: 'Dashboard', to: '/dashboard', iconComponent: IconDashboard },
-  { label: 'Characters', to: '/characters', iconComponent: IconCharacters },
-  { label: 'Shop', to: '/shop', iconComponent: IconShop },
-  { label: 'Donate', to: '/donate', iconComponent: IconDonate },
-  { label: 'Tickets', to: '/tickets', iconComponent: IconTickets },
-  { label: 'Profile', to: '/profile', iconComponent: IconProfile },
+  { label: 'Dashboard', to: localePath('/dashboard'), iconComponent: IconDashboard },
+  { label: 'Characters', to: localePath('/characters'), iconComponent: IconCharacters },
+  { label: 'Shop', to: localePath('/shop'), iconComponent: IconShop },
+  { label: 'Donate', to: localePath('/donate'), iconComponent: IconDonate },
+  { label: 'Tickets', to: localePath('/tickets'), iconComponent: IconTickets },
+  { label: 'Profile', to: localePath('/profile'), iconComponent: IconProfile },
 ]
 
 const IconAdminTickets = () => h('svg', { fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.5' }, [
@@ -249,10 +250,10 @@ const recentNotifications = computed(() => notifications.value.slice(0, 3))
 
 function nLink(n: Notification): string {
   const type = nType(n)
-  if (type === 'ticket' && n.data?.ticket_id) return `/tickets?id=${n.data.ticket_id}`
-  if (type === 'purchase') return '/shop'
-  if (type === 'promo') return '/profile/history'
-  return '/profile/history'
+  if (type === 'ticket' && n.data?.ticket_id) return localePath(`/tickets?id=${n.data.ticket_id}`)
+  if (type === 'purchase') return localePath('/shop')
+  if (type === 'promo') return localePath('/profile/history')
+  return localePath('/profile/history')
 }
 
 function nType(n: Notification): string {

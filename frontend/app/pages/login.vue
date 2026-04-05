@@ -11,7 +11,7 @@
       <div>
         <div class="mb-1.5 flex items-center justify-between">
           <label for="password" class="text-[12px] font-medium text-white/40">{{ $t('auth.password') }}</label>
-          <NuxtLink to="/forgot-password" class="text-[11px] font-medium text-white/20 transition-colors hover:text-red-400">{{ $t('auth.forgotPassword') }}</NuxtLink>
+          <NuxtLink :to="localePath('/forgot-password')" class="text-[11px] font-medium text-white/20 transition-colors hover:text-red-400">{{ $t('auth.forgotPassword') }}</NuxtLink>
         </div>
         <FormInput v-model="form.password" id="password" type="password" required autocomplete="current-password" :placeholder="$t('auth.enterPassword')" :error="errors.password?.[0]" />
       </div>
@@ -40,7 +40,7 @@
     <!-- Register link -->
     <p class="text-center text-[13px] text-white/30">
       {{ $t('auth.noAccount') }}
-      <NuxtLink to="/register" class="font-medium text-red-400 transition-colors hover:text-red-300">{{ $t('auth.createOne') }}</NuxtLink>
+      <NuxtLink :to="localePath('/register')" class="font-medium text-red-400 transition-colors hover:text-red-300">{{ $t('auth.createOne') }}</NuxtLink>
     </p>
   </div>
 </template>
@@ -49,6 +49,7 @@
 definePageMeta({ layout: 'auth', middleware: 'guest' })
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const form = reactive({ email: '', password: '', remember: false })
 const { $api, fetchCsrfCookie } = useApi()
 const { getToken } = useRecaptcha()

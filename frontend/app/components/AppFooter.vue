@@ -9,7 +9,7 @@
 
         <!-- Brand column -->
         <div class="md:col-span-4">
-          <NuxtLink to="/" class="group inline-flex items-center gap-2.5">
+          <NuxtLink :to="localePath('/')" class="group inline-flex items-center gap-2.5">
             <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/15 ring-1 ring-red-500/20">
               <svg class="h-4 w-4 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
@@ -34,16 +34,16 @@
           <div>
             <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ t('footer.server') }}</span>
             <div class="mt-4 flex flex-col gap-2.5">
-              <NuxtLink to="/start" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.startPlaying') }}</NuxtLink>
-              <NuxtLink to="/news" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.news') }}</NuxtLink>
-              <NuxtLink to="/rankings" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.rankings') }}</NuxtLink>
-              <NuxtLink to="/schedule" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.schedule') }}</NuxtLink>
+              <NuxtLink :to="localePath('/start')" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.startPlaying') }}</NuxtLink>
+              <NuxtLink :to="localePath('/news')" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.news') }}</NuxtLink>
+              <NuxtLink :to="localePath('/rankings')" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.rankings') }}</NuxtLink>
+              <NuxtLink :to="localePath('/schedule')" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.schedule') }}</NuxtLink>
             </div>
           </div>
           <div>
             <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ t('footer.info') }}</span>
             <div class="mt-4 flex flex-col gap-2.5">
-              <NuxtLink to="/wiki" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">Wiki</NuxtLink>
+              <NuxtLink :to="localePath('/wiki')" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">Wiki</NuxtLink>
               <a href="#" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">Discord</a>
               <a href="#" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.forum') }}</a>
             </div>
@@ -51,8 +51,8 @@
           <div>
             <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ t('footer.legal') }}</span>
             <div class="mt-4 flex flex-col gap-2.5">
-              <NuxtLink to="/terms" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.terms') }}</NuxtLink>
-              <NuxtLink to="/privacy" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.privacy') }}</NuxtLink>
+              <NuxtLink :to="localePath('/terms')" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.terms') }}</NuxtLink>
+              <NuxtLink :to="localePath('/privacy')" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.privacy') }}</NuxtLink>
             </div>
           </div>
         </div>
@@ -69,4 +69,5 @@
 
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 </script>

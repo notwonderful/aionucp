@@ -39,7 +39,7 @@
     <div v-else-if="filteredProducts.length" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       <NuxtLink
         v-for="product in filteredProducts" :key="product.id"
-        :to="`/shop/${product.slug}`"
+        :to="localePath(`/shop/${product.slug}`)"
         class="group overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]"
       >
         <div class="relative overflow-hidden border-b border-white/[0.04] bg-gradient-to-br from-red-950/20 via-surface-card to-surface" style="aspect-ratio: 4/3">
@@ -92,6 +92,7 @@ interface Category { id: number; name: string; slug: string; parent_id: number |
 interface Product { id: number; name: string; slug: string; description: string; toll: number; item_id: number; item_qty: number; image_url: string; sales_count: number; category: Category | null }
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const { $api } = useApi()
 const { user } = useAuth()
 

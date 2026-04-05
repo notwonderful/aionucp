@@ -21,7 +21,7 @@
   ]">
     <div class="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4">
       <!-- Logo -->
-      <NuxtLink to="/" class="group flex items-center gap-2.5">
+      <NuxtLink :to="localePath('/')" class="group flex items-center gap-2.5">
         <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/15 ring-1 ring-red-500/20 transition-all duration-300 group-hover:bg-red-600/25 group-hover:ring-red-500/40">
           <svg class="h-4 w-4 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
