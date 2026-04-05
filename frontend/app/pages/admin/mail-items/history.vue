@@ -15,14 +15,14 @@
 
     <template v-else>
       <DataTable :columns="columns" :has-rows="!!logs.length" :empty-text="$t('admin.noMailLogs')">
-        <div v-for="log in logs" :key="log.id"
-          class="table-row border-b border-white/[0.04] last:border-0">
+        <tr v-for="log in logs" :key="log.id"
+          class="border-b border-white/[0.04] last:border-0">
           <td class="px-5 py-3 text-[13px] text-white/50">{{ log.admin_name }}</td>
           <td class="px-5 py-3 text-[13px] font-medium text-white/70">{{ log.player_name }}</td>
           <td class="px-5 py-3 text-[13px] tabular-nums text-white/50">{{ log.item_id }}</td>
           <td class="px-5 py-3 text-[13px] tabular-nums text-white/50">{{ log.item_qty }}</td>
           <td class="px-5 py-3 text-right text-[12px] text-white/20">{{ formatDate(log.created_at) }}</td>
-        </div>
+        </tr>
       </DataTable>
 
       <div v-if="meta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
