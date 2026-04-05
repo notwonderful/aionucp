@@ -14,6 +14,10 @@ use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\ScheduleEntryController as AdminScheduleEntryController;
+use App\Http\Controllers\Api\ScheduleController;
+use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
+use App\Http\Controllers\Api\SettingsController;
 use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
@@ -80,6 +84,8 @@ Route::prefix('news')->group(function () {
 });
 
 Route::get('faq', [FaqController::class, 'index']);
+Route::get('schedule', [ScheduleController::class, 'index']);
+Route::get('settings/download', [SettingsController::class, 'download']);
 
 Route::prefix('rating')->group(function () {
     Route::get('abyss', [RatingController::class, 'abyss']);
@@ -180,6 +186,15 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
 
     Route::apiResource('faq', AdminFaqController::class)
         ->middleware('permission:'.Permission::FAQ_VIEW->value);
+
+    Route::apiResource('schedule', AdminScheduleEntryController::class)
+        ->middleware('permission:'.Permission::SCHEDULE_VIEW->value);
+
+    Route::prefix('settings')->middleware('permission:'.Permission::SETTINGS_VIEW->value)->group(function () {
+        Route::get('download', [AdminSettingsController::class, 'downloadShow']);
+        Route::put('download', [AdminSettingsController::class, 'downloadUpdate'])
+            ->middleware('permission:'.Permission::SETTINGS_EDIT->value);
+    });
 
     Route::prefix('tickets')->middleware('permission:'.Permission::TICKETS_VIEW->value)->group(function () {
         Route::get('/', [AdminTicketController::class, 'index']);

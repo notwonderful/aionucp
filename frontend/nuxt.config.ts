@@ -36,6 +36,7 @@ export default defineNuxtConfig({
       reverbKey: process.env.NUXT_PUBLIC_REVERB_KEY || 'pmcilkvvwjaifuyyk2nn',
       reverbHost: process.env.NUXT_PUBLIC_REVERB_HOST || 'localhost',
       reverbPort: process.env.NUXT_PUBLIC_REVERB_PORT || '8080',
+      serverTimezone: process.env.NUXT_PUBLIC_SERVER_TIMEZONE || 'Europe/Berlin',
     },
   },
 

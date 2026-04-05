@@ -51,6 +51,16 @@ enum Permission: string
     case FAQ_EDIT = 'faq.edit';
     case FAQ_DELETE = 'faq.delete';
 
+    // Schedule
+    case SCHEDULE_VIEW = 'schedule.view';
+    case SCHEDULE_CREATE = 'schedule.create';
+    case SCHEDULE_EDIT = 'schedule.edit';
+    case SCHEDULE_DELETE = 'schedule.delete';
+
+    // Settings
+    case SETTINGS_VIEW = 'settings.view';
+    case SETTINGS_EDIT = 'settings.edit';
+
     // Bulk Email
     case BULK_EMAIL_SEND = 'bulk-email.send';
 
@@ -81,6 +91,12 @@ enum Permission: string
             self::NEWS_CREATE => __('Create News'),
             self::NEWS_EDIT => __('Edit News'),
             self::NEWS_DELETE => __('Delete News'),
+            self::SCHEDULE_VIEW => __('View Schedule'),
+            self::SCHEDULE_CREATE => __('Create Schedule'),
+            self::SCHEDULE_EDIT => __('Edit Schedule'),
+            self::SCHEDULE_DELETE => __('Delete Schedule'),
+            self::SETTINGS_VIEW => __('View Settings'),
+            self::SETTINGS_EDIT => __('Edit Settings'),
             self::FAQ_VIEW => __('View FAQ'),
             self::FAQ_CREATE => __('Create FAQ'),
             self::FAQ_EDIT => __('Edit FAQ'),

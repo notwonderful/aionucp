@@ -1,4 +1,7 @@
 export function useDate() {
+  const config = useRuntimeConfig()
+  const tz = config.public.serverTimezone as string
+
   function relative(date: string): string {
     if (!date) return 'Just now'
     const d = new Date(date)
@@ -23,5 +26,27 @@ export function useDate() {
     return new Date(date).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' })
   }
 
-  return { relative, time, datetime, full }
+  function serverNow(): { hour: number; day: number } {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
+      hour: 'numeric',
+      hour12: false,
+      weekday: 'short',
+    })
+    const parts = fmt.formatToParts(new Date())
+    const hour = Number(parts.find(p => p.type === 'hour')?.value ?? 0)
+    const weekday = parts.find(p => p.type === 'weekday')?.value ?? 'Mon'
+    const dayMap: Record<string, number> = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 }
+    return { hour, day: dayMap[weekday] ?? 0 }
+  }
+
+  function serverDay(): number {
+    return serverNow().day
+  }
+
+  function serverHour(): number {
+    return serverNow().hour
+  }
+
+  return { relative, time, datetime, full, serverNow, serverDay, serverHour }
 }

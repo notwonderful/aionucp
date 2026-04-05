@@ -42,10 +42,12 @@
               <td class="py-4 pr-4 font-display text-[15px] font-bold tabular-nums text-white/50">{{ row.time }}</td>
               <td v-for="(cell, di) in row.cells" :key="di" class="py-4 text-center">
                 <template v-if="cell">
-                  <div :class="['inline-block rounded-lg px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider',
-                    cell.type === 'divine' ? 'bg-red-500/15 text-red-400' :
-                    cell.type === 'upper' ? 'bg-amber-500/10 text-amber-400/80' :
-                    'bg-white/[0.04] text-white/40']">
+                  <div :class="['inline-block rounded-lg px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all duration-500',
+                    isSiegeActive(row.time, di)
+                      ? 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/30'
+                      : cell.type === 'divine' ? 'bg-red-500/15 text-red-400'
+                      : cell.type === 'upper' ? 'bg-amber-500/10 text-amber-400/80'
+                      : 'bg-white/[0.04] text-white/40']">
                     {{ cell.name }}
                   </div>
                 </template>
@@ -75,12 +77,15 @@
       <!-- DREDGION -->
       <div v-else-if="activeTab === 'dredgion'">
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <div v-for="dred in dredgionSchedule" :key="dred.name"
-            class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+          <div v-for="dred in dredgionList" :key="dred.id"
+            :class="['rounded-xl p-6 transition-all duration-500',
+              isDredgionActive(dred.metadata.slots as any[])
+                ? 'border border-emerald-500/20 bg-emerald-500/[0.04] ring-1 ring-emerald-500/10'
+                : 'border border-white/[0.04] bg-white/[0.02]']">
             <h3 class="font-display text-[16px] font-bold uppercase tracking-wider">{{ dred.name }}</h3>
-            <p class="mt-1 text-[12px] text-white/20">{{ dred.level }}</p>
+            <p class="mt-1 text-[12px] text-white/20">{{ dred.metadata.level }}</p>
             <div class="mt-4 space-y-2">
-              <div v-for="slot in dred.slots" :key="slot.days" class="flex items-center justify-between border-t border-white/[0.03] pt-2">
+              <div v-for="slot in (dred.metadata.slots as any[])" :key="slot.days" class="flex items-center justify-between border-t border-white/[0.03] pt-2">
                 <span class="text-[12px] text-white/30">{{ slot.days }}</span>
                 <span class="rounded bg-red-600/10 px-2 py-0.5 text-[12px] font-bold tabular-nums text-red-400/70">{{ slot.time }}</span>
               </div>
@@ -93,17 +98,22 @@
       <div v-else-if="activeTab === 'rifts'">
         <div class="max-w-2xl">
           <div class="grid grid-cols-[80px_1fr_auto] items-center gap-x-6">
-            <template v-for="rift in riftSchedule" :key="rift.time">
-              <div class="border-t border-white/[0.04] py-4 font-display text-[15px] font-bold tabular-nums text-white/50">{{ rift.time }}</div>
-              <div class="border-t border-white/[0.04] py-4">
+            <template v-for="rift in riftList" :key="rift.id">
+              <div :class="['border-t border-white/[0.04] py-4 font-display text-[15px] font-bold tabular-nums transition-colors duration-500',
+                isRiftActive(String(rift.metadata.time)) ? 'text-emerald-400' : 'text-white/50']">{{ rift.metadata.time }}</div>
+              <div :class="['border-t border-white/[0.04] py-4',
+                isRiftActive(String(rift.metadata.time)) ? 'bg-emerald-500/[0.04]' : '']">
                 <span :class="['text-[13px] font-medium',
-                  rift.direction.includes('Morheim') ? 'text-red-400/70' : 'text-sky-400/70']">
-                  {{ rift.direction }}
+                  isRiftActive(String(rift.metadata.time)) ? 'text-emerald-400'
+                  : String(rift.metadata.direction).includes('Morheim') ? 'text-red-400/70' : 'text-sky-400/70']">
+                  {{ rift.metadata.direction }}
                 </span>
               </div>
-              <div class="border-t border-white/[0.04] py-4">
+              <div :class="['border-t border-white/[0.04] py-4',
+                isRiftActive(String(rift.metadata.time)) ? 'bg-emerald-500/[0.04]' : '']">
                 <span :class="['inline-block h-2 w-2 rounded-full',
-                  rift.direction.includes('Morheim') ? 'bg-red-500/40' : 'bg-sky-500/40']" />
+                  isRiftActive(String(rift.metadata.time)) ? 'bg-emerald-500 animate-pulse'
+                  : String(rift.metadata.direction).includes('Morheim') ? 'bg-red-500/40' : 'bg-sky-500/40']" />
               </div>
             </template>
           </div>
@@ -118,6 +128,7 @@
 definePageMeta({ layout: 'default' })
 
 const { t } = useI18n()
+const { $api } = useApi()
 const activeTab = ref('sieges')
 
 const tabs = [
@@ -128,122 +139,94 @@ const tabs = [
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-type FortressCell = { name: string; type: 'divine' | 'upper' | 'lower' } | null
+interface ScheduleItem {
+  id: number
+  category: string
+  name: string
+  metadata: Record<string, unknown>
+  sort_order: number
+  published: boolean
+}
 
-const siegeGrid: { time: string; cells: FortressCell[] }[] = [
-  {
-    time: '16:00',
-    cells: [
-      { name: 'Asteria', type: 'lower' },
-      null,
-      { name: 'Asteria', type: 'lower' },
-      null,
-      { name: 'Asteria', type: 'lower' },
-      null,
-      { name: 'Asteria', type: 'lower' },
-    ],
-  },
-  {
-    time: '18:00',
-    cells: [
-      null,
-      { name: 'Sulfur', type: 'upper' },
-      null,
-      { name: 'Sulfur', type: 'upper' },
-      null,
-      { name: 'Sulfur', type: 'upper' },
-      null,
-    ],
-  },
-  {
-    time: '20:00',
-    cells: [
-      { name: 'Krotan', type: 'lower' },
-      { name: 'Kysis', type: 'lower' },
-      { name: 'Miren', type: 'lower' },
-      { name: 'Krotan', type: 'lower' },
-      { name: 'Kysis', type: 'lower' },
-      { name: 'Miren', type: 'lower' },
-      { name: 'Krotan', type: 'lower' },
-    ],
-  },
-  {
-    time: '22:00',
-    cells: [
-      null,
-      null,
-      null,
-      null,
-      null,
-      { name: 'Divine', type: 'divine' },
-      { name: 'Divine', type: 'divine' },
-    ],
-  },
-  {
-    time: '23:00',
-    cells: [
-      { name: 'Siel Western', type: 'upper' },
-      null,
-      { name: 'Siel Eastern', type: 'upper' },
-      null,
-      { name: 'Siel Western', type: 'upper' },
-      null,
-      { name: 'Siel Eastern', type: 'upper' },
-    ],
-  },
-  {
-    time: '00:00',
-    cells: [
-      null,
-      null,
-      null,
-      null,
-      null,
-      { name: 'Divine', type: 'divine' },
-      null,
-    ],
-  },
-]
+interface ScheduleResponse {
+  data: {
+    siege: ScheduleItem[]
+    dredgion: ScheduleItem[]
+    rift: ScheduleItem[]
+  }
+}
 
-const dredgionSchedule = [
-  {
-    name: 'Baranath Dredgion',
-    level: 'Lv. 46-55',
-    slots: [
-      { days: 'Mon — Fri', time: '10:00 — 02:00' },
-      { days: 'Sat — Sun', time: '10:00 — 02:00' },
-    ],
-  },
-  {
-    name: 'Chantra Dredgion',
-    level: 'Lv. 51-55',
-    slots: [
-      { days: 'Mon — Fri', time: '12:00 — 02:00' },
-      { days: 'Sat — Sun', time: '12:00 — 02:00' },
-    ],
-  },
-  {
-    name: 'Terath Dredgion',
-    level: 'Lv. 55',
-    slots: [
-      { days: 'Sat', time: '20:00 — 22:00' },
-      { days: 'Sun', time: '20:00 — 22:00' },
-    ],
-  },
-]
+const { data: scheduleData } = useAsyncData('schedule', () => $api<ScheduleResponse>('/schedule'))
 
-const riftSchedule = [
-  { time: '01:00', direction: 'Morheim → Eltnen' },
-  { time: '03:00', direction: 'Eltnen → Morheim' },
-  { time: '05:00', direction: 'Morheim → Eltnen' },
-  { time: '07:00', direction: 'Eltnen → Morheim' },
-  { time: '09:00', direction: 'Morheim → Eltnen' },
-  { time: '11:00', direction: 'Eltnen → Morheim' },
-  { time: '13:00', direction: 'Morheim → Eltnen' },
-  { time: '15:00', direction: 'Eltnen → Morheim' },
-  { time: '17:00', direction: 'Morheim → Eltnen' },
-  { time: '19:00', direction: 'Eltnen → Morheim' },
-  { time: '21:00', direction: 'Morheim → Eltnen' },
-  { time: '23:00', direction: 'Eltnen → Morheim' },
-]
+type FortressCell = { name: string; type: string } | null
+
+const siegeGrid = computed(() => {
+  const sieges = scheduleData.value?.data?.siege ?? []
+  const timeMap = new Map<string, FortressCell[]>()
+
+  for (const s of sieges) {
+    const time = String(s.metadata.time)
+    const day = Number(s.metadata.day_of_week)
+    if (!timeMap.has(time)) timeMap.set(time, Array(7).fill(null))
+    const row = timeMap.get(time)!
+    row[day] = { name: s.name, type: String(s.metadata.fortress_type) }
+  }
+
+  return Array.from(timeMap.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([time, cells]) => ({ time, cells }))
+})
+
+const dredgionList = computed(() => scheduleData.value?.data?.dredgion ?? [])
+const riftList = computed(() => scheduleData.value?.data?.rift ?? [])
+
+const { serverDay, serverHour } = useDate()
+const currentDay = ref(serverDay())
+const currentHour = ref(serverHour())
+let timer: ReturnType<typeof setInterval>
+
+onMounted(() => {
+  timer = setInterval(() => {
+    currentDay.value = serverDay()
+    currentHour.value = serverHour()
+  }, 60000)
+})
+onUnmounted(() => clearInterval(timer))
+
+function isSiegeActive(time: string, dayIndex: number): boolean {
+  if (dayIndex !== currentDay.value) return false
+  const [h] = time.split(':').map(Number)
+  return currentHour.value >= h && currentHour.value < h + 1
+}
+
+function isRiftActive(time: string): boolean {
+  const [h] = time.split(':').map(Number)
+  return currentHour.value >= h && currentHour.value < h + 2
+}
+
+function isDredgionActive(slots: { days: string; time: string }[]): boolean {
+  const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  const today = dayLabels[currentDay.value]
+
+  return slots.some(slot => {
+    const dayMatch = slot.days.includes('—')
+      ? isDayInRange(today, slot.days, dayLabels)
+      : slot.days.includes(today)
+    if (!dayMatch) return false
+    const [startStr, endStr] = slot.time.split('—').map(s => s.trim())
+    const [startH] = startStr.split(':').map(Number)
+    const [endH] = endStr.split(':').map(Number)
+    return endH < startH
+      ? (currentHour.value >= startH || currentHour.value < endH)
+      : (currentHour.value >= startH && currentHour.value < endH)
+  })
+}
+
+function isDayInRange(today: string, range: string, dayLabels: string[]): boolean {
+  const [start, end] = range.split('—').map(s => s.trim())
+  const si = dayLabels.indexOf(start.slice(0, 3))
+  const ei = dayLabels.indexOf(end.slice(0, 3))
+  const ti = dayLabels.indexOf(today)
+  return si <= ei ? (ti >= si && ti <= ei) : (ti >= si || ti <= ei)
+}
 </script>
