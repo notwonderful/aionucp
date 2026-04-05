@@ -53,6 +53,8 @@ interface GameServerContract
 
     public function teleportPlayer(int $accountId, int $playerId, float $x, float $y, float $z, int $map): bool;
 
+    public function playerExists(string $name): bool;
+
     // Mail & Items
     public function sendMailItem(string $playerName, int $itemId, int $itemQty): void;
 

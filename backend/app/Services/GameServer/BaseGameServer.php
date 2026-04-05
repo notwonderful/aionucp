@@ -224,6 +224,13 @@ abstract class BaseGameServer implements GameServerContract
         return $updated > 0;
     }
 
+    public function playerExists(string $name): bool
+    {
+        return $this->query(Player::class)
+            ->where('name', $name)
+            ->exists();
+    }
+
     public function sendMailItem(string $playerName, int $itemId, int $itemQty): void
     {
         /** @var Player $player */
@@ -243,7 +250,6 @@ abstract class BaseGameServer implements GameServerContract
                 'item_creator' => '',
                 'item_location' => 127,
                 'enchant' => 0,
-                'authorize' => 0,
             ]);
 
             $this->query(MailItem::class)->create([
@@ -253,7 +259,6 @@ abstract class BaseGameServer implements GameServerContract
                 'mail_title' => __('Mail Item Service'),
                 'mail_message' => __('Thank you for purchasing!'),
                 'attached_item_id' => $uniqueItemId,
-                'attached_item_count' => $itemQty,
                 'attached_kinah_count' => 0,
                 'express' => 1,
             ]);

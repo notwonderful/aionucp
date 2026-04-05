@@ -5,18 +5,23 @@ declare(strict_types=1);
 namespace App\Actions\Game;
 
 use App\Contracts\GameServerContract;
+use App\Models\MailItemLog;
 
 final class SendMailItemAction
 {
     public function __construct(
-        protected GameServerContract $gameServer
+        private readonly GameServerContract $gameServer,
     ) {}
 
-    /**
-     * @throws \Exception
-     */
-    public function execute(string $playerName, int $itemId, int $itemQty): void
+    public function execute(string $playerName, int $itemId, int $itemQty, int $adminId): void
     {
         $this->gameServer->sendMailItem($playerName, $itemId, $itemQty);
+
+        MailItemLog::create([
+            'admin_id' => $adminId,
+            'player_name' => $playerName,
+            'item_id' => $itemId,
+            'item_qty' => $itemQty,
+        ]);
     }
 }

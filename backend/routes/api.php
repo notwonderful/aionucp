@@ -176,6 +176,8 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
     Route::apiResource('products', ProductController::class)
         ->middleware('permission:'.Permission::PRODUCTS_VIEW->value);
 
+    Route::get('mail-items', [MailItemController::class, 'index'])
+        ->middleware('permission:'.Permission::MAIL_ITEMS_SEND->value);
     Route::post('mail-items', [MailItemController::class, 'store'])
         ->middleware('permission:'.Permission::MAIL_ITEMS_SEND->value);
 

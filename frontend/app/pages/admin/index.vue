@@ -83,6 +83,17 @@
         </div>
       </NuxtLink>
 
+      <NuxtLink to="/admin/mail-items"
+        class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10">
+          <svg class="h-6 w-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+        </div>
+        <div>
+          <div class="text-[15px] font-semibold transition-colors group-hover:text-amber-400">{{ $t('admin.sendItem') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('admin.sendItemDesc') }}</div>
+        </div>
+      </NuxtLink>
+
       <NuxtLink to="/admin/products"
         class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
         <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600/10">

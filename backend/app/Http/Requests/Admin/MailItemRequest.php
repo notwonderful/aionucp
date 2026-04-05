@@ -4,23 +4,32 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use App\Contracts\GameServerContract;
 use App\Models\Game\Player;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class MailItemRequest extends FormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
+    /** @return array<string, ValidationRule|array<mixed>|string> */
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'exists:'.Player::class],
-            'item_id' => ['required', 'integer'],
-            'item_qty' => ['required', 'integer'],
+            'player_name' => [
+                'required',
+                'string',
+                'max:50',
+                function (string $attribute, mixed $value, \Closure $fail) {
+                    $gameServer = app(GameServerContract::class);
+                    $exists = $gameServer->playerExists((string) $value);
+
+                    if (! $exists) {
+                        $fail(__('Player not found.'));
+                    }
+                },
+            ],
+            'item_id' => ['required', 'integer', 'min:1'],
+            'item_qty' => ['required', 'integer', 'min:1', 'max:1000'],
         ];
     }
 }
