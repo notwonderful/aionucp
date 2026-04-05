@@ -36,7 +36,7 @@
             </p>
 
             <div class="mt-10 flex items-center gap-5">
-              <NuxtLink to="/start"
+              <NuxtLink :to="localePath('/start')"
                 class="inline-block bg-red-600 px-8 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-red-500 hover:shadow-[0_0_40px_rgba(220,60,60,0.3)] active:scale-[0.97]">
                 {{ t('hero.cta') }}
               </NuxtLink>
@@ -134,7 +134,7 @@
             <span class="mr-2 text-[10px] font-bold uppercase tracking-widest text-white/20">{{ unit.label }}</span>
           </div>
         </div>
-        <NuxtLink to="/schedule" class="text-[12px] font-bold uppercase tracking-widest text-white/25 transition-colors hover:text-white/50">
+        <NuxtLink :to="localePath('/schedule')" class="text-[12px] font-bold uppercase tracking-widest text-white/25 transition-colors hover:text-white/50">
           {{ t('schedule.title') }} &rarr;
         </NuxtLink>
       </div>
@@ -242,12 +242,12 @@
       <div class="relative mx-auto max-w-[1200px] px-6">
         <div class="mb-14 flex items-end justify-between">
           <h2 v-reveal class="font-display text-3xl font-extrabold uppercase tracking-tighter lg:text-4xl">{{ t('news.title') }}</h2>
-          <NuxtLink to="/news" class="text-[12px] font-medium uppercase tracking-widest text-red-500/60 transition-colors hover:text-red-500">{{ t('news.all') }}</NuxtLink>
+          <NuxtLink :to="localePath('/news')" class="text-[12px] font-medium uppercase tracking-widest text-red-500/60 transition-colors hover:text-red-500">{{ t('news.all') }}</NuxtLink>
         </div>
 
         <div class="grid gap-4 lg:grid-cols-12">
           <!-- Featured — 8 cols, image dominant -->
-          <NuxtLink v-if="featuredNews" :to="`/news/${featuredNews.slug}`" class="group relative overflow-hidden lg:col-span-8">
+          <NuxtLink v-if="featuredNews" :to="localePath(`/news/${featuredNews.slug}`)" class="group relative overflow-hidden lg:col-span-8">
             <div class="aspect-[16/9] overflow-hidden bg-cover bg-center lg:aspect-[2/1]" :style="featuredNews.image_url ? { backgroundImage: `url(${featuredNews.image_url})` } : {}" :class="!featuredNews.image_url && 'bg-gradient-to-br from-red-950/30 to-surface'">
               <div class="flex h-full flex-col justify-end bg-gradient-to-t from-surface via-surface/30 to-transparent p-8 transition-all duration-500 group-hover:via-surface/50">
                 <span class="mb-3 w-fit bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest">{{ featuredNews.tag }}</span>
@@ -260,7 +260,7 @@
 
           <!-- Side stack — 4 cols -->
           <div class="flex flex-col gap-4 lg:col-span-4">
-            <NuxtLink v-for="item in sideNews" :key="item.id" :to="`/news/${item.slug}`"
+            <NuxtLink v-for="item in sideNews" :key="item.id" :to="localePath(`/news/${item.slug}`)"
               class="group flex-1 overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-colors hover:border-white/[0.08]">
               <div v-if="item.image_url" class="h-28 bg-cover bg-center" :style="{ backgroundImage: `url(${item.image_url})` }">
                 <div class="h-full bg-gradient-to-t from-surface to-transparent" />
@@ -431,7 +431,7 @@
           {{ t('cta.title1') }}<br><span class="text-red-500">{{ t('cta.title2') }}</span>
         </h2>
         <p class="mx-auto mt-4 max-w-sm text-[14px] italic text-white/30">{{ t('cta.desc') }}</p>
-        <NuxtLink to="/register"
+        <NuxtLink :to="localePath('/register')"
           class="mt-10 inline-block bg-red-600 px-10 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-red-500 hover:shadow-[0_0_50px_rgba(220,60,60,0.3)] active:scale-[0.97]">
           {{ t('cta.button') }}
         </NuxtLink>
@@ -445,6 +445,7 @@
 definePageMeta({ layout: 'default' })
 
 const { locale, t } = useI18n()
+const localePath = useLocalePath()
 const activeTab = ref('pvp')
 const openFaq = ref(-1)
 
@@ -577,7 +578,7 @@ const allFeatures = [
 
 const { $api } = useApi()
 const { full: formatDate } = useDate()
-const { data: newsData } = useAsyncData('home-news', () => $api<{ data: Array<{ id: number; slug: string; tag: string; title: string; excerpt: string; image_url: string | null; published_at: string }> }>('/news?per_page=4'), { watch: [locale] })
+const { data: newsData } = useAsyncData('home-news', () => $api<{ data: Array<{ id: number; slug: string; tag: string; title: string; excerpt: string; image_url: string | null; published_at: string }> }>('/news/featured'), { watch: [locale] })
 const featuredNews = computed(() => newsData.value?.data?.[0] ?? null)
 const sideNews = computed(() => (newsData.value?.data ?? []).slice(1, 4))
 
