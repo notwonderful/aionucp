@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\ScheduleEntry;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 
 final class ScheduleSeeder extends Seeder
 {
@@ -94,5 +95,6 @@ final class ScheduleSeeder extends Seeder
         }
 
         ScheduleEntry::insert($rows);
+        Cache::forget('schedule:public');
     }
 }

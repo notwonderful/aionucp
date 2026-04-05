@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Observers\ScheduleEntryObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(ScheduleEntryObserver::class)]
 final class ScheduleEntry extends Model
 {
     protected $fillable = [
