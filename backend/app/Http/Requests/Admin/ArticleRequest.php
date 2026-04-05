@@ -7,6 +7,7 @@ namespace App\Http\Requests\Admin;
 use App\Services\Localization\TranslatableRuleBuilder;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Stevebauman\Purify\Facades\Purify;
 
 final class ArticleRequest extends FormRequest
 {
@@ -26,5 +27,22 @@ final class ArticleRequest extends FormRequest
             'published' => ['required', 'boolean'],
             'published_at' => ['nullable', 'date'],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $locales = config('app.locales', ['en']);
+
+        foreach ($locales as $locale) {
+            $key = "body.$locale";
+            $value = $this->input($key);
+
+            if (is_string($value)) {
+                $this->merge(["body" => array_merge(
+                    $this->input('body', []),
+                    [$locale => Purify::clean($value)],
+                )]);
+            }
+        }
     }
 }

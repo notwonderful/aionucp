@@ -26,9 +26,7 @@
             </div>
             <div>
               <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.body') }} ({{ loc }})</label>
-              <textarea v-model="form.body[loc]" rows="16"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[13px] font-mono text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15 resize-y"
-                :placeholder="$t('admin.bodyPlaceholder')" />
+              <RichEditor v-model="form.body[loc]" :placeholder="$t('admin.bodyPlaceholder')" />
             </div>
           </div>
         </section>
