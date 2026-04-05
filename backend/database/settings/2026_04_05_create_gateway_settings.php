@@ -15,6 +15,12 @@ return new class extends SettingsMigration
                 'currency' => 'USD',
                 'enabled' => true,
             ],
+            'pally' => [
+                'min_amount' => 100.0,
+                'max_amount' => 50000.0,
+                'currency' => 'RUB',
+                'enabled' => true,
+            ],
         ]);
     }
 };

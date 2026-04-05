@@ -11,12 +11,14 @@ final class PaymentGatewayFactory
 {
     public function __construct(
         private readonly StripeGateway $stripeGateway,
+        private readonly PallyGateway $pallyGateway,
     ) {}
 
     public function make(DonationGateway $gateway): PaymentGateway
     {
         return match ($gateway) {
             DonationGateway::STRIPE => $this->stripeGateway,
+            DonationGateway::PALLY => $this->pallyGateway,
         };
     }
 }

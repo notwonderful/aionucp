@@ -27,14 +27,9 @@ return [
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
     ],
 
-    'palych' => [
-        'shop_id' => env('PALYCH_SHOP_ID'),
-        'token' => env('PALYCH_TOKEN'),
-    ],
-
-    'payop' => [
-        'key' => env('PAYOP_PUBLIC_KEY'),
-        'secret' => env('PAYOP_SECRET_KEY'),
+    'pally' => [
+        'shop_id' => env('PALLY_SHOP_ID'),
+        'api_token' => env('PALLY_API_TOKEN'),
     ],
 
     'postmark' => [

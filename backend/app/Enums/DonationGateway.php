@@ -7,11 +7,13 @@ namespace App\Enums;
 enum DonationGateway: string
 {
     case STRIPE = 'stripe';
+    case PALLY = 'pally';
 
     public function label(): string
     {
         return match ($this) {
             self::STRIPE => 'Stripe',
+            self::PALLY => 'Pally',
         };
     }
 
@@ -19,6 +21,7 @@ enum DonationGateway: string
     {
         return match ($this) {
             self::STRIPE => Currency::USD,
+            self::PALLY => Currency::RUB,
         };
     }
 
@@ -26,6 +29,7 @@ enum DonationGateway: string
     {
         return match ($this) {
             self::STRIPE => '/images/gateways/stripe.svg',
+            self::PALLY => '/images/gateways/pally.svg',
         };
     }
 }

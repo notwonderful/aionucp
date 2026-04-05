@@ -90,7 +90,7 @@ const saving = ref(false)
 const successMsg = ref('')
 const errorMsg = ref('')
 
-const gatewayLabels: Record<string, string> = { stripe: 'Stripe' }
+const gatewayLabels: Record<string, string> = { stripe: 'Stripe', pally: 'Pally' }
 
 const paymentForm = reactive({
   enabled: false,
