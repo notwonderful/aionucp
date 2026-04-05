@@ -102,7 +102,7 @@
 
         <!-- Online history — area chart -->
         <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
-          <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ locale === 'ru' ? 'Онлайн за неделю' : 'Weekly online' }}</h3>
+          <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ t('rank.weeklyOnline') }}</h3>
           <ClientOnly>
             <apexchart type="area" height="280" :options="onlineChartOpts" :series="onlineChartSeries" />
           </ClientOnly>
@@ -128,7 +128,7 @@
 
         <!-- Online by hour — bar chart -->
         <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
-          <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ locale === 'ru' ? 'Онлайн по часам (среднее)' : 'Average online by hour' }}</h3>
+          <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ t('rank.hourlyOnline') }}</h3>
           <ClientOnly>
             <apexchart type="bar" height="240" :options="hourlyChartOpts" :series="hourlyChartSeries" />
           </ClientOnly>
@@ -142,7 +142,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-const { locale, t } = useI18n()
+const { t } = useI18n()
 const { $api } = useApi()
 const activeTab = ref('abyss')
 

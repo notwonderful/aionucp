@@ -16,7 +16,7 @@
             <span class="font-display text-xl font-extrabold tracking-tight text-white">AION<span class="text-red-500">UCP</span></span>
           </NuxtLink>
           <p class="mt-4 max-w-[260px] text-[13px] leading-relaxed text-white/20">
-            {{ locale === 'ru' ? 'Классический Aion 3.9 на выделенных серверах. Честная игра без доната.' : 'Classic Aion 3.9 on dedicated servers. Fair play, no pay-to-win.' }}
+            {{ t('footer.desc') }}
           </p>
           <!-- Social -->
           <div class="mt-6 flex gap-2">
@@ -32,27 +32,27 @@
         <!-- Link columns -->
         <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 md:col-span-8">
           <div>
-            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ locale === 'ru' ? 'Сервер' : 'Server' }}</span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ t('footer.server') }}</span>
             <div class="mt-4 flex flex-col gap-2.5">
-              <NuxtLink to="/start" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ locale === 'ru' ? 'Начать играть' : 'Start playing' }}</NuxtLink>
-              <NuxtLink to="/news" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ locale === 'ru' ? 'Новости' : 'News' }}</NuxtLink>
-              <NuxtLink to="/rankings" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ locale === 'ru' ? 'Рейтинг' : 'Rankings' }}</NuxtLink>
-              <NuxtLink to="/schedule" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ locale === 'ru' ? 'Расписание' : 'Schedule' }}</NuxtLink>
+              <NuxtLink to="/start" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.startPlaying') }}</NuxtLink>
+              <NuxtLink to="/news" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.news') }}</NuxtLink>
+              <NuxtLink to="/rankings" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.rankings') }}</NuxtLink>
+              <NuxtLink to="/schedule" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.schedule') }}</NuxtLink>
             </div>
           </div>
           <div>
-            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ locale === 'ru' ? 'Информация' : 'Info' }}</span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ t('footer.info') }}</span>
             <div class="mt-4 flex flex-col gap-2.5">
               <NuxtLink to="/wiki" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">Wiki</NuxtLink>
               <a href="#" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">Discord</a>
-              <a href="#" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ locale === 'ru' ? 'Форум' : 'Forum' }}</a>
+              <a href="#" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.forum') }}</a>
             </div>
           </div>
           <div>
-            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ locale === 'ru' ? 'Правовое' : 'Legal' }}</span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/10">{{ t('footer.legal') }}</span>
             <div class="mt-4 flex flex-col gap-2.5">
-              <NuxtLink to="/terms" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ locale === 'ru' ? 'Правила' : 'Terms' }}</NuxtLink>
-              <NuxtLink to="/privacy" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ locale === 'ru' ? 'Конфиденциальность' : 'Privacy' }}</NuxtLink>
+              <NuxtLink to="/terms" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.terms') }}</NuxtLink>
+              <NuxtLink to="/privacy" class="text-[13px] text-white/25 transition-colors duration-200 hover:text-white/60">{{ t('footer.privacy') }}</NuxtLink>
             </div>
           </div>
         </div>
@@ -68,5 +68,5 @@
 </template>
 
 <script setup lang="ts">
-const { locale } = useI18n()
+const { t } = useI18n()
 </script>

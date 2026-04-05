@@ -475,7 +475,7 @@ const serverStats = [
 ]
 
 const steps = [
-  { titleKey: 'steps.1.title', descKey: 'steps.1.desc', link: '/register', linkLabel: locale.value === 'ru' ? 'Регистрация' : 'Register' },
+  { titleKey: 'steps.1.title', descKey: 'steps.1.desc', link: '/register', linkLabel: t('steps.1.linkLabel') },
   { titleKey: 'steps.2.title', descKey: 'steps.2.desc', link: null, linkLabel: 'Download' },
   { titleKey: 'steps.3.title', descKey: 'steps.3.desc', link: null, linkLabel: null },
 ]

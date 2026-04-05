@@ -384,7 +384,7 @@
   },
   "steps": {
     "title": "Start in 5 minutes",
-    "1": { "title": "Create account", "desc": "Quick registration. Email and password — that's it." },
+    "1": { "title": "Create account", "desc": "Quick registration. Email and password — that's it.", "linkLabel": "Register" },
     "2": { "title": "Download client", "desc": "Lightweight launcher, auto-patching. ~8 GB." },
     "3": { "title": "Enter Atreia", "desc": "Pick Elyos or Asmodian. Your war begins." }
   },
@@ -475,14 +475,26 @@
     "totalChars": "Total characters",
     "byClass": "Characters by class",
     "byRace": "Race balance",
-    "back": "Back to home"
+    "back": "Back to home",
+    "weeklyOnline": "Weekly online",
+    "hourlyOnline": "Average online by hour"
   },
   "start": {
     "title": "Start playing",
     "desc": "From zero to Atreia in under 10 minutes.",
+    "discordHelp": "Still stuck? Join Discord — we'll help.",
     "s1": { "title": "Create your account", "desc": "Quick registration — email and password. No phone number, no verification delays. Your account is ready instantly.", "cta": "Register now" },
     "s2": { "title": "Download the client", "desc": "Our lightweight launcher downloads and patches the game automatically. Total size: ~8.2 GB. Average download time: 15-30 minutes on a decent connection.", "cta": "Download launcher" },
-    "s3": { "title": "Launch and play", "desc": "Open the launcher, log in with your credentials, and hit Play. Choose Elyos or Asmodian, create your character, and enter Atreia." },
+    "s3": {
+      "title": "Launch and play",
+      "desc": "Open the launcher, log in with your credentials, and hit Play. Choose Elyos or Asmodian, create your character, and enter Atreia.",
+      "c1": "Open the launcher",
+      "c2": "Log in with your credentials",
+      "c3": "Click \"Play\"",
+      "c4": "Select the server",
+      "c5": "Create a character — Elyos or Asmodian",
+      "c6": "You're in Atreia"
+    },
     "req": { "title": "System requirements", "min": "Minimum", "rec": "Recommended" },
     "faq": {
       "title": "Common issues",
@@ -495,5 +507,69 @@
       "q4": "SendLog error on launch",
       "a4": "Delete the bin32/aion.bin.old file in your game folder. If it persists, run File Repair in the launcher."
     }
+  },
+  "footer": {
+    "desc": "Classic Aion 3.9 on dedicated servers. Fair play, no pay-to-win.",
+    "server": "Server",
+    "startPlaying": "Start playing",
+    "news": "News",
+    "rankings": "Rankings",
+    "schedule": "Schedule",
+    "info": "Info",
+    "forum": "Forum",
+    "legal": "Legal",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "updated": "Last updated: April 1, 2026",
+    "s1title": "General",
+    "s1text": "AionUCP is a non-commercial fan project. By using our service, you agree to these terms. The administration reserves the right to modify these terms without prior notice.",
+    "s2title": "Accounts",
+    "s2text": "Each user is entitled to one account. Multi-accounting is allowed within 2 simultaneous connections (dual box). Selling, trading, and transferring accounts to third parties is prohibited.",
+    "s3title": "Prohibited actions",
+    "s4title": "Penalties",
+    "s4text": "Violations are punished with a warning, temporary or permanent account ban depending on severity. Use of cheats, bots, and exploits results in a permanent ban without warning.",
+    "s5title": "Donations",
+    "s5text": "All donations are voluntary and non-refundable. Toll currency is purchased to support the project. The administration does not guarantee permanent server availability. No refunds are issued.",
+    "s6title": "Data handling",
+    "s6text": "We store minimal data: email, password hash, last login IP. Data is not shared with third parties. See the Privacy page for details.",
+    "s7title": "Limitation of liability",
+    "s7text": "AionUCP is provided \"as is\". We are not liable for loss of game data, server downtime, or any damage related to the use of the service.",
+    "r1": "Use of third-party software (bots, cheats, macros, speed hacks)",
+    "r2": "Exploiting bugs and vulnerabilities (report them instead)",
+    "r3": "Kill trading and consensual AP farming",
+    "r4": "Insults, racism, threats in chat and forums",
+    "r5": "Advertising other servers",
+    "r6": "Real money trading of game items and currency (RMT)",
+    "r7": "Intentional deception of the administration"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: April 1, 2026",
+    "collectTitle": "What data we collect",
+    "collectIntro": "When you register and use the service, we collect:",
+    "c1": "Email address (for registration and password recovery)",
+    "c2": "Username (game account name)",
+    "c3": "Last login IP address (for security)",
+    "c4": "Password hash (SHA-1)",
+    "c5": "Game activity (characters, items, statistics — stored in game database)",
+    "usageTitle": "How we use the data",
+    "u1": "Authentication and account management",
+    "u2": "Password recovery",
+    "u3": "Fraud prevention and multi-accounting detection",
+    "u4": "Displaying game statistics and rankings",
+    "storageTitle": "Storage and security",
+    "storageText": "Passwords are stored as SHA-1 hashes (game client requirement). We recommend using a unique password not shared with other services. Data is stored on dedicated servers in Germany.",
+    "sharingTitle": "Third-party data sharing",
+    "sharingText": "We do not sell, share, or provide access to your data to third parties. Exception: law enforcement requests in accordance with applicable law.",
+    "cookiesText": "We use session cookies for authentication and CSRF protection. No analytics cookies are used. No third-party trackers.",
+    "rightsTitle": "Your rights",
+    "ri1": "Request deletion of your account and all associated data",
+    "ri2": "Request export of your data",
+    "ri3": "Change email and password in your dashboard",
+    "contactTitle": "Contact",
+    "contactText": "For privacy inquiries, contact us via Discord or administration email."
   }
 }

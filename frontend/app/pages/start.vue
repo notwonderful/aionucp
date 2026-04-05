@@ -141,7 +141,7 @@
     <!-- Bottom CTA -->
     <div class="border-t border-white/[0.04] py-16">
       <div class="mx-auto max-w-[600px] px-6 text-center">
-        <p class="text-[14px] text-white/25">{{ locale === 'ru' ? 'Остались вопросы? Зайди в Discord — поможем.' : 'Still stuck? Join Discord — we\'ll help.' }}</p>
+        <p class="text-[14px] text-white/25">{{ t('start.discordHelp') }}</p>
         <div class="mt-5 flex flex-wrap justify-center gap-3">
           <a href="#" class="inline-flex items-center gap-2 bg-[#5865F2] px-5 py-2.5 text-[12px] font-bold uppercase tracking-widest text-white transition-all hover:bg-[#4752C4] active:scale-[0.97]">
             <svg class="h-4 w-4" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
@@ -159,13 +159,13 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-const { locale, t } = useI18n()
+const { t } = useI18n()
 const openFaq = ref(-1)
 
-const checklist = computed(() => locale.value === 'ru'
-  ? ['Открой лаунчер', 'Войди с логином и паролем', 'Нажми "Play"', 'Выбери сервер', 'Создай персонажа — Elyos или Asmodian', 'Готово — ты в Атрее']
-  : ['Open the launcher', 'Log in with your credentials', 'Click "Play"', 'Select the server', 'Create a character — Elyos or Asmodian', 'You\'re in Atreia']
-)
+const checklist = computed(() => [
+  t('start.s3.c1'), t('start.s3.c2'), t('start.s3.c3'),
+  t('start.s3.c4'), t('start.s3.c5'), t('start.s3.c6'),
+])
 
 const minReqs = [
   { label: 'OS', value: 'Windows 7 64-bit' },
