@@ -11,7 +11,7 @@
     <div v-else-if="!article" class="flex min-h-[60vh] flex-col items-center justify-center pt-28">
       <div class="font-display text-6xl font-extrabold text-white/10">404</div>
       <p class="mt-4 text-[14px] text-white/30">{{ $t('news.notFound') }}</p>
-      <NuxtLink to="/news" class="mt-6 text-[12px] font-bold uppercase tracking-widest text-red-500 hover:text-red-400">&larr; {{ $t('news.backToNews') }}</NuxtLink>
+      <NuxtLink :to="localePath('/news')" class="mt-6 text-[12px] font-bold uppercase tracking-widest text-red-500 hover:text-red-400">&larr; {{ $t('news.backToNews') }}</NuxtLink>
     </div>
 
     <template v-else>
@@ -19,7 +19,7 @@
         <div v-if="article.image_url" class="absolute inset-0 bg-cover bg-center opacity-[0.08]" :style="{ backgroundImage: `url(${article.image_url})` }" />
         <div class="absolute inset-0 bg-gradient-to-b from-surface via-transparent to-surface" />
         <div class="relative mx-auto max-w-[760px] px-6">
-          <NuxtLink to="/news" class="mb-6 inline-flex items-center gap-1.5 text-[12px] font-medium text-white/30 transition-colors hover:text-white/60">
+          <NuxtLink :to="localePath('/news')" class="mb-6 inline-flex items-center gap-1.5 text-[12px] font-medium text-white/30 transition-colors hover:text-white/60">
             <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
             {{ $t('news.allNews') }}
           </NuxtLink>
@@ -46,6 +46,7 @@ definePageMeta({ layout: 'default' })
 
 const route = useRoute()
 const { $api } = useApi()
+const localePath = useLocalePath()
 const { full: formatDate } = useDate()
 
 const { data: articleData, status } = useAsyncData(

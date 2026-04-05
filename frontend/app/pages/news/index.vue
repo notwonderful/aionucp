@@ -17,7 +17,7 @@
       </div>
 
       <template v-else-if="articles.length">
-        <NuxtLink :to="`/news/${featured.slug}`" class="group mb-8 block overflow-hidden rounded-xl border border-white/[0.04]">
+        <NuxtLink :to="localePath(`/news/${featured.slug}`)" class="group mb-8 block overflow-hidden rounded-xl border border-white/[0.04]">
           <div class="grid lg:grid-cols-2">
             <div class="h-56 bg-cover bg-center lg:h-auto" :style="featured.image_url ? { backgroundImage: `url(${featured.image_url})` } : {}"
               :class="!featured.image_url && 'bg-gradient-to-br from-red-950/30 to-surface'" />
@@ -34,7 +34,7 @@
         </NuxtLink>
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <NuxtLink v-for="article in rest" :key="article.id" :to="`/news/${article.slug}`"
+          <NuxtLink v-for="article in rest" :key="article.id" :to="localePath(`/news/${article.slug}`)"
             class="group overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-colors duration-300 hover:border-white/[0.08]">
             <div class="h-40 bg-cover bg-center" :style="article.image_url ? { backgroundImage: `url(${article.image_url})` } : {}"
               :class="!article.image_url && 'bg-gradient-to-br from-white/[0.03] to-transparent'" />
@@ -61,6 +61,7 @@ import type { NewsResponse } from '~/composables/useNews'
 definePageMeta({ layout: 'default' })
 
 const { $api } = useApi()
+const localePath = useLocalePath()
 const { full: formatDate } = useDate()
 
 const { data: newsData, status } = useAsyncData(
