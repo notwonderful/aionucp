@@ -17,7 +17,7 @@
       </div>
 
       <template v-else-if="articles.length">
-        <NuxtLink :to="localePath(`/news/${featured.slug}`)" class="group mb-8 block overflow-hidden rounded-xl border border-white/[0.04]">
+        <NuxtLink v-if="featured" :to="localePath(`/news/${featured.slug}`)" class="group mb-8 block overflow-hidden rounded-xl border border-white/[0.04]">
           <div class="grid lg:grid-cols-2">
             <div class="h-56 bg-cover bg-center lg:h-auto" :style="featured.image_url ? { backgroundImage: `url(${featured.image_url})` } : {}"
               :class="!featured.image_url && 'bg-gradient-to-br from-red-950/30 to-surface'" />
@@ -51,25 +51,44 @@
       </template>
 
       <div v-else class="py-20 text-center text-white/20">{{ $t('news.noNews') }}</div>
+
+      <div v-if="meta.last_page > 1" class="mt-10 flex items-center justify-center gap-2">
+        <button v-for="p in meta.last_page" :key="p" @click="page = p"
+          :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
+            page === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
+          {{ p }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { NewsResponse } from '~/composables/useNews'
-
 definePageMeta({ layout: 'default' })
 
 const { $api } = useApi()
 const localePath = useLocalePath()
 const { full: formatDate } = useDate()
 
-const { data: newsData, status } = useAsyncData(
-  'news-list',
-  () => $api<NewsResponse>('/news'),
-)
+const page = ref(1)
+const articles = ref<any[]>([])
+const meta = ref({ last_page: 1 })
+const status = ref<'pending' | 'success'>('pending')
 
-const articles = computed(() => newsData.value?.data ?? [])
-const featured = computed(() => articles.value[0])
-const rest = computed(() => articles.value.slice(1))
+async function fetchNews() {
+  status.value = 'pending'
+  try {
+    const res = await $api<{ data: any[]; meta: any }>(`/news?page=${page.value}`)
+    articles.value = res.data
+    meta.value = res.meta ?? { last_page: 1 }
+  } finally {
+    status.value = 'success'
+  }
+}
+
+watch(page, () => fetchNews())
+onMounted(() => fetchNews())
+
+const featured = computed(() => page.value === 1 ? articles.value[0] : null)
+const rest = computed(() => page.value === 1 ? articles.value.slice(1) : articles.value)
 </script>
