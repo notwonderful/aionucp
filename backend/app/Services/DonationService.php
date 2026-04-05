@@ -32,11 +32,14 @@ final class DonationService
         $rate = $this->paymentSettings->getRate($currency);
         $amountMoney = $this->paymentSettings->tollToMoney($amountToll, $currency);
 
+        $bonusToll = $this->paymentSettings->calculateBonusToll($amountToll);
+
         $donation = Donation::create([
             'user_id' => $user->id,
             'gateway' => $gateway,
             'status' => DonationStatus::PENDING,
             'amount_toll' => $amountToll,
+            'bonus_toll' => $bonusToll,
             'amount_money' => $amountMoney,
             'currency' => $currency,
             'exchange_rate' => $rate,
@@ -144,7 +147,7 @@ final class DonationService
 
                 Cache::put($cacheKey, true, now()->addHours(24));
 
-                $this->gameServer->incrementBalance($donation->user->aion_acc_id, $donation->amount_toll);
+                $this->gameServer->incrementBalance($donation->user->aion_acc_id, $donation->amount_toll + $donation->bonus_toll);
 
                 $donation->user->notify(new DonationCompletedNotification($donation));
             });

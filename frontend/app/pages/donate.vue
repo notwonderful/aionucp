@@ -21,6 +21,26 @@
 
     <div v-else class="mx-auto max-w-2xl space-y-8">
 
+      <section v-if="bonusTiers.length > 0" class="relative overflow-hidden rounded-xl border border-amber-500/10 bg-gradient-to-br from-amber-500/[0.04] to-transparent p-6">
+        <div class="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-amber-500/[0.03] blur-2xl" />
+        <div class="relative">
+          <div class="mb-4 flex items-center gap-2">
+            <svg class="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg>
+            <h3 class="font-display text-[14px] font-bold uppercase tracking-wider text-amber-400">{{ $t('donate.bonusTitle') }}</h3>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <div v-for="tier in bonusTiers" :key="tier.min_toll"
+              :class="['relative rounded-lg border px-4 py-2.5 text-center transition-all duration-300',
+                currentBonusPercent >= tier.bonus_percent && amount && amount >= tier.min_toll
+                  ? 'border-amber-500/30 bg-amber-500/10'
+                  : 'border-white/[0.04] bg-white/[0.02]']">
+              <p class="font-display text-[18px] font-extrabold tabular-nums" :class="currentBonusPercent >= tier.bonus_percent && amount && amount >= tier.min_toll ? 'text-amber-400' : 'text-white/40'">+{{ tier.bonus_percent }}%</p>
+              <p class="mt-0.5 text-[11px] tabular-nums text-white/20">{{ $t('donate.from') }} {{ tier.min_toll.toLocaleString() }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
         <label class="mb-3 block text-[11px] font-bold uppercase tracking-widest text-white/20">{{ $t('donate.amountLabel') }}</label>
 
@@ -87,15 +107,28 @@
       </section>
 
       <section class="space-y-4">
-        <div v-if="amount && amount > 0 && selectedGateway" class="flex items-center justify-between rounded-xl border border-white/[0.04] bg-white/[0.02] px-6 py-4">
-          <div class="space-y-0.5">
-            <p class="text-[12px] text-white/25">{{ $t('donate.youReceive') }}</p>
-            <p class="font-display text-[20px] font-extrabold tabular-nums text-red-400">{{ amount?.toLocaleString() }} <span class="text-[13px] font-bold text-red-400/50">{{ $t('common.toll') }}</span></p>
+        <div v-if="amount && amount > 0 && selectedGateway" class="rounded-xl border border-white/[0.04] bg-white/[0.02] px-6 py-5">
+          <div class="flex items-center justify-between">
+            <div class="space-y-0.5">
+              <p class="text-[12px] text-white/25">{{ $t('donate.youReceive') }}</p>
+              <div class="flex items-baseline gap-2">
+                <p class="font-display text-[22px] font-extrabold tabular-nums text-red-400">{{ totalToll.toLocaleString() }}</p>
+                <span class="text-[13px] font-bold text-red-400/50">{{ $t('common.toll') }}</span>
+              </div>
+            </div>
+            <div class="text-right space-y-0.5">
+              <p class="text-[12px] text-white/25">{{ $t('donate.youPay') }}</p>
+              <p class="font-display text-[22px] font-extrabold tabular-nums text-white/70">
+                {{ currencySymbols[selectedGateway.currency.code] }}{{ moneyDisplay }}
+              </p>
+            </div>
           </div>
-          <div class="text-right space-y-0.5">
-            <p class="text-[12px] text-white/25">{{ $t('donate.youPay') }}</p>
-            <p class="font-display text-[20px] font-extrabold tabular-nums text-white/70">
-              {{ currencySymbols[selectedGateway.currency.code] }}{{ moneyDisplay }}
+
+          <div v-if="bonusToll > 0" class="mt-3 flex items-center gap-2 rounded-lg border border-amber-500/15 bg-amber-500/[0.05] px-4 py-2.5">
+            <svg class="h-4 w-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+            <p class="text-[13px] font-medium text-amber-400">
+              +{{ bonusToll.toLocaleString() }} {{ $t('donate.bonusToll') }}
+              <span class="text-amber-400/50">(+{{ currentBonusPercent }}%)</span>
             </p>
           </div>
         </div>
@@ -134,8 +167,14 @@ interface GatewayMethod {
   max_amount: number
 }
 
+interface BonusTier {
+  min_toll: number
+  bonus_percent: number
+}
+
 const gateways = ref<GatewayMethod[]>([])
 const rates = ref<Record<string, number>>({})
+const bonusTiers = ref<BonusTier[]>([])
 const methodsLoading = ref(true)
 
 const selectedGateway = ref<GatewayMethod | null>(null)
@@ -144,6 +183,22 @@ const loading = ref(false)
 const errorMessage = ref('')
 
 const currencySymbols: Record<string, string> = { USD: '$', EUR: '€', RUB: '₽' }
+
+const currentBonusPercent = computed(() => {
+  if (!amount.value || !bonusTiers.value.length) return 0
+  let percent = 0
+  for (const tier of bonusTiers.value) {
+    if (amount.value >= tier.min_toll) percent = tier.bonus_percent
+  }
+  return percent
+})
+
+const bonusToll = computed(() => {
+  if (!amount.value || !currentBonusPercent.value) return 0
+  return Math.floor(amount.value * currentBonusPercent.value / 100)
+})
+
+const totalToll = computed(() => (amount.value ?? 0) + bonusToll.value)
 
 const moneyAmount = computed(() => {
   if (!amount.value || !selectedGateway.value) return 0
@@ -177,9 +232,10 @@ const canSubmit = computed(() => {
 async function fetchMethods() {
   methodsLoading.value = true
   try {
-    const res = await $api<{ data: GatewayMethod[]; rates: Record<string, number> }>('/donate')
+    const res = await $api<{ data: GatewayMethod[]; rates: Record<string, number>; bonus_tiers: BonusTier[] }>('/donate')
     gateways.value = res.data
     rates.value = res.rates
+    bonusTiers.value = (res.bonus_tiers || []).sort((a, b) => a.min_toll - b.min_toll)
     if (gateways.value.length > 0) {
       selectedGateway.value = gateways.value[0]
     }

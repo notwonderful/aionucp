@@ -70,6 +70,32 @@
         </section>
       </div>
 
+      <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-[13px] font-bold uppercase tracking-widest text-white/30">{{ $t('admin.bonusTiers') }}</h3>
+          <button type="button" @click="addTier"
+            class="rounded-lg bg-white/[0.04] px-3 py-1.5 text-[11px] font-bold text-white/30 transition-colors hover:bg-white/[0.08] hover:text-white/50">
+            + {{ $t('admin.addTier') }}
+          </button>
+        </div>
+        <div v-for="(tier, i) in paymentForm.bonus_tiers" :key="i" class="flex items-end gap-3">
+          <div class="flex-1">
+            <label class="mb-1 block text-[11px] font-medium text-white/25">{{ $t('admin.minToll') }}</label>
+            <input v-model.number="tier.min_toll" type="number" min="1" step="1"
+              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30">
+          </div>
+          <div class="flex-1">
+            <label class="mb-1 block text-[11px] font-medium text-white/25">{{ $t('admin.bonusPercent') }}</label>
+            <input v-model.number="tier.bonus_percent" type="number" min="1" max="100" step="1"
+              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30">
+          </div>
+          <button type="button" @click="removeTier(i)"
+            class="mb-0.5 shrink-0 rounded-lg p-2 text-white/15 transition-colors hover:bg-red-600/10 hover:text-red-400">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+      </section>
+
       <AlertMessage :message="successMsg" variant="success" />
       <AlertMessage :message="errorMsg" variant="error" />
 
@@ -97,7 +123,16 @@ const paymentForm = reactive({
   rate_rub: 1.0,
   rate_usd: 0.01245,
   rate_eur: 0.01117,
+  bonus_tiers: [] as Array<{ min_toll: number; bonus_percent: number }>,
 })
+
+function addTier() {
+  paymentForm.bonus_tiers.push({ min_toll: 100, bonus_percent: 5 })
+}
+
+function removeTier(index: number) {
+  paymentForm.bonus_tiers.splice(index, 1)
+}
 
 const gatewayForm = reactive({
   limits: {} as Record<string, { min_amount: number; max_amount: number; currency: string; enabled: boolean }>,

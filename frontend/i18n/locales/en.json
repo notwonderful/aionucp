@@ -163,7 +163,10 @@
     "min": "min",
     "minAmountError": "Minimum payment is {amount}{symbol}",
     "maxAmountError": "Maximum payment is {amount}{symbol}",
-    "paymentError": "Payment is not available at the moment. Please try again later."
+    "paymentError": "Payment is not available at the moment. Please try again later.",
+    "bonusTitle": "Bonus Tiers",
+    "bonusToll": "bonus toll",
+    "from": "from"
   },
   "tickets": {
     "title": "Support Tickets",
@@ -455,6 +458,10 @@
     "rateUsd": "Rate USD",
     "rateEur": "Rate EUR",
     "gatewayLimits": "Gateway Limits",
+    "bonusTiers": "Bonus Tiers",
+    "addTier": "Add tier",
+    "minToll": "Min toll",
+    "bonusPercent": "Bonus %",
     "minAmount": "Min amount",
     "maxAmount": "Max amount",
     "enabled": "Enabled",

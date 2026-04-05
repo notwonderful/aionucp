@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('gateway');
             $table->string('status');
             $table->unsignedInteger('amount_toll');
+            $table->unsignedInteger('bonus_toll')->default(0);
             $table->unsignedInteger('amount_money');
             $table->string('currency', 3);
             $table->decimal('exchange_rate', 10, 6);

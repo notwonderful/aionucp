@@ -163,7 +163,10 @@
     "min": "мин",
     "minAmountError": "Минимальный платёж — {amount}{symbol}",
     "maxAmountError": "Максимальный платёж — {amount}{symbol}",
-    "paymentError": "Оплата сейчас недоступна. Попробуйте позже."
+    "paymentError": "Оплата сейчас недоступна. Попробуйте позже.",
+    "bonusTitle": "Бонусные уровни",
+    "bonusToll": "бонусных toll",
+    "from": "от"
   },
   "tickets": {
     "title": "Тикеты",
@@ -455,6 +458,10 @@
     "rateUsd": "Курс USD",
     "rateEur": "Курс EUR",
     "gatewayLimits": "Лимиты платёжек",
+    "bonusTiers": "Бонусные уровни",
+    "addTier": "Добавить уровень",
+    "minToll": "Мин. toll",
+    "bonusPercent": "Бонус %",
     "minAmount": "Мин. сумма",
     "maxAmount": "Макс. сумма",
     "enabled": "Включено",

@@ -96,6 +96,7 @@ final class SettingsController extends Controller
                 'rate_rub' => $settings->rate_rub,
                 'rate_usd' => $settings->rate_usd,
                 'rate_eur' => $settings->rate_eur,
+                'bonus_tiers' => $settings->bonus_tiers,
             ],
         ]);
     }
@@ -107,12 +108,16 @@ final class SettingsController extends Controller
             'rate_rub' => ['required', 'numeric', 'min:0'],
             'rate_usd' => ['required', 'numeric', 'min:0'],
             'rate_eur' => ['required', 'numeric', 'min:0'],
+            'bonus_tiers' => ['required', 'array'],
+            'bonus_tiers.*.min_toll' => ['required', 'integer', 'min:1'],
+            'bonus_tiers.*.bonus_percent' => ['required', 'integer', 'min:1', 'max:100'],
         ]);
 
         $settings->enabled = $validated['enabled'];
         $settings->rate_rub = (float) $validated['rate_rub'];
         $settings->rate_usd = (float) $validated['rate_usd'];
         $settings->rate_eur = (float) $validated['rate_eur'];
+        $settings->bonus_tiers = $validated['bonus_tiers'];
         $settings->save();
 
         return response()->json([

@@ -17,6 +17,8 @@ final class PaymentSettings extends Settings
 
     public float $rate_eur;
 
+    public array $bonus_tiers;
+
     public static function group(): string
     {
         return 'payment';
@@ -34,5 +36,28 @@ final class PaymentSettings extends Settings
     public function tollToMoney(int $toll, Currency $currency): int
     {
         return (int) round($toll * $this->getRate($currency) * 100);
+    }
+
+    public function getBonusPercent(int $toll): int
+    {
+        $sorted = $this->bonus_tiers;
+        usort($sorted, static fn (array $a, array $b): int => $a['min_toll'] <=> $b['min_toll']);
+
+        $percent = 0;
+
+        foreach ($sorted as $tier) {
+            if ($toll >= $tier['min_toll']) {
+                $percent = $tier['bonus_percent'];
+            }
+        }
+
+        return $percent;
+    }
+
+    public function calculateBonusToll(int $toll): int
+    {
+        $percent = $this->getBonusPercent($toll);
+
+        return $percent > 0 ? (int) floor($toll * $percent / 100) : 0;
     }
 }

@@ -51,6 +51,7 @@ final class DonateController extends Controller
                 Currency::USD->value => $paymentSettings->rate_usd,
                 Currency::EUR->value => $paymentSettings->rate_eur,
             ],
+            'bonus_tiers' => $paymentSettings->bonus_tiers,
         ]);
     }
 

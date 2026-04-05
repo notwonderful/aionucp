@@ -8,10 +8,6 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('payment.enabled', true);
-        $this->migrator->add('payment.rate_rub', 1.0);
-        $this->migrator->add('payment.rate_usd', 0.01245);
-        $this->migrator->add('payment.rate_eur', 0.01117);
         $this->migrator->add('payment.bonus_tiers', [
             ['min_toll' => 500, 'bonus_percent' => 5],
             ['min_toll' => 1000, 'bonus_percent' => 10],

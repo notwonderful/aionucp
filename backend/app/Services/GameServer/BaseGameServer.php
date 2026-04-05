@@ -195,7 +195,6 @@ abstract class BaseGameServer implements GameServerContract
     {
         return $this->query(Player::class)
             ->where('account_id', $accountId)
-            ->select(['id', 'name'])
             ->get();
     }
 
