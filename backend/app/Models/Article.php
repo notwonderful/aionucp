@@ -43,10 +43,6 @@ final class Article extends Model
         ];
     }
 
-    protected $appends = [
-        'image_url',
-    ];
-
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

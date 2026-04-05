@@ -36,10 +36,6 @@ final class Product extends Model
         'image',
     ];
 
-    protected $appends = [
-        'image_url',
-    ];
-
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -47,9 +43,9 @@ final class Product extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function getImageUrlAttribute(): string
+    public function getImageUrlAttribute(): ?string
     {
-        return Storage::disk('public')->url($this->image ?? '');
+        return $this->image ? Storage::disk('public')->url($this->image) : null;
     }
 
     /** @return BelongsTo<ProductCategory, $this> */
