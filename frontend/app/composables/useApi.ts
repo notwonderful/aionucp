@@ -6,6 +6,7 @@ interface ApiRequestOptions extends Omit<FetchOptions, 'signal'> {
 
 export function useApi() {
   const config = useRuntimeConfig()
+  const locale = useCookie('locale')
 
   const baseURL = import.meta.server
     ? (config.apiBaseServer as string)
@@ -27,7 +28,8 @@ export function useApi() {
     const xsrfToken = getXsrfToken()
 
     const mergedHeaders: Record<string, string> = {
-      Accept: 'application/json',
+      'Accept': 'application/json',
+      'Accept-Language': locale.value || 'en',
       'X-Requested-With': 'XMLHttpRequest',
       ...(xsrfToken ? { 'X-XSRF-TOKEN': xsrfToken } : {}),
       ...(import.meta.server && serverHeaders?.cookie ? { cookie: serverHeaders.cookie } : {}),

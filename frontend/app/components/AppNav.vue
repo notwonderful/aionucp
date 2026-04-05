@@ -27,7 +27,7 @@
 
       <!-- Nav links -->
       <div class="hidden items-center gap-7 md:flex">
-        <NuxtLink v-for="lnk in navLinks" :key="lnk.href" :to="lnk.href"
+        <NuxtLink v-for="lnk in navLinks" :key="lnk.href" :to="localePath(lnk.href)"
           :class="['group relative py-1 text-[12px] font-medium uppercase tracking-widest transition-colors duration-300',
             isActive(lnk.href) ? 'text-white' : 'text-white/40 hover:text-white']">
           {{ t(lnk.key) }}
@@ -39,23 +39,22 @@
       <!-- Right zone -->
       <div class="flex items-center gap-4">
         <div class="hidden items-center gap-1 sm:flex">
-          <button v-for="l in (['en','ru'] as const)" :key="l"
+          <NuxtLink v-for="l in (['en','ru'] as const)" :key="l" :to="switchLocalePath(l)"
             :class="['rounded px-2 py-1 text-[10px] font-bold uppercase transition-all duration-300',
-              locale===l ? 'bg-white/[0.08] text-white' : 'text-white/20 hover:text-white/50']"
-            @click="setLocale(l)">{{ l }}</button>
+              locale===l ? 'bg-white/[0.08] text-white' : 'text-white/20 hover:text-white/50']">{{ l }}</NuxtLink>
         </div>
         <div class="hidden h-5 w-px bg-white/[0.08] sm:block" />
         <template v-if="isAuthenticated">
-          <NuxtLink to="/dashboard"
+          <NuxtLink :to="localePath('/dashboard')"
             class="rounded-lg bg-red-600 px-5 py-2.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(220,60,60,0.15)] transition-all duration-300 hover:bg-red-500 hover:shadow-[0_0_25px_rgba(220,60,60,0.35)] active:scale-[0.97]">
             Dashboard
           </NuxtLink>
         </template>
         <template v-else>
-          <NuxtLink to="/login" class="hidden text-[12px] font-medium text-white/30 transition-colors duration-300 hover:text-white/60 sm:block">
+          <NuxtLink :to="localePath('/login')" class="hidden text-[12px] font-medium text-white/30 transition-colors duration-300 hover:text-white/60 sm:block">
             {{ t('nav.signin') }}
           </NuxtLink>
-          <NuxtLink to="/register"
+          <NuxtLink :to="localePath('/register')"
             class="rounded-lg bg-red-600 px-5 py-2.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(220,60,60,0.15)] transition-all duration-300 hover:bg-red-500 hover:shadow-[0_0_25px_rgba(220,60,60,0.35)] active:scale-[0.97]">
             {{ t('nav.play') }}
           </NuxtLink>
@@ -71,7 +70,7 @@
     <!-- Mobile menu -->
     <div v-if="mobileMenu" class="border-t border-white/[0.04] bg-surface/95 px-6 pb-6 pt-4 backdrop-blur-xl md:hidden">
       <div class="flex flex-col gap-1">
-        <NuxtLink v-for="lnk in navLinks" :key="lnk.href" :to="lnk.href"
+        <NuxtLink v-for="lnk in navLinks" :key="lnk.href" :to="localePath(lnk.href)"
           :class="['rounded-lg px-3 py-3 text-[13px] font-medium uppercase tracking-widest transition-colors',
             isActive(lnk.href) ? 'bg-white/[0.04] text-white' : 'text-white/50 hover:bg-white/[0.04] hover:text-white']"
           @click="mobileMenu = false">
@@ -79,17 +78,18 @@
         </NuxtLink>
       </div>
       <div class="mt-4 flex items-center gap-2 border-t border-white/[0.04] pt-4">
-        <button v-for="l in (['en','ru'] as const)" :key="l"
+        <NuxtLink v-for="l in (['en','ru'] as const)" :key="l" :to="switchLocalePath(l)"
           :class="['rounded px-3 py-1.5 text-[11px] font-bold uppercase',
-            locale===l ? 'bg-white/[0.08] text-white' : 'text-white/25']"
-          @click="setLocale(l)">{{ l }}</button>
+            locale===l ? 'bg-white/[0.08] text-white' : 'text-white/25']">{{ l }}</NuxtLink>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-const { locale, t, setLocale } = useI18n()
+const { locale, t } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
+const localePath = useLocalePath()
 const route = useRoute()
 const { isAuthenticated } = useAuth()
 

@@ -577,7 +577,7 @@ const allFeatures = [
 
 const { $api } = useApi()
 const { full: formatDate } = useDate()
-const { data: newsData } = useAsyncData('home-news', () => $api<{ data: Array<{ id: number; slug: string; tag: string; title: string; excerpt: string; image_url: string | null; published_at: string }> }>('/news?per_page=4'))
+const { data: newsData } = useAsyncData('home-news', () => $api<{ data: Array<{ id: number; slug: string; tag: string; title: string; excerpt: string; image_url: string | null; published_at: string }> }>('/news?per_page=4'), { watch: [locale] })
 const featuredNews = computed(() => newsData.value?.data?.[0] ?? null)
 const sideNews = computed(() => (newsData.value?.data ?? []).slice(1, 4))
 
@@ -628,6 +628,6 @@ const sysReqs = [
   { label: 'GPU', valueKey: 'download.gpu' },
 ]
 
-const { data: faqData } = useAsyncData('home-faq', () => $api<{ data: Array<{ id: number; question: string; answer: string }> }>('/faq'))
+const { data: faqData } = useAsyncData('home-faq', () => $api<{ data: Array<{ id: number; question: string; answer: string }> }>('/faq'), { watch: [locale] })
 const faqList = computed(() => faqData.value?.data ?? [])
 </script>
