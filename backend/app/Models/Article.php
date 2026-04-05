@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasTranslatableSlug;
@@ -13,6 +14,7 @@ use Spatie\Translatable\HasTranslations;
 
 final class Article extends Model
 {
+    use HasFactory;
     use HasTranslatableSlug;
     use HasTranslations;
 
