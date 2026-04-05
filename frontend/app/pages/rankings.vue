@@ -93,11 +93,11 @@
         <!-- Counters -->
         <div class="grid gap-3 sm:grid-cols-2">
           <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
-            <div class="text-[11px] font-bold uppercase tracking-widest text-white/20">{{ t('rank.online_now') }}</div>
+            <div class="text-[11px] font-bold uppercase tracking-widest text-white/20">{{ t('rank.onlineNow') }}</div>
             <div class="mt-2 font-display text-4xl font-extrabold tabular-nums text-white">{{ stats.online }}</div>
           </div>
           <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
-            <div class="text-[11px] font-bold uppercase tracking-widest text-white/20">{{ t('rank.total_chars') }}</div>
+            <div class="text-[11px] font-bold uppercase tracking-widest text-white/20">{{ t('rank.totalChars') }}</div>
             <div class="mt-2 font-display text-4xl font-extrabold tabular-nums text-white">{{ stats.total_characters }}</div>
           </div>
         </div>
@@ -113,7 +113,7 @@
         <!-- Race balance — donut -->
         <div class="grid gap-4 lg:grid-cols-2">
           <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
-            <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ t('rank.by_race') }}</h3>
+            <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ t('rank.byRace') }}</h3>
             <ClientOnly>
               <apexchart type="donut" height="260" :options="raceChartOpts" :series="raceChartSeries" />
             </ClientOnly>
@@ -121,7 +121,7 @@
 
           <!-- Class distribution — horizontal bar -->
           <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
-            <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ t('rank.by_class') }}</h3>
+            <h3 class="mb-2 font-display text-lg font-bold uppercase tracking-wider">{{ t('rank.byClass') }}</h3>
             <ClientOnly>
               <apexchart type="bar" height="260" :options="classChartOpts" :series="classChartSeries" />
             </ClientOnly>

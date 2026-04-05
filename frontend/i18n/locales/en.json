@@ -573,8 +573,11 @@
     "byClass": "Characters by class",
     "byRace": "Race balance",
     "back": "Back to home",
+    "rank": "Rank",
     "weeklyOnline": "Weekly online",
-    "hourlyOnline": "Average online by hour"
+    "hourlyOnline": "Average online by hour",
+    "peakOnline": "Peak online",
+    "avgOnline": "Avg online"
   },
   "start": {
     "title": "Start playing",
