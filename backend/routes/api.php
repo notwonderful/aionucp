@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServerController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PromoCodeController;
 use App\Http\Controllers\Api\RatingController;
 use App\Http\Controllers\Api\ReferralController;
+use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\TicketController;
@@ -69,6 +71,11 @@ Route::prefix('auth')->group(function () {
 | Public Routes
 |--------------------------------------------------------------------------
 */
+
+Route::prefix('news')->group(function () {
+    Route::get('/', [ArticleController::class, 'index']);
+    Route::get('{slug}', [ArticleController::class, 'show']);
+});
 
 Route::prefix('rating')->group(function () {
     Route::get('abyss', [RatingController::class, 'abyss']);
@@ -162,6 +169,10 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
 
     Route::post('bulk-email', [BulkEmailController::class, 'sendBulkEmail'])
         ->middleware('permission:'.Permission::BULK_EMAIL_SEND->value);
+
+    Route::apiResource('news', AdminArticleController::class)
+        ->parameters(['news' => 'article'])
+        ->middleware('permission:'.Permission::NEWS_VIEW->value);
 
     Route::prefix('tickets')->middleware('permission:'.Permission::TICKETS_VIEW->value)->group(function () {
         Route::get('/', [AdminTicketController::class, 'index']);

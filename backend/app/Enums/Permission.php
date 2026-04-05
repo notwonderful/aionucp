@@ -39,6 +39,12 @@ enum Permission: string
     // Mail Items
     case MAIL_ITEMS_SEND = 'mail-items.send';
 
+    // News
+    case NEWS_VIEW = 'news.view';
+    case NEWS_CREATE = 'news.create';
+    case NEWS_EDIT = 'news.edit';
+    case NEWS_DELETE = 'news.delete';
+
     // Bulk Email
     case BULK_EMAIL_SEND = 'bulk-email.send';
 
@@ -65,6 +71,10 @@ enum Permission: string
             self::TICKETS_VIEW => __('View Tickets'),
             self::TICKETS_REPLY => __('Reply to Tickets'),
             self::TICKETS_CLOSE => __('Close Tickets'),
+            self::NEWS_VIEW => __('View News'),
+            self::NEWS_CREATE => __('Create News'),
+            self::NEWS_EDIT => __('Edit News'),
+            self::NEWS_DELETE => __('Delete News'),
             self::MAIL_ITEMS_SEND => __('Send Mail Items'),
             self::BULK_EMAIL_SEND => __('Send Bulk Email'),
         };

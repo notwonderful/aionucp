@@ -28,6 +28,17 @@
         </div>
       </NuxtLink>
 
+      <NuxtLink to="/admin/news"
+        class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10">
+          <svg class="h-6 w-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg>
+        </div>
+        <div>
+          <div class="text-[15px] font-semibold transition-colors group-hover:text-amber-400">{{ $t('admin.news') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('admin.newsDesc') }}</div>
+        </div>
+      </NuxtLink>
+
       <NuxtLink to="/admin/products"
         class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
         <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600/10">

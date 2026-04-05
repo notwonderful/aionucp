@@ -242,36 +242,36 @@
       <div class="relative mx-auto max-w-[1200px] px-6">
         <div class="mb-14 flex items-end justify-between">
           <h2 v-reveal class="font-display text-3xl font-extrabold uppercase tracking-tighter lg:text-4xl">{{ t('news.title') }}</h2>
-          <a href="#" class="text-[12px] font-medium uppercase tracking-widest text-red-500/60 transition-colors hover:text-red-500">{{ t('news.all') }}</a>
+          <NuxtLink to="/news" class="text-[12px] font-medium uppercase tracking-widest text-red-500/60 transition-colors hover:text-red-500">{{ t('news.all') }}</NuxtLink>
         </div>
 
         <div class="grid gap-4 lg:grid-cols-12">
           <!-- Featured — 8 cols, image dominant -->
-          <article class="group relative overflow-hidden lg:col-span-8">
-            <div class="aspect-[16/9] overflow-hidden bg-[url('/img/bg_39_armor.jpg')] bg-cover bg-center lg:aspect-[2/1]">
+          <NuxtLink v-if="featuredNews" :to="`/news/${featuredNews.slug}`" class="group relative overflow-hidden lg:col-span-8">
+            <div class="aspect-[16/9] overflow-hidden bg-cover bg-center lg:aspect-[2/1]" :style="featuredNews.image_url ? { backgroundImage: `url(${featuredNews.image_url})` } : {}" :class="!featuredNews.image_url && 'bg-gradient-to-br from-red-950/30 to-surface'">
               <div class="flex h-full flex-col justify-end bg-gradient-to-t from-surface via-surface/30 to-transparent p-8 transition-all duration-500 group-hover:via-surface/50">
-                <span class="mb-3 w-fit bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest">Update</span>
-                <h3 class="font-display text-2xl font-bold uppercase tracking-tight lg:text-3xl">Season 2: The rise of Tiamat</h3>
-                <p class="mt-2 max-w-md text-[13px] text-white/40">Tiamat stronghold, reforged armor, rebalanced Abyss rewards.</p>
-                <time class="mt-4 text-[11px] text-white/20">01.04.2026</time>
+                <span class="mb-3 w-fit bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest">{{ featuredNews.tag }}</span>
+                <h3 class="font-display text-2xl font-bold uppercase tracking-tight lg:text-3xl">{{ featuredNews.title }}</h3>
+                <p class="mt-2 max-w-md text-[13px] text-white/40">{{ featuredNews.excerpt }}</p>
+                <time class="mt-4 text-[11px] text-white/20">{{ formatDate(featuredNews.published_at) }}</time>
               </div>
             </div>
-          </article>
+          </NuxtLink>
 
           <!-- Side stack — 4 cols -->
           <div class="flex flex-col gap-4 lg:col-span-4">
-            <article v-for="item in sideNews" :key="item.title"
+            <NuxtLink v-for="item in sideNews" :key="item.id" :to="`/news/${item.slug}`"
               class="group flex-1 overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-colors hover:border-white/[0.08]">
-              <div v-if="item.image" class="h-28 bg-cover bg-center" :style="{ backgroundImage: `url(${item.image})` }">
+              <div v-if="item.image_url" class="h-28 bg-cover bg-center" :style="{ backgroundImage: `url(${item.image_url})` }">
                 <div class="h-full bg-gradient-to-t from-surface to-transparent" />
               </div>
-              <div class="p-5" :class="!item.image && 'pt-5'">
+              <div class="p-5" :class="!item.image_url && 'pt-5'">
                 <span class="text-[10px] font-bold uppercase tracking-widest text-red-500/50">{{ item.tag }}</span>
                 <h3 class="mt-1 font-display text-[15px] font-bold leading-snug uppercase tracking-tight transition-colors group-hover:text-red-400">{{ item.title }}</h3>
                 <p class="mt-1 text-[12px] text-white/25 line-clamp-2">{{ item.excerpt }}</p>
-                <time class="mt-2 block text-[11px] text-white/15">{{ item.date }}</time>
+                <time class="mt-2 block text-[11px] text-white/15">{{ formatDate(item.published_at) }}</time>
               </div>
-            </article>
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -575,11 +575,11 @@ const allFeatures = [
   { titleKey: 'feat.team.title', descKey: 'feat.team.desc' },
 ]
 
-const sideNews = [
-  { tag: 'Event', date: '28.03.2026', title: 'Double AP weekend', excerpt: 'Double Abyss Points this weekend. Push your rank.', image: '/img/news/abyss.jpg' },
-  { tag: 'Patch', date: '20.03.2026', title: 'Hotfix v3.9.7', excerpt: 'Dredgion timers, Cleric coefficients corrected.', image: null },
-  { tag: 'Guide', date: '15.03.2026', title: 'Asmodian leveling 1-55', excerpt: 'Optimal path for current patch rates.', image: '/img/news/runa.png' },
-]
+const { $api } = useApi()
+const { full: formatDate } = useDate()
+const { data: newsData } = useAsyncData('home-news', () => $api<{ data: Array<{ id: number; slug: string; tag: string; title: string; excerpt: string; image_url: string | null; published_at: string }> }>('/news?per_page=4'))
+const featuredNews = computed(() => newsData.value?.data?.[0] ?? null)
+const sideNews = computed(() => (newsData.value?.data ?? []).slice(1, 4))
 
 const rankingTabs = [
   { key: 'pvp', labelKey: 'tab.pvp' },
