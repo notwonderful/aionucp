@@ -444,7 +444,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-const { lang, t, setLang } = useLang()
+const { locale, t } = useI18n()
 const activeTab = ref('pvp')
 const openFaq = ref(-1)
 
@@ -475,7 +475,7 @@ const serverStats = [
 ]
 
 const steps = [
-  { titleKey: 'steps.1.title', descKey: 'steps.1.desc', link: '/register', linkLabel: lang.value === 'ru' ? 'Регистрация' : 'Register' },
+  { titleKey: 'steps.1.title', descKey: 'steps.1.desc', link: '/register', linkLabel: locale.value === 'ru' ? 'Регистрация' : 'Register' },
   { titleKey: 'steps.2.title', descKey: 'steps.2.desc', link: null, linkLabel: 'Download' },
   { titleKey: 'steps.3.title', descKey: 'steps.3.desc', link: null, linkLabel: null },
 ]

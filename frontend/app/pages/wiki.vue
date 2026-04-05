@@ -304,7 +304,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-const { lang, t, setLang } = useLang()
+const { t } = useI18n()
 const activeCat = ref('rates')
 
 const categories = [

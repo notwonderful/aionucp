@@ -41,8 +41,8 @@
         <div class="hidden items-center gap-1 sm:flex">
           <button v-for="l in (['en','ru'] as const)" :key="l"
             :class="['rounded px-2 py-1 text-[10px] font-bold uppercase transition-all duration-300',
-              lang===l ? 'bg-white/[0.08] text-white' : 'text-white/20 hover:text-white/50']"
-            @click="setLang(l)">{{ l }}</button>
+              locale===l ? 'bg-white/[0.08] text-white' : 'text-white/20 hover:text-white/50']"
+            @click="setLocale(l)">{{ l }}</button>
         </div>
         <div class="hidden h-5 w-px bg-white/[0.08] sm:block" />
         <template v-if="isAuthenticated">
@@ -81,15 +81,15 @@
       <div class="mt-4 flex items-center gap-2 border-t border-white/[0.04] pt-4">
         <button v-for="l in (['en','ru'] as const)" :key="l"
           :class="['rounded px-3 py-1.5 text-[11px] font-bold uppercase',
-            lang===l ? 'bg-white/[0.08] text-white' : 'text-white/25']"
-          @click="setLang(l)">{{ l }}</button>
+            locale===l ? 'bg-white/[0.08] text-white' : 'text-white/25']"
+          @click="setLocale(l)">{{ l }}</button>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-const { lang, t, setLang } = useLang()
+const { locale, t, setLocale } = useI18n()
 const route = useRoute()
 const { isAuthenticated } = useAuth()
 

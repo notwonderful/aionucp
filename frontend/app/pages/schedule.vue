@@ -117,7 +117,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-const { lang, t, setLang } = useLang()
+const { t } = useI18n()
 const activeTab = ref('sieges')
 
 const tabs = [
