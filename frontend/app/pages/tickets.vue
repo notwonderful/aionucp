@@ -263,7 +263,7 @@ let echoChannel: any = null
 function subscribeToTicket(id: string) {
   const { $echo } = useNuxtApp()
   if (!$echo) return
-  echoChannel = $echo.private(`tickets.${id}`)
+  echoChannel = $echo().private(`tickets.${id}`)
     .listen('.message.sent', (e: { message: TicketMsg }) => {
       const exists = messages.value.some(m => m.id === e.message.id)
       if (!exists) {
@@ -280,7 +280,7 @@ function subscribeToTicket(id: string) {
 
 function unsubscribeFromTicket(id: string) {
   const { $echo } = useNuxtApp()
-  $echo?.leave(`tickets.${id}`)
+  $echo().leave(`tickets.${id}`)
   echoChannel = null
 }
 

@@ -182,7 +182,7 @@ onMounted(() => {
   const { $echo } = useNuxtApp()
   if (!$echo || !user.value) return
 
-  $echo.private(`App.Models.User.${user.value.id}`)
+  $echo().private(`App.Models.User.${user.value.id}`)
     .notification((n: Notification) => {
       if (!n.created_at) n.created_at = new Date().toISOString()
       if (!n.data && n.type) n.data = n as any
@@ -194,7 +194,7 @@ onMounted(() => {
 onUnmounted(() => {
   const { $echo } = useNuxtApp()
   if ($echo && user.value) {
-    $echo.leave(`App.Models.User.${user.value.id}`)
+    $echo().leave(`App.Models.User.${user.value.id}`)
   }
 })
 

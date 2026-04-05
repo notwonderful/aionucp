@@ -2,28 +2,36 @@ import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 
 export default defineNuxtPlugin(() => {
-  const config = useRuntimeConfig()
+  let echo: Echo | null = null
 
-  window.Pusher = Pusher
+  function getEcho(): Echo {
+    if (echo) return echo
 
-  const echo = new Echo({
-    broadcaster: 'reverb',
-    key: config.public.reverbKey,
-    wsHost: config.public.reverbHost,
-    wsPort: Number(config.public.reverbPort),
-    wssPort: Number(config.public.reverbPort),
-    forceTLS: false,
-    enabledTransports: ['ws', 'wss'],
-    authEndpoint: '/broadcasting/auth',
-    auth: {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-XSRF-TOKEN': getXsrfToken(),
+    window.Pusher = Pusher
+
+    const config = useRuntimeConfig()
+
+    echo = new Echo({
+      broadcaster: 'reverb',
+      key: config.public.reverbKey,
+      wsHost: config.public.reverbHost,
+      wsPort: Number(config.public.reverbPort),
+      wssPort: Number(config.public.reverbPort),
+      forceTLS: false,
+      enabledTransports: ['ws', 'wss'],
+      authEndpoint: '/broadcasting/auth',
+      auth: {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-XSRF-TOKEN': getXsrfToken(),
+        },
       },
-    },
-  })
+    })
 
-  return { provide: { echo } }
+    return echo
+  }
+
+  return { provide: { echo: getEcho } }
 })
 
 function getXsrfToken(): string {
