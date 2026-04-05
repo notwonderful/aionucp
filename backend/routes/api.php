@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\ServerController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -76,6 +78,8 @@ Route::prefix('news')->group(function () {
     Route::get('/', [ArticleController::class, 'index']);
     Route::get('{slug}', [ArticleController::class, 'show']);
 });
+
+Route::get('faq', [FaqController::class, 'index']);
 
 Route::prefix('rating')->group(function () {
     Route::get('abyss', [RatingController::class, 'abyss']);
@@ -173,6 +177,9 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
     Route::apiResource('news', AdminArticleController::class)
         ->parameters(['news' => 'article'])
         ->middleware('permission:'.Permission::NEWS_VIEW->value);
+
+    Route::apiResource('faq', AdminFaqController::class)
+        ->middleware('permission:'.Permission::FAQ_VIEW->value);
 
     Route::prefix('tickets')->middleware('permission:'.Permission::TICKETS_VIEW->value)->group(function () {
         Route::get('/', [AdminTicketController::class, 'index']);

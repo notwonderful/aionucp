@@ -44,6 +44,9 @@ final class RoleSeeder extends Seeder
             Permission::NEWS_VIEW->value,
             Permission::NEWS_CREATE->value,
             Permission::NEWS_EDIT->value,
+            Permission::FAQ_VIEW->value,
+            Permission::FAQ_CREATE->value,
+            Permission::FAQ_EDIT->value,
         ]);
 
         // Member — no admin permissions

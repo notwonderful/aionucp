@@ -401,11 +401,11 @@
         <h2 v-reveal class="mb-12 text-center font-display text-3xl font-extrabold uppercase tracking-tighter lg:text-4xl">{{ t('faq.title') }}</h2>
 
         <div class="space-y-1">
-          <div v-for="(faq, i) in faqs" :key="i" class="border-b border-white/[0.04]">
+          <div v-for="(faq, i) in faqList" :key="faq.id" class="border-b border-white/[0.04]">
             <button
               class="flex w-full items-center justify-between py-5 text-left transition-colors hover:text-white"
               @click="openFaq === i ? openFaq = -1 : openFaq = i">
-              <span class="pr-4 font-display text-[15px] font-bold uppercase tracking-wider">{{ t(faq.qKey) }}</span>
+              <span class="pr-4 font-display text-[15px] font-bold uppercase tracking-wider">{{ faq.question }}</span>
               <svg :class="['h-4 w-4 shrink-0 text-white/20 transition-transform duration-300',
                 openFaq === i ? 'rotate-45' : '']"
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -414,7 +414,7 @@
             </button>
             <div :class="['overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
               openFaq === i ? 'max-h-40 pb-5 opacity-100' : 'max-h-0 opacity-0']">
-              <p class="text-[14px] leading-relaxed text-white/30">{{ t(faq.aKey) }}</p>
+              <p class="text-[14px] leading-relaxed text-white/30">{{ faq.answer }}</p>
             </div>
           </div>
         </div>
@@ -628,11 +628,6 @@ const sysReqs = [
   { label: 'GPU', valueKey: 'download.gpu' },
 ]
 
-const faqs = [
-  { qKey: 'faq.q1', aKey: 'faq.a1' },
-  { qKey: 'faq.q2', aKey: 'faq.a2' },
-  { qKey: 'faq.q3', aKey: 'faq.a3' },
-  { qKey: 'faq.q4', aKey: 'faq.a4' },
-  { qKey: 'faq.q5', aKey: 'faq.a5' },
-]
+const { data: faqData } = useAsyncData('home-faq', () => $api<{ data: Array<{ id: number; question: string; answer: string }> }>('/faq'))
+const faqList = computed(() => faqData.value?.data ?? [])
 </script>
