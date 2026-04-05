@@ -84,7 +84,7 @@
           <tbody>
             <tr v-for="(entry, i) in abyssData" :key="i" class="border-b border-white/[0.03] transition-colors hover:bg-white/[0.015]">
               <td class="py-4 pr-4">
-                <span :class="['font-display text-lg font-extrabold tabular-nums', i < 3 ? 'text-red-500' : 'text-white/15']">{{ String(i + 1).padStart(2, '0') }}</span>
+                <span :class="['font-display text-lg font-extrabold tabular-nums', i < 3 && abyssPage === 1 ? 'text-red-500' : 'text-white/15']">{{ String(((abyssPage - 1) * 15) + i + 1).padStart(2, '0') }}</span>
               </td>
               <td class="py-4 pr-4 text-[14px] font-medium">{{ entry.player?.name }}</td>
               <td class="hidden py-4 pr-4 text-[13px] text-white/30 lg:table-cell">{{ entry.rank_name }}</td>
@@ -96,6 +96,13 @@
           </tbody>
         </table>
         <p v-if="!abyssLoading && abyssData.length === 0" class="py-12 text-center text-[14px] text-white/20">No abyss ranking data yet.</p>
+        <div v-if="abyssMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
+          <button v-for="p in abyssMeta.last_page" :key="p" @click="abyssPage = p"
+            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
+              abyssPage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
+            {{ p }}
+          </button>
+        </div>
       </div>
 
       <!-- LEGIONS -->
@@ -114,7 +121,7 @@
           <tbody>
             <tr v-for="(leg, i) in legionData" :key="i" class="border-b border-white/[0.03] transition-colors hover:bg-white/[0.015]">
               <td class="py-4 pr-4">
-                <span :class="['font-display text-lg font-extrabold tabular-nums', i < 3 ? 'text-red-500' : 'text-white/15']">{{ String(i + 1).padStart(2, '0') }}</span>
+                <span :class="['font-display text-lg font-extrabold tabular-nums', i < 3 && legionPage === 1 ? 'text-red-500' : 'text-white/15']">{{ String(((legionPage - 1) * 15) + i + 1).padStart(2, '0') }}</span>
               </td>
               <td class="py-4 pr-4 text-[14px] font-medium">{{ leg.name }}</td>
               <td class="py-4 text-right font-display text-[14px] font-bold tabular-nums text-red-400/70">{{ leg.level }}</td>
@@ -122,6 +129,13 @@
           </tbody>
         </table>
         <p v-if="!legionLoading && legionData.length === 0" class="py-12 text-center text-[14px] text-white/20">No legion data yet.</p>
+        <div v-if="legionMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
+          <button v-for="p in legionMeta.last_page" :key="p" @click="legionPage = p"
+            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
+              legionPage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
+            {{ p }}
+          </button>
+        </div>
       </div>
 
       <!-- STATISTICS -->
@@ -220,10 +234,44 @@ watch(onlinePage, () => fetchOnline())
 // Abyss data
 const abyssData = ref<any[]>([])
 const abyssLoading = ref(true)
+const abyssPage = ref(1)
+const abyssMeta = ref({ last_page: 1 })
+
+async function fetchAbyss() {
+  abyssLoading.value = true
+  try {
+    const res = await $api<{ data: any[]; meta: any }>(`/rating/abyss?page=${abyssPage.value}`)
+    abyssData.value = res.data
+    abyssMeta.value = res.meta ?? { last_page: 1 }
+  } catch (e) {
+    console.error('Failed to load abyss rankings:', e)
+  } finally {
+    abyssLoading.value = false
+  }
+}
+
+watch(abyssPage, () => fetchAbyss())
 
 // Legion data
 const legionData = ref<any[]>([])
 const legionLoading = ref(true)
+const legionPage = ref(1)
+const legionMeta = ref({ last_page: 1 })
+
+async function fetchLegion() {
+  legionLoading.value = true
+  try {
+    const res = await $api<{ data: any[]; meta: any }>(`/rating/legion?page=${legionPage.value}`)
+    legionData.value = res.data
+    legionMeta.value = res.meta ?? { last_page: 1 }
+  } catch (e) {
+    console.error('Failed to load legion rankings:', e)
+  } finally {
+    legionLoading.value = false
+  }
+}
+
+watch(legionPage, () => fetchLegion())
 
 // Stats
 const stats = reactive({ online: 0, total_characters: 0, races: {} as Record<string, number>, classes: {} as Record<string, number> })
@@ -302,22 +350,17 @@ const hourlyChartSeries = computed(() => {
 // Fetch data
 onMounted(async () => {
   try {
-    const [, abyss, legion, statsRes, historyRes] = await Promise.all([
+    const [,, , statsRes, historyRes] = await Promise.all([
       fetchOnline(),
-      $api<{ data: any[] }>('/rating/abyss'),
-      $api<{ data: any[] }>('/rating/legion'),
+      fetchAbyss(),
+      fetchLegion(),
       $api<{ data: any }>('/rating/stats'),
       $api<{ data: any }>('/rating/online-history'),
     ])
-    abyssData.value = abyss.data
-    legionData.value = legion.data
     Object.assign(stats, statsRes.data)
     Object.assign(onlineHistory, historyRes.data)
   } catch (e) {
     console.error('Failed to load rankings:', e)
-  } finally {
-    abyssLoading.value = false
-    legionLoading.value = false
   }
 })
 </script>
