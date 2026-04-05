@@ -7,17 +7,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FaqResource;
 use App\Models\Faq;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 final class FaqController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        $faqs = Faq::published()
-            ->orderBy('sort_order')
-            ->orderBy('id')
-            ->get();
+        $data = Cache::flexible('faq:public', [300, 900], function () {
+            return FaqResource::collection(
+                Faq::published()
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->get()
+            )->resolve();
+        });
 
-        return FaqResource::collection($faqs);
+        return response()->json(['data' => $data]);
     }
 }

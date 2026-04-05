@@ -15,7 +15,7 @@ final class WikiController extends Controller
 {
     public function index(): JsonResponse
     {
-        $data = Cache::rememberForever('wiki:public', function () {
+        $data = Cache::flexible('wiki:public', [300, 900], function () {
             $categories = WikiCategory::published()
                 ->orderBy('sort_order')
                 ->with(['entries' => fn ($q) => $q->published()->orderBy('sort_order')->orderBy('id')])

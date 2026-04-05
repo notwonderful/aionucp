@@ -14,7 +14,7 @@ final class ScheduleController extends Controller
 {
     public function index(): JsonResponse
     {
-        $data = Cache::rememberForever('schedule:public', function () {
+        $data = Cache::flexible('schedule:public', [300, 900], function () {
             $entries = ScheduleEntry::published()
                 ->orderBy('sort_order')
                 ->orderBy('id')

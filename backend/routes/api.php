@@ -83,6 +83,7 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('news')->group(function () {
     Route::get('/', [ArticleController::class, 'index']);
+    Route::get('featured', [ArticleController::class, 'featured']);
     Route::get('{slug}', [ArticleController::class, 'show']);
 });
 
@@ -90,6 +91,7 @@ Route::get('faq', [FaqController::class, 'index']);
 Route::get('schedule', [ScheduleController::class, 'index']);
 Route::get('wiki', [WikiController::class, 'index']);
 Route::get('settings/download', [SettingsController::class, 'download']);
+Route::get('settings/announcement', [SettingsController::class, 'announcement']);
 
 Route::prefix('rating')->group(function () {
     Route::get('online', [RatingController::class, 'online']);
@@ -204,6 +206,9 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
     Route::prefix('settings')->middleware('permission:'.Permission::SETTINGS_VIEW->value)->group(function () {
         Route::get('download', [AdminSettingsController::class, 'downloadShow']);
         Route::put('download', [AdminSettingsController::class, 'downloadUpdate'])
+            ->middleware('permission:'.Permission::SETTINGS_EDIT->value);
+        Route::get('announcement', [AdminSettingsController::class, 'announcementShow']);
+        Route::put('announcement', [AdminSettingsController::class, 'announcementUpdate'])
             ->middleware('permission:'.Permission::SETTINGS_EDIT->value);
     });
 
