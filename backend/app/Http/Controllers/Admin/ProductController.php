@@ -8,12 +8,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ImageUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class ProductController extends Controller
 {
+    public function __construct(
+        private readonly ImageUploadService $imageService,
+    ) {}
+
     public function index(): AnonymousResourceCollection
     {
         $products = QueryBuilder::for(Product::class)
@@ -31,7 +36,7 @@ final class ProductController extends Controller
         $validatedData = $request->validated();
 
         if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')?->store('images/products', 'public');
+            $validatedData['image'] = $this->imageService->upload($request->file('image'), 'images/products');
         }
 
         $product = Product::create($validatedData);
@@ -49,7 +54,13 @@ final class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product): JsonResponse
     {
-        $product->update($request->validated());
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $validatedData['image'] = $this->imageService->upload($request->file('image'), 'images/products');
+        }
+
+        $product->update($validatedData);
 
         return response()->json([
             'data' => new ProductResource($product),

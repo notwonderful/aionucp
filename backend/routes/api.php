@@ -156,7 +156,7 @@ Route::middleware('auth:sanctum')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())])->prefix('admin')->group(function () {
+Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/', AdminController::class);
 
     Route::apiResource('users', AdminUserController::class)

@@ -26,6 +26,7 @@ final class ProductResource extends JsonResource
             'item_qty' => $this->item_qty,
             'image_url' => $this->image_url,
             'sales_count' => $this->sales_count,
+            'category_id' => $this->category_id,
             'category' => new ProductCategoryResource($this->whenLoaded('category')),
             'translations' => $this->when(
                 $request->routeIs('admin.*'),

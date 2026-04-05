@@ -17,8 +17,8 @@ final class UploadController extends Controller
             'image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
         ]);
 
-        $url = $imageUpload->upload($request->file('image'));
+        $path = $imageUpload->upload($request->file('image'));
 
-        return response()->json(['url' => $url]);
+        return response()->json(['url' => asset('storage/'.$path)]);
     }
 }

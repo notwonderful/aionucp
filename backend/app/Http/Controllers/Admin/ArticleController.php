@@ -8,12 +8,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use App\Services\ImageUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 
 final class ArticleController extends Controller
 {
+    public function __construct(
+        private readonly ImageUploadService $imageService,
+    ) {}
     public function index(): AnonymousResourceCollection
     {
         $articles = QueryBuilder::for(Article::class)
@@ -30,7 +34,7 @@ final class ArticleController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')?->store('images/news', 'public');
+            $data['image'] = $this->imageService->upload($request->file('image'), 'images/news');
         }
 
         $article = Article::create($data);
@@ -51,7 +55,7 @@ final class ArticleController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')?->store('images/news', 'public');
+            $data['image'] = $this->imageService->upload($request->file('image'), 'images/news');
         }
 
         $article->update($data);

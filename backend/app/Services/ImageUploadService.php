@@ -7,7 +7,6 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
 final class ImageUploadService
@@ -19,18 +18,12 @@ final class ImageUploadService
         "\x52\x49\x46\x46"    => 'image/webp',
     ];
 
-    private ImageManager $manager;
-
-    public function __construct()
-    {
-        $this->manager = new ImageManager(new Driver());
-    }
-
     public function upload(UploadedFile $file, string $directory = 'uploads/images', int $maxWidth = 1920, int $quality = 85): string
     {
         $this->validateMagicBytes($file);
 
-        $image = $this->manager->read($file->getPathname());
+        $manager = ImageManager::usingDriver(\Intervention\Image\Drivers\Gd\Driver::class);
+        $image = $manager->decode($file->getPathname());
 
         $image->scaleDown($maxWidth, $maxWidth);
 
@@ -44,9 +37,9 @@ final class ImageUploadService
             mkdir($dir, 0755, true);
         }
 
-        $image->toWebp($quality)->save($fullPath);
+        $image->save($fullPath, quality: $quality);
 
-        return asset('storage/'.$path);
+        return $path;
     }
 
     private function validateMagicBytes(UploadedFile $file): void
