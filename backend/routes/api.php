@@ -66,10 +66,11 @@ Route::prefix('auth')->group(function () {
         Route::put('password', [PasswordController::class, 'update']);
 
         Route::post('email/verify/resend', [EmailVerificationController::class, 'resend'])
-            ->middleware('throttle:2,15');
+            ->middleware('throttle:10,15');
 
         Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
-            ->middleware(['signed', 'throttle:6,1']);
+            ->middleware(['signed', 'throttle:6,1'])
+            ->name('verification.verify');
     });
 
 });
@@ -103,7 +104,7 @@ Route::prefix('rating')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index']);

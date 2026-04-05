@@ -671,5 +671,20 @@
     "ri3": "Change email and password in your dashboard",
     "contactTitle": "Contact",
     "contactText": "For privacy inquiries, contact us via Discord or administration email."
+  },
+  "verify": {
+    "title": "Verify your email",
+    "desc": "We sent a verification link to your email address. Please check your inbox and click the link to verify.",
+    "resend": "Resend verification email",
+    "sending": "Sending...",
+    "sent": "A new verification link has been sent to your email.",
+    "failed": "Failed to send verification email. Please try again.",
+    "tooMany": "Too many requests. Please wait a few minutes before trying again.",
+    "logout": "Log out",
+    "verifying": "Verifying your email...",
+    "verified": "Your email has been verified successfully!",
+    "failedVerify": "Verification failed. The link may be expired or invalid.",
+    "invalidLink": "Invalid verification link.",
+    "goToDashboard": "Go to dashboard"
   }
 }

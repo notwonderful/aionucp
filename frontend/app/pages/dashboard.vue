@@ -171,7 +171,7 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'verified'] })
 
 interface Player { id: number; name: string; race: string; player_class: string; online: boolean }
 interface AccountData { id: number; name: string; toll: number; membership: number; membership_expire: string | null; players: Player[] }
