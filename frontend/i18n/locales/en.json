@@ -120,9 +120,12 @@
     "amountLabel": "Amount",
     "paymentMethod": "Payment method",
     "youReceive": "You receive",
+    "youPay": "You pay",
     "finalAmountWarning": "Final amount may vary depending on the payment provider",
     "proceedToPayment": "Proceed to payment",
     "termsNotice": "By proceeding you agree to our terms of service",
+    "termsPrefix": "By proceeding you agree to our",
+    "termsLink": "terms of service",
     "processing": "Processing...",
     "methods": {
       "card": {
@@ -153,7 +156,12 @@
         "name": "SkinPay",
         "desc": "Pay with CS2 / Dota 2 skins"
       }
-    }
+    },
+    "unavailable": "Donations are currently unavailable. Please try again later.",
+    "min": "min",
+    "minAmountError": "Minimum payment is {amount}{symbol}",
+    "maxAmountError": "Maximum payment is {amount}{symbol}",
+    "paymentError": "Payment is not available at the moment. Please try again later."
   },
   "tickets": {
     "title": "Support Tickets",
@@ -437,6 +445,17 @@
     "itemSendFailed": "Failed to send item.",
     "admin": "Admin",
     "date": "Date",
+    "paymentSettings": "Payment & Donations",
+    "paymentSettingsDesc": "Manage exchange rates, gateway limits, and donation availability",
+    "paymentGeneral": "Exchange Rates",
+    "donationsEnabled": "Enable donations",
+    "rateRub": "Rate RUB",
+    "rateUsd": "Rate USD",
+    "rateEur": "Rate EUR",
+    "gatewayLimits": "Gateway Limits",
+    "minAmount": "Min amount",
+    "maxAmount": "Max amount",
+    "enabled": "Enabled",
     "announcementSettings": "Announcement Bar",
     "announceEnabled": "Show announcement bar",
     "announceText": "Announcement text",

@@ -14,10 +14,8 @@ final class DownloadSettings extends Settings
 
     public string $discord_url;
 
-    /** @var array */
     public array $min_requirements;
 
-    /** @var array */
     public array $rec_requirements;
 
     public static function group(): string

@@ -120,9 +120,12 @@
     "amountLabel": "Сумма",
     "paymentMethod": "Способ оплаты",
     "youReceive": "Ты получишь",
+    "youPay": "К оплате",
     "finalAmountWarning": "Итоговая сумма может отличаться в зависимости от платёжной системы",
     "proceedToPayment": "Перейти к оплате",
     "termsNotice": "Продолжая, ты соглашаешься с условиями использования",
+    "termsPrefix": "Продолжая, ты соглашаешься с",
+    "termsLink": "условиями использования",
     "processing": "Обработка...",
     "methods": {
       "card": {
@@ -153,7 +156,12 @@
         "name": "SkinPay",
         "desc": "Оплата скинами CS2 / Dota 2"
       }
-    }
+    },
+    "unavailable": "Пополнение временно недоступно. Попробуйте позже.",
+    "min": "мин",
+    "minAmountError": "Минимальный платёж — {amount}{symbol}",
+    "maxAmountError": "Максимальный платёж — {amount}{symbol}",
+    "paymentError": "Оплата сейчас недоступна. Попробуйте позже."
   },
   "tickets": {
     "title": "Тикеты",
@@ -437,6 +445,17 @@
     "itemSendFailed": "Не удалось отправить предмет.",
     "admin": "Админ",
     "date": "Дата",
+    "paymentSettings": "Платежи и донаты",
+    "paymentSettingsDesc": "Курсы валют, лимиты платёжек и доступность донатов",
+    "paymentGeneral": "Курсы валют",
+    "donationsEnabled": "Включить донаты",
+    "rateRub": "Курс RUB",
+    "rateUsd": "Курс USD",
+    "rateEur": "Курс EUR",
+    "gatewayLimits": "Лимиты платёжек",
+    "minAmount": "Мин. сумма",
+    "maxAmount": "Макс. сумма",
+    "enabled": "Включено",
     "announcementSettings": "Панель объявлений",
     "announceEnabled": "Показывать панель объявлений",
     "announceText": "Текст объявления",

@@ -20,7 +20,8 @@
         "spatie/laravel-settings": "^3.7",
         "spatie/laravel-sluggable": "^3.8",
         "spatie/laravel-translatable": "^6.13",
-        "stevebauman/purify": "^6.3"
+        "stevebauman/purify": "^6.3",
+        "stripe/stripe-php": "^20.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",

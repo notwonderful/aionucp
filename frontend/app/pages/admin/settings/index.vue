@@ -71,11 +71,15 @@
 
       <form @submit.prevent="handleAnnounceSubmit" class="space-y-6">
         <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
-          <label class="flex cursor-pointer items-center gap-3">
-            <input v-model="announceForm.enabled" type="checkbox"
-              class="h-4 w-4 rounded border-white/10 bg-white/[0.03] text-red-600 focus:ring-red-500/20" />
+          <div class="flex items-center gap-3">
+            <button type="button" @click="announceForm.enabled = !announceForm.enabled"
+              :class="['relative h-6 w-11 rounded-full transition-colors duration-300',
+                announceForm.enabled ? 'bg-emerald-500' : 'bg-white/10']">
+              <span :class="['absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform duration-300',
+                announceForm.enabled && 'translate-x-5']" />
+            </button>
             <span class="text-[13px] text-white/50">{{ $t('admin.announceEnabled') }}</span>
-          </label>
+          </div>
 
           <div>
             <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.announceText') }}</label>

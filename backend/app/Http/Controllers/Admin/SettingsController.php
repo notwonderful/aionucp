@@ -7,6 +7,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Settings\AnnouncementSettings;
 use App\Settings\DownloadSettings;
+use App\Settings\GatewaySettings;
+use App\Settings\PaymentSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -82,6 +84,67 @@ final class SettingsController extends Controller
         return response()->json([
             'data' => $validated,
             'message' => __('Announcement settings updated successfully!'),
+        ]);
+    }
+
+    public function paymentShow(PaymentSettings $settings): JsonResponse
+    {
+        return response()->json([
+            'data' => [
+                'enabled' => $settings->enabled,
+                'rate_rub' => $settings->rate_rub,
+                'rate_usd' => $settings->rate_usd,
+                'rate_eur' => $settings->rate_eur,
+            ],
+        ]);
+    }
+
+    public function paymentUpdate(Request $request, PaymentSettings $settings): JsonResponse
+    {
+        $validated = $request->validate([
+            'enabled' => ['required', 'boolean'],
+            'rate_rub' => ['required', 'numeric', 'min:0'],
+            'rate_usd' => ['required', 'numeric', 'min:0'],
+            'rate_eur' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        $settings->enabled = $validated['enabled'];
+        $settings->rate_rub = (float) $validated['rate_rub'];
+        $settings->rate_usd = (float) $validated['rate_usd'];
+        $settings->rate_eur = (float) $validated['rate_eur'];
+        $settings->save();
+
+        return response()->json([
+            'data' => $validated,
+            'message' => __('Payment settings updated successfully!'),
+        ]);
+    }
+
+    public function gatewayShow(GatewaySettings $settings): JsonResponse
+    {
+        return response()->json([
+            'data' => [
+                'limits' => $settings->limits,
+            ],
+        ]);
+    }
+
+    public function gatewayUpdate(Request $request, GatewaySettings $settings): JsonResponse
+    {
+        $validated = $request->validate([
+            'limits' => ['required', 'array'],
+            'limits.*.min_amount' => ['required', 'numeric', 'min:0'],
+            'limits.*.max_amount' => ['required', 'numeric', 'min:0'],
+            'limits.*.currency' => ['required', 'string', 'max:3'],
+            'limits.*.enabled' => ['required', 'boolean'],
+        ]);
+
+        $settings->limits = $validated['limits'];
+        $settings->save();
+
+        return response()->json([
+            'data' => $validated,
+            'message' => __('Gateway settings updated successfully!'),
         ]);
     }
 }

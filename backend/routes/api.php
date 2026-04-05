@@ -37,9 +37,12 @@ use App\Http\Controllers\Api\RatingController;
 use App\Http\Controllers\Api\ReferralController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\DonateController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\UploadController;
+use App\Http\Controllers\Api\WebhookController;
+use App\Http\Controllers\Admin\DonationController as AdminDonationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -161,12 +164,28 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('uploads/image', [UploadController::class, 'image'])
         ->middleware('throttle:10,1');
 
+    // Donations
+    Route::prefix('donate')->middleware('throttle:10,1')->group(function () {
+        Route::get('/', [DonateController::class, 'methods']);
+        Route::post('/', [DonateController::class, 'store']);
+        Route::get('history', [DonateController::class, 'history']);
+    });
+
     // Notifications
     Route::get('notifications', [NotificationController::class, 'index']);
     Route::post('notifications/read', [NotificationController::class, 'markAsRead']);
     Route::post('notifications/{id}/read', [NotificationController::class, 'markOneAsRead']);
 
 });
+
+/*
+|--------------------------------------------------------------------------
+| Webhook Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::post('webhooks/{gateway}', [WebhookController::class, 'handle'])
+    ->middleware('throttle:60,1');
 
 /*
 |--------------------------------------------------------------------------
@@ -225,6 +244,18 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
         Route::put('announcement', [AdminSettingsController::class, 'announcementUpdate'])
             ->middleware('permission:'.Permission::SETTINGS_EDIT->value);
     });
+
+    Route::prefix('settings/payments')->middleware('permission:'.Permission::PAYMENTS_VIEW->value)->group(function () {
+        Route::get('rates', [AdminSettingsController::class, 'paymentShow']);
+        Route::put('rates', [AdminSettingsController::class, 'paymentUpdate'])
+            ->middleware('permission:'.Permission::PAYMENTS_EDIT->value);
+        Route::get('gateways', [AdminSettingsController::class, 'gatewayShow']);
+        Route::put('gateways', [AdminSettingsController::class, 'gatewayUpdate'])
+            ->middleware('permission:'.Permission::PAYMENTS_EDIT->value);
+    });
+
+    Route::get('donations', [AdminDonationController::class, 'index'])
+        ->middleware('permission:'.Permission::DONATIONS_VIEW->value);
 
     Route::prefix('tickets')->middleware('permission:'.Permission::TICKETS_VIEW->value)->group(function () {
         Route::get('/', [AdminTicketController::class, 'index']);

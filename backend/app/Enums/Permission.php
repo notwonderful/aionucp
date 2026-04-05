@@ -61,6 +61,13 @@ enum Permission: string
     case SETTINGS_VIEW = 'settings.view';
     case SETTINGS_EDIT = 'settings.edit';
 
+    // Payments
+    case PAYMENTS_VIEW = 'payments.view';
+    case PAYMENTS_EDIT = 'payments.edit';
+
+    // Donations
+    case DONATIONS_VIEW = 'donations.view';
+
     // Bulk Email
     case BULK_EMAIL_SEND = 'bulk-email.send';
 
@@ -102,6 +109,9 @@ enum Permission: string
             self::FAQ_EDIT => __('Edit FAQ'),
             self::FAQ_DELETE => __('Delete FAQ'),
             self::MAIL_ITEMS_SEND => __('Send Mail Items'),
+            self::PAYMENTS_VIEW => __('View Payment Settings'),
+            self::PAYMENTS_EDIT => __('Edit Payment Settings'),
+            self::DONATIONS_VIEW => __('View Donations'),
             self::BULK_EMAIL_SEND => __('Send Bulk Email'),
         };
     }
