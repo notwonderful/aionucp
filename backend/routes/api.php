@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\PasswordController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\Auth\TwoFactorController;
 use App\Http\Controllers\Api\Auth\UserController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\MembershipController;
@@ -59,6 +60,10 @@ Route::prefix('auth')->group(function () {
         Route::post('reset-password', [ResetPasswordController::class, 'store'])
             ->middleware('throttle:5,15');
     });
+
+    Route::post('verify-2fa', [LoginController::class, 'verifyTwoFactor'])
+        ->middleware('throttle:5,5')
+        ->name('2fa.verify');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('user', [UserController::class, 'show']);
@@ -108,6 +113,15 @@ Route::prefix('rating')->group(function () {
 */
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+
+    // Two-Factor Authentication
+    Route::prefix('2fa')->group(function () {
+        Route::get('status', [TwoFactorController::class, 'status']);
+        Route::post('setup', [TwoFactorController::class, 'setup'])->middleware('throttle:3,5');
+        Route::post('verify', [TwoFactorController::class, 'verify'])->middleware('throttle:5,5');
+        Route::delete('/', [TwoFactorController::class, 'disable'])->middleware('throttle:3,5');
+        Route::post('recovery-codes', [TwoFactorController::class, 'recoveryCodes'])->middleware('throttle:3,15');
+    });
 
     // Dashboard
     Route::get('dashboard', [DashboardController::class, 'index']);
