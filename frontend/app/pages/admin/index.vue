@@ -50,6 +50,17 @@
         </div>
       </NuxtLink>
 
+      <NuxtLink to="/admin/wiki"
+        class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10">
+          <svg class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+        </div>
+        <div>
+          <div class="text-[15px] font-semibold transition-colors group-hover:text-indigo-400">{{ $t('admin.wiki') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('admin.wikiDesc') }}</div>
+        </div>
+      </NuxtLink>
+
       <NuxtLink to="/admin/schedule"
         class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
         <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10">

@@ -14,6 +14,9 @@ use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\WikiCategoryController as AdminWikiCategoryController;
+use App\Http\Controllers\Admin\WikiEntryController as AdminWikiEntryController;
+use App\Http\Controllers\Api\WikiController;
 use App\Http\Controllers\Admin\ScheduleEntryController as AdminScheduleEntryController;
 use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
@@ -85,6 +88,7 @@ Route::prefix('news')->group(function () {
 
 Route::get('faq', [FaqController::class, 'index']);
 Route::get('schedule', [ScheduleController::class, 'index']);
+Route::get('wiki', [WikiController::class, 'index']);
 Route::get('settings/download', [SettingsController::class, 'download']);
 
 Route::prefix('rating')->group(function () {
@@ -186,6 +190,12 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
 
     Route::apiResource('faq', AdminFaqController::class)
         ->middleware('permission:'.Permission::FAQ_VIEW->value);
+
+    Route::apiResource('wiki-categories', AdminWikiCategoryController::class)
+        ->middleware('permission:'.Permission::WIKI_VIEW->value);
+
+    Route::apiResource('wiki', AdminWikiEntryController::class)
+        ->middleware('permission:'.Permission::WIKI_VIEW->value);
 
     Route::apiResource('schedule', AdminScheduleEntryController::class)
         ->middleware('permission:'.Permission::SCHEDULE_VIEW->value);

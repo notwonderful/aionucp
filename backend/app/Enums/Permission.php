@@ -51,6 +51,12 @@ enum Permission: string
     case FAQ_EDIT = 'faq.edit';
     case FAQ_DELETE = 'faq.delete';
 
+    // Wiki
+    case WIKI_VIEW = 'wiki.view';
+    case WIKI_CREATE = 'wiki.create';
+    case WIKI_EDIT = 'wiki.edit';
+    case WIKI_DELETE = 'wiki.delete';
+
     // Schedule
     case SCHEDULE_VIEW = 'schedule.view';
     case SCHEDULE_CREATE = 'schedule.create';
@@ -91,6 +97,10 @@ enum Permission: string
             self::NEWS_CREATE => __('Create News'),
             self::NEWS_EDIT => __('Edit News'),
             self::NEWS_DELETE => __('Delete News'),
+            self::WIKI_VIEW => __('View Wiki'),
+            self::WIKI_CREATE => __('Create Wiki'),
+            self::WIKI_EDIT => __('Edit Wiki'),
+            self::WIKI_DELETE => __('Delete Wiki'),
             self::SCHEDULE_VIEW => __('View Schedule'),
             self::SCHEDULE_CREATE => __('Create Schedule'),
             self::SCHEDULE_EDIT => __('Edit Schedule'),
