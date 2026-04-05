@@ -85,19 +85,21 @@ const emit = defineEmits<{
   saved: [id: number]
 }>()
 
-const { t } = useI18n()
+const { t, availableLocales } = useI18n()
 const { $api, fetchCsrfCookie } = useApi()
 const router = useRouter()
 
-const locales = ['en', 'ru']
-const activeLang = ref('en')
+const locales = availableLocales
+const activeLang = ref(locales[0])
 const saving = ref(false)
 const successMsg = ref('')
 const errorMsg = ref('')
 
+const emptyTranslations = () => Object.fromEntries(locales.map(l => [l, '']))
+
 const form = reactive({
-  question: { en: '', ru: '' } as Record<string, string>,
-  answer: { en: '', ru: '' } as Record<string, string>,
+  question: emptyTranslations(),
+  answer: emptyTranslations(),
   sort_order: 0,
   published: true,
 })
@@ -105,8 +107,10 @@ const form = reactive({
 watch(() => props.faq, (f) => {
   if (!f) return
   if (f.translations) {
-    form.question = { en: f.translations.question?.en ?? '', ru: f.translations.question?.ru ?? '' }
-    form.answer = { en: f.translations.answer?.en ?? '', ru: f.translations.answer?.ru ?? '' }
+    for (const loc of locales) {
+      form.question[loc] = f.translations.question?.[loc] ?? ''
+      form.answer[loc] = f.translations.answer?.[loc] ?? ''
+    }
   }
   form.sort_order = f.sort_order
   form.published = f.published
@@ -120,13 +124,13 @@ async function handleSubmit() {
   try {
     await fetchCsrfCookie()
 
-    const payload = {
-      'question[en]': form.question.en,
-      'question[ru]': form.question.ru || '',
-      'answer[en]': form.answer.en,
-      'answer[ru]': form.answer.ru || '',
+    const payload: Record<string, string | number | boolean> = {
       sort_order: form.sort_order,
       published: form.published,
+    }
+    for (const loc of locales) {
+      payload[`question[${loc}]`] = form.question[loc] || ''
+      payload[`answer[${loc}]`] = form.answer[loc] || ''
     }
 
     if (props.faq) {

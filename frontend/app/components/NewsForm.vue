@@ -103,21 +103,23 @@ const emit = defineEmits<{
   saved: [id: number]
 }>()
 
-const { t } = useI18n()
+const { t, availableLocales } = useI18n()
 const { $api, fetchCsrfCookie } = useApi()
 const router = useRouter()
 
-const locales = ['en', 'ru']
-const activeLang = ref('en')
+const locales = availableLocales
+const activeLang = ref(locales[0])
 const saving = ref(false)
 const successMsg = ref('')
 const errorMsg = ref('')
 const imageFile = ref<File | null>(null)
 
+const emptyTranslations = () => Object.fromEntries(locales.map(l => [l, '']))
+
 const form = reactive({
-  title: { en: '', ru: '' } as Record<string, string>,
-  excerpt: { en: '', ru: '' } as Record<string, string>,
-  body: { en: '', ru: '' } as Record<string, string>,
+  title: emptyTranslations(),
+  excerpt: emptyTranslations(),
+  body: emptyTranslations(),
   tag: 'News',
   published: false,
 })
@@ -125,9 +127,11 @@ const form = reactive({
 watch(() => props.article, (a) => {
   if (!a) return
   if (a.translations) {
-    form.title = { en: a.translations.title?.en ?? '', ru: a.translations.title?.ru ?? '' }
-    form.excerpt = { en: a.translations.excerpt?.en ?? '', ru: a.translations.excerpt?.ru ?? '' }
-    form.body = { en: a.translations.body?.en ?? '', ru: a.translations.body?.ru ?? '' }
+    for (const loc of locales) {
+      form.title[loc] = a.translations.title?.[loc] ?? ''
+      form.excerpt[loc] = a.translations.excerpt?.[loc] ?? ''
+      form.body[loc] = a.translations.body?.[loc] ?? ''
+    }
   }
   form.tag = a.tag
   form.published = a.published
@@ -147,12 +151,11 @@ async function handleSubmit() {
     await fetchCsrfCookie()
 
     const fd = new FormData()
-    fd.append('title[en]', form.title.en)
-    fd.append('title[ru]', form.title.ru || '')
-    fd.append('excerpt[en]', form.excerpt.en)
-    fd.append('excerpt[ru]', form.excerpt.ru || '')
-    fd.append('body[en]', form.body.en)
-    fd.append('body[ru]', form.body.ru || '')
+    for (const loc of locales) {
+      fd.append(`title[${loc}]`, form.title[loc] || '')
+      fd.append(`excerpt[${loc}]`, form.excerpt[loc] || '')
+      fd.append(`body[${loc}]`, form.body[loc] || '')
+    }
     fd.append('tag', form.tag)
     fd.append('published', form.published ? '1' : '0')
     if (form.published) {

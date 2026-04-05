@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasTranslatableSlug;
@@ -53,7 +54,8 @@ final class Article extends Model
         return $this->image ? Storage::disk('public')->url($this->image) : null;
     }
 
-    public function scopePublished($query)
+    /** @param Builder<self> $query */
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('published', true)->whereNotNull('published_at');
     }
