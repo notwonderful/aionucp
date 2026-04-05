@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\DB;
 final class RegisterUser
 {
     public function __construct(
-        protected GameServerContract $gameServer,
-        protected ReferralService $referralService
+        private readonly GameServerContract $gameServer,
+        private readonly ReferralService $referralService
     ) {}
 
     public function execute(UserData $userData, ?string $refCode = null): User
     {
-        return DB::transaction(function () use ($userData, $refCode) {
+        $user = DB::transaction(function () use ($userData, $refCode) {
             $aionAccountId = $this->gameServer->createAccount($userData);
 
             $user = User::create([
@@ -32,15 +32,16 @@ final class RegisterUser
                 'aion_acc_id' => $aionAccountId,
             ])->assignRole(UserRole::MEMBER);
 
-            event(new Registered($user));
-
-            Auth::login($user);
-
             if ($refCode !== null) {
                 $this->referralService->setReferral($refCode, $user);
             }
 
             return $user;
         });
+
+        event(new Registered($user));
+        Auth::login($user);
+
+        return $user;
     }
 }
