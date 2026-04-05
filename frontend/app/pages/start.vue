@@ -46,19 +46,14 @@
 
             <!-- Download buttons -->
             <div class="mt-6 flex flex-wrap gap-3">
-              <a href="#"
+              <a :href="dl?.url || '#'"
                 class="inline-flex items-center gap-2.5 bg-red-600 px-6 py-3 text-[12px] font-bold uppercase tracking-widest text-white transition-all hover:bg-red-500 hover:shadow-[0_0_30px_rgba(220,60,60,0.25)] active:scale-[0.97]">
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
                 {{ t('start.s2.cta') }}
               </a>
-              <span class="flex items-center text-[12px] text-white/20">~8.2 GB</span>
+              <span class="flex items-center text-[12px] text-white/20">{{ dl?.file_size }}</span>
             </div>
 
-            <!-- Checksum -->
-            <div class="mt-4 rounded-lg bg-white/[0.02] px-4 py-3 ring-1 ring-white/[0.04]">
-              <div class="text-[10px] font-bold uppercase tracking-widest text-white/15">MD5</div>
-              <code class="mt-1 block text-[12px] text-white/30">a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4</code>
-            </div>
           </div>
         </div>
 
@@ -143,7 +138,7 @@
       <div class="mx-auto max-w-[600px] px-6 text-center">
         <p class="text-[14px] text-white/25">{{ t('start.discordHelp') }}</p>
         <div class="mt-5 flex flex-wrap justify-center gap-3">
-          <a href="#" class="inline-flex items-center gap-2 bg-[#5865F2] px-5 py-2.5 text-[12px] font-bold uppercase tracking-widest text-white transition-all hover:bg-[#4752C4] active:scale-[0.97]">
+          <a :href="dl?.discord_url || '#'" class="inline-flex items-center gap-2 bg-[#5865F2] px-5 py-2.5 text-[12px] font-bold uppercase tracking-widest text-white transition-all hover:bg-[#4752C4] active:scale-[0.97]">
             <svg class="h-4 w-4" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
             Discord
           </a>
@@ -160,6 +155,7 @@
 definePageMeta({ layout: 'default' })
 
 const { t } = useI18n()
+const { $api } = useApi()
 const openFaq = ref(-1)
 
 const checklist = computed(() => [
@@ -167,23 +163,19 @@ const checklist = computed(() => [
   t('start.s3.c4'), t('start.s3.c5'), t('start.s3.c6'),
 ])
 
-const minReqs = [
-  { label: 'OS', value: 'Windows 7 64-bit' },
-  { label: 'CPU', value: 'Intel Core i3 / AMD FX-6300' },
-  { label: 'RAM', value: '4 GB' },
-  { label: 'GPU', value: 'GeForce GTX 660 / Radeon HD 7850' },
-  { label: 'Storage', value: '12 GB' },
-  { label: 'Network', value: '2 Mbps' },
-]
+interface ReqItem { label: string; value: string }
+interface DownloadData {
+  url: string
+  file_size: string
+  discord_url: string
+  min_requirements: ReqItem[]
+  rec_requirements: ReqItem[]
+}
 
-const recReqs = [
-  { label: 'OS', value: 'Windows 10/11 64-bit' },
-  { label: 'CPU', value: 'Intel i5-8400 / Ryzen 5 2600' },
-  { label: 'RAM', value: '8 GB' },
-  { label: 'GPU', value: 'GeForce GTX 1060 / RX 580' },
-  { label: 'Storage', value: '12 GB SSD' },
-  { label: 'Network', value: '10 Mbps' },
-]
+const { data: downloadData } = useAsyncData('download-settings', () => $api<{ data: DownloadData }>('/settings/download'))
+const dl = computed(() => downloadData.value?.data)
+const minReqs = computed(() => dl.value?.min_requirements ?? [])
+const recReqs = computed(() => dl.value?.rec_requirements ?? [])
 
 const faqs = [
   { qKey: 'start.faq.q1', aKey: 'start.faq.a1' },

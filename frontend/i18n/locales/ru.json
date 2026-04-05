@@ -403,6 +403,11 @@
     "itemSendFailed": "Не удалось отправить предмет.",
     "admin": "Админ",
     "date": "Дата",
+    "announcementSettings": "Панель объявлений",
+    "announceEnabled": "Показывать панель объявлений",
+    "announceText": "Текст объявления",
+    "announceLinkText": "Текст ссылки",
+    "announceLinkUrl": "URL ссылки",
     "viewAll": "Показать все",
     "sendHistoryDesc": "Все предметы, отправленные игрокам через почту.",
     "backToSendItem": "Назад к отправке"

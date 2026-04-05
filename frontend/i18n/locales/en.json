@@ -403,6 +403,11 @@
     "itemSendFailed": "Failed to send item.",
     "admin": "Admin",
     "date": "Date",
+    "announcementSettings": "Announcement Bar",
+    "announceEnabled": "Show announcement bar",
+    "announceText": "Announcement text",
+    "announceLinkText": "Link text",
+    "announceLinkUrl": "Link URL",
     "viewAll": "View all",
     "sendHistoryDesc": "All items sent to players via the mail system.",
     "backToSendItem": "Back to send item"

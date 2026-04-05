@@ -1,17 +1,20 @@
 <template>
-  <!-- ANNOUNCEMENT BAR -->
-  <div v-if="showAnnounce" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 bg-red-600 px-4 py-2 text-center">
-    <span class="text-[12px] font-medium text-white/90">{{ t('announce.text') }}</span>
-    <a href="#" class="text-[12px] font-bold text-white underline underline-offset-2">{{ t('announce.link') }}</a>
-    <button class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 transition-colors hover:text-white" @click="showAnnounce = false">
-      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-    </button>
-  </div>
+  <div>
+    <!-- ANNOUNCEMENT BAR -->
+    <ClientOnly>
+      <div v-if="showAnnounce && announcement" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 bg-red-600 px-4 py-2 text-center">
+        <span class="text-[12px] font-medium text-white/90">{{ announcement.text }}</span>
+        <NuxtLink :to="announcement.link_url" class="text-[12px] font-bold text-white underline underline-offset-2">{{ announcement.link_text }}</NuxtLink>
+        <button class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 transition-colors hover:text-white" @click="showAnnounce = false">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+    </ClientOnly>
 
-  <!-- NAV -->
-  <nav :class="[
-    'fixed left-0 right-0 z-40 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]',
-    showAnnounce ? 'top-[36px]' : 'top-0',
+    <!-- NAV -->
+    <nav :class="[
+      'fixed left-0 right-0 z-40 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]',
+      announceVisible ? 'top-[36px]' : 'top-0',
     scrolled
       ? 'bg-surface/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
       : 'bg-gradient-to-b from-black/70 to-transparent',
@@ -84,6 +87,7 @@
       </div>
     </div>
   </nav>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -92,8 +96,25 @@ const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
 const route = useRoute()
 const { isAuthenticated } = useAuth()
+const { $api } = useApi()
 
-const showAnnounce = ref(true)
+interface Announcement { enabled: boolean; text: string; link_text: string; link_url: string }
+const announcement = ref<Announcement | null>(null)
+const showAnnounce = ref(false)
+const announceVisible = ref(false)
+
+onMounted(async () => {
+  try {
+    const res = await $api<{ data: Announcement }>('/settings/announcement')
+    announcement.value = res.data
+    showAnnounce.value = res.data.enabled
+    announceVisible.value = res.data.enabled
+  } catch { /* */ }
+})
+
+watch(showAnnounce, (val) => {
+  announceVisible.value = val
+})
 const mobileMenu = ref(false)
 const scrolled = ref(false)
 
