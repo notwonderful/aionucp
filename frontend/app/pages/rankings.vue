@@ -180,20 +180,21 @@ const chartTheme = {
 }
 
 // --- Online history (area chart) ---
-const onlineWeekly = [
-  { day: 'Mon', values: [180, 210, 260, 312, 290, 245, 198] },
-].length ? null : null // placeholder
+const onlineHistory = reactive({ daily: [] as { date: string; peak: number; avg: number }[], hourly: [] as { hour: number; avg: number }[] })
 
-const onlineChartOpts = {
+const onlineChartOpts = computed(() => ({
   ...chartTheme,
   chart: { ...chartTheme.chart, type: 'area', sparkline: { enabled: false } },
-  colors: ['#dc2626'],
+  colors: ['#dc2626', '#f97316'],
   fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] } },
   stroke: { curve: 'smooth' as const, width: 2 },
   dataLabels: { enabled: false },
-  xaxis: { ...chartTheme.xaxis, categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
-}
-const onlineChartSeries = [{ name: 'Peak online', data: [312, 287, 345, 298, 378, 401, 367] }]
+  xaxis: { ...chartTheme.xaxis, categories: onlineHistory.daily.map(d => d.date) },
+}))
+const onlineChartSeries = computed(() => [
+  { name: t('rank.peakOnline'), data: onlineHistory.daily.map(d => d.peak) },
+  { name: t('rank.avgOnline'), data: onlineHistory.daily.map(d => d.avg) },
+])
 
 // --- Race donut ---
 const raceChartOpts = computed(() => ({
@@ -222,7 +223,7 @@ const classChartOpts = computed(() => ({
 const classChartSeries = computed(() => [{ name: 'Characters', data: Object.values(stats.classes).length ? Object.values(stats.classes) : [0] }])
 
 // --- Online by hour (bar) ---
-const hourlyChartOpts = {
+const hourlyChartOpts = computed(() => ({
   ...chartTheme,
   chart: { ...chartTheme.chart, type: 'bar' },
   colors: ['#dc2626'],
@@ -230,23 +231,28 @@ const hourlyChartOpts = {
   dataLabels: { enabled: false },
   xaxis: { ...chartTheme.xaxis, categories: Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`) },
   tooltip: { ...chartTheme.tooltip, y: { formatter: (v: number) => `${v} players` } },
-}
-const hourlyChartSeries = [{
-  name: 'Avg online',
-  data: [45, 32, 22, 18, 15, 14, 18, 35, 78, 120, 165, 198, 230, 255, 270, 295, 320, 345, 370, 385, 365, 310, 240, 145],
-}]
+}))
+const hourlyChartSeries = computed(() => {
+  const data = Array.from({ length: 24 }, () => 0)
+  for (const h of onlineHistory.hourly) {
+    data[h.hour] = h.avg
+  }
+  return [{ name: t('rank.avgOnline'), data }]
+})
 
 // Fetch data
 onMounted(async () => {
   try {
-    const [abyss, legion, statsRes] = await Promise.all([
+    const [abyss, legion, statsRes, historyRes] = await Promise.all([
       $api<{ data: any[] }>('/rating/abyss'),
       $api<{ data: any[] }>('/rating/legion'),
       $api<{ data: any }>('/rating/stats'),
+      $api<{ data: any }>('/rating/online-history'),
     ])
     abyssData.value = abyss.data
     legionData.value = legion.data
     Object.assign(stats, statsRes.data)
+    Object.assign(onlineHistory, historyRes.data)
   } catch (e) {
     console.error('Failed to load rankings:', e)
   } finally {

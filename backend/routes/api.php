@@ -94,6 +94,7 @@ Route::prefix('rating')->group(function () {
     Route::get('abyss', [RatingController::class, 'abyss']);
     Route::get('legion', [RatingController::class, 'legion']);
     Route::get('stats', [RatingController::class, 'stats']);
+    Route::get('online-history', [RatingController::class, 'onlineHistory']);
 });
 
 /*
