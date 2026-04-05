@@ -37,6 +37,7 @@
             <tr class="border-b border-white/[0.06]">
               <th class="py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15">#</th>
               <th class="py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15">{{ t('rank.name') }}</th>
+              <th class="hidden py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15 lg:table-cell">{{ t('rank.rank') }}</th>
               <th class="hidden py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15 sm:table-cell">{{ t('rank.race') }}</th>
               <th class="hidden py-3 pr-4 text-left text-[10px] font-bold uppercase tracking-widest text-white/15 md:table-cell">{{ t('rank.class') }}</th>
               <th class="py-3 pr-4 text-right text-[10px] font-bold uppercase tracking-widest text-white/15">{{ t('rank.kills') }}</th>
@@ -49,6 +50,7 @@
                 <span :class="['font-display text-lg font-extrabold tabular-nums', i < 3 ? 'text-red-500' : 'text-white/15']">{{ String(i + 1).padStart(2, '0') }}</span>
               </td>
               <td class="py-4 pr-4 text-[14px] font-medium">{{ entry.player?.name }}</td>
+              <td class="hidden py-4 pr-4 text-[13px] text-white/30 lg:table-cell">{{ entry.rank_name }}</td>
               <td class="hidden py-4 pr-4 text-[13px] text-white/30 sm:table-cell">{{ entry.player?.race }}</td>
               <td class="hidden py-4 pr-4 text-[13px] text-white/30 md:table-cell">{{ entry.player?.player_class }}</td>
               <td class="py-4 pr-4 text-right text-[13px] tabular-nums text-white/40">{{ formatNum(entry.all_kill) }}</td>

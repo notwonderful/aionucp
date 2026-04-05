@@ -111,6 +111,32 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'aion_auth' => [
+            'driver' => env('AION_AUTH_DB_DRIVER', 'mysql'),
+            'host' => env('AION_AUTH_DB_HOST', '127.0.0.1'),
+            'port' => env('AION_AUTH_DB_PORT', '3306'),
+            'database' => env('AION_AUTH_DB_DATABASE', 'aion_server_ls'),
+            'username' => env('AION_AUTH_DB_USERNAME', 'root'),
+            'password' => env('AION_AUTH_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+        ],
+
+        'aion_world' => [
+            'driver' => env('AION_WORLD_DB_DRIVER', 'mysql'),
+            'host' => env('AION_WORLD_DB_HOST', '127.0.0.1'),
+            'port' => env('AION_WORLD_DB_PORT', '3306'),
+            'database' => env('AION_WORLD_DB_DATABASE', 'aion_world'),
+            'username' => env('AION_WORLD_DB_USERNAME', 'root'),
+            'password' => env('AION_WORLD_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+        ],
+
     ],
 
     /*

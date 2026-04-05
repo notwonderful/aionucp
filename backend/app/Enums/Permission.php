@@ -25,12 +25,6 @@ enum Permission: string
     case CATEGORIES_EDIT = 'categories.edit';
     case CATEGORIES_DELETE = 'categories.delete';
 
-    // Servers
-    case SERVERS_VIEW = 'servers.view';
-    case SERVERS_CREATE = 'servers.create';
-    case SERVERS_EDIT = 'servers.edit';
-    case SERVERS_DELETE = 'servers.delete';
-
     // Tickets
     case TICKETS_VIEW = 'tickets.view';
     case TICKETS_REPLY = 'tickets.reply';
@@ -86,10 +80,6 @@ enum Permission: string
             self::CATEGORIES_CREATE => __('Create Categories'),
             self::CATEGORIES_EDIT => __('Edit Categories'),
             self::CATEGORIES_DELETE => __('Delete Categories'),
-            self::SERVERS_VIEW => __('View Servers'),
-            self::SERVERS_CREATE => __('Create Servers'),
-            self::SERVERS_EDIT => __('Edit Servers'),
-            self::SERVERS_DELETE => __('Delete Servers'),
             self::TICKETS_VIEW => __('View Tickets'),
             self::TICKETS_REPLY => __('Reply to Tickets'),
             self::TICKETS_CLOSE => __('Close Tickets'),

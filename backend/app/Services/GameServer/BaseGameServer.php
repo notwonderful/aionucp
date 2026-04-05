@@ -15,7 +15,6 @@ use App\Models\Game\Inventory;
 use App\Models\Game\Legion;
 use App\Models\Game\MailItem;
 use App\Models\Game\Player;
-use App\Models\Server;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,35 +27,29 @@ abstract class BaseGameServer implements GameServerContract
 {
     public function __construct(
         protected GameServerManager $manager,
-        protected Server $server,
         protected PasswordEncrypterContract $encrypter
     ) {}
 
     abstract protected function hashPassword(string $password): string;
 
-    public function getServerId(): int
-    {
-        return $this->server->id;
-    }
-
     protected function connection(): ConnectionInterface
     {
-        return $this->manager->getConnection($this->server);
+        return DB::connection($this->manager->connectionName());
     }
 
     protected function worldConnection(): ConnectionInterface
     {
-        return DB::connection($this->worldConnectionName());
+        return DB::connection($this->manager->worldConnectionName());
     }
 
     protected function connectionName(): string
     {
-        return $this->manager->connectionName($this->server);
+        return $this->manager->connectionName();
     }
 
     protected function worldConnectionName(): string
     {
-        return $this->manager->worldConnectionName($this->server);
+        return $this->manager->worldConnectionName();
     }
 
     /**
@@ -77,7 +70,7 @@ abstract class BaseGameServer implements GameServerContract
 
     protected function cacheKey(string $key): string
     {
-        return "server_{$this->server->id}_{$key}";
+        return "game_{$key}";
     }
 
     public function createAccount(UserData $userData): int
@@ -231,10 +224,6 @@ abstract class BaseGameServer implements GameServerContract
         return $updated > 0;
     }
 
-    // ──────────────────────────────────────────────
-    // Mail & Items
-    // ──────────────────────────────────────────────
-
     public function sendMailItem(string $playerName, int $itemId, int $itemQty): void
     {
         /** @var Player $player */
@@ -271,10 +260,6 @@ abstract class BaseGameServer implements GameServerContract
         });
     }
 
-    // ──────────────────────────────────────────────
-    // Rankings
-    // ──────────────────────────────────────────────
-
     /** @return LengthAwarePaginator<int, AbyssRank> */
     public function getAbyssRanks(): LengthAwarePaginator
     {
@@ -297,9 +282,25 @@ abstract class BaseGameServer implements GameServerContract
         });
     }
 
-    // ──────────────────────────────────────────────
-    // Helpers
-    // ──────────────────────────────────────────────
+    /** @return array{online: int, total_characters: int, races: array<string, int>, classes: array<string, int>} */
+    public function getServerStats(): array
+    {
+        return Cache::flexible($this->cacheKey('server_stats'), [60, 300], function (): array {
+            $conn = $this->worldConnection();
+
+            $online = $conn->selectOne('SELECT COUNT(*) as cnt FROM players WHERE online = 1');
+            $total = $conn->selectOne('SELECT COUNT(*) as cnt FROM players');
+            $races = $conn->select('SELECT race, COUNT(*) as cnt FROM players GROUP BY race');
+            $classes = $conn->select('SELECT player_class, COUNT(*) as cnt FROM players GROUP BY player_class ORDER BY cnt DESC');
+
+            return [
+                'online' => (int) $online->cnt,
+                'total_characters' => (int) $total->cnt,
+                'races' => collect($races)->mapWithKeys(fn ($r) => [$r->race => (int) $r->cnt])->all(),
+                'classes' => collect($classes)->mapWithKeys(fn ($c) => [$c->player_class => (int) $c->cnt])->all(),
+            ];
+        });
+    }
 
     private function generateUniqueMailId(): int
     {

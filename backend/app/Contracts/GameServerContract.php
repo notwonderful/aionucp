@@ -62,4 +62,8 @@ interface GameServerContract
 
     /** @return LengthAwarePaginator<int, Legion> */
     public function getLegionRanks(): LengthAwarePaginator;
+
+    // Stats
+    /** @return array{online: int, total_characters: int, races: array<string, int>, classes: array<string, int>} */
+    public function getServerStats(): array;
 }

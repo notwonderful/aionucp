@@ -23,14 +23,9 @@ final class RoleSeeder extends Seeder
         $superAdmin = Role::findOrCreate(UserRole::SUPER_ADMIN->value);
         $superAdmin->syncPermissions(array_column(Permission::cases(), 'value'));
 
-        // Admin — everything except server management
+        // Admin — all permissions
         $admin = Role::findOrCreate(UserRole::ADMIN->value);
-        $admin->syncPermissions(
-            collect(Permission::cases())
-                ->filter(fn (Permission $p) => ! str_starts_with($p->value, 'servers.'))
-                ->pluck('value')
-                ->toArray()
-        );
+        $admin->syncPermissions(array_column(Permission::cases(), 'value'));
 
         // Content Manager — products and categories only
         $contentManager = Role::findOrCreate(UserRole::CONTENT_MANAGER->value);

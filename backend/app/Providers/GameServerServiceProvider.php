@@ -22,7 +22,6 @@ final class GameServerServiceProvider extends ServiceProvider
             return $app->make(GameServerManager::class)->current();
         });
 
-        // Default encrypter for factories/tests/seeders
         $this->app->bind(PasswordEncrypterContract::class, function () {
             return PasswordEncrypterFactory::create(EncryptionType::SHA1);
         });

@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\BulkEmailController;
 use App\Http\Controllers\Admin\MailItemController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\ServerController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
@@ -174,9 +173,6 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
 
     Route::apiResource('products', ProductController::class)
         ->middleware('permission:'.Permission::PRODUCTS_VIEW->value);
-
-    Route::apiResource('servers', ServerController::class)
-        ->middleware('permission:'.Permission::SERVERS_VIEW->value);
 
     Route::post('mail-items', [MailItemController::class, 'store'])
         ->middleware('permission:'.Permission::MAIL_ITEMS_SEND->value);

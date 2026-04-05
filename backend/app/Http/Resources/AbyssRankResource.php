@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\Game\AbyssRankName;
 use App\Models\Game\AbyssRank;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,6 +19,7 @@ final class AbyssRankResource extends JsonResource
     {
         return [
             'rank' => $this->rank,
+            'rank_name' => $this->rank->getRankName(),
             'rank_pos' => $this->rank_pos,
             'ap' => $this->ap,
             'all_kill' => $this->all_kill,
