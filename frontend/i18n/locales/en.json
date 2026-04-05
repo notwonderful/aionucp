@@ -85,6 +85,8 @@
     "title": "Characters",
     "subtitle": "Your Daevas across all servers",
     "teleport": "Teleport to Obelisk",
+    "teleportConfirmTitle": "Confirm Teleport",
+    "teleportConfirmDesc": "Are you sure you want to teleport {name} to the obelisk? The character must be offline.",
     "teleportSuccess": "Character teleported successfully",
     "teleportFailed": "Teleport failed. Character may be online."
   },
@@ -456,6 +458,8 @@
     "minAmount": "Min amount",
     "maxAmount": "Max amount",
     "enabled": "Enabled",
+    "teleportSettings": "Teleport Coordinates",
+    "cooldownMinutes": "Cooldown (minutes)",
     "announcementSettings": "Announcement Bar",
     "announceEnabled": "Show announcement bar",
     "announceText": "Announcement text",

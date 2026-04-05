@@ -9,6 +9,7 @@ use App\Settings\AnnouncementSettings;
 use App\Settings\DownloadSettings;
 use App\Settings\GatewaySettings;
 use App\Settings\PaymentSettings;
+use App\Settings\TeleportSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -145,6 +146,54 @@ final class SettingsController extends Controller
         return response()->json([
             'data' => $validated,
             'message' => __('Gateway settings updated successfully!'),
+        ]);
+    }
+
+    public function teleportShow(TeleportSettings $settings): JsonResponse
+    {
+        return response()->json([
+            'data' => [
+                'elyos_x' => $settings->elyos_x,
+                'elyos_y' => $settings->elyos_y,
+                'elyos_z' => $settings->elyos_z,
+                'elyos_map' => $settings->elyos_map,
+                'asmodians_x' => $settings->asmodians_x,
+                'asmodians_y' => $settings->asmodians_y,
+                'asmodians_z' => $settings->asmodians_z,
+                'asmodians_map' => $settings->asmodians_map,
+                'cooldown_minutes' => $settings->cooldown_minutes,
+            ],
+        ]);
+    }
+
+    public function teleportUpdate(Request $request, TeleportSettings $settings): JsonResponse
+    {
+        $validated = $request->validate([
+            'elyos_x' => ['required', 'numeric'],
+            'elyos_y' => ['required', 'numeric'],
+            'elyos_z' => ['required', 'numeric'],
+            'elyos_map' => ['required', 'integer'],
+            'asmodians_x' => ['required', 'numeric'],
+            'asmodians_y' => ['required', 'numeric'],
+            'asmodians_z' => ['required', 'numeric'],
+            'asmodians_map' => ['required', 'integer'],
+            'cooldown_minutes' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $settings->elyos_x = (float) $validated['elyos_x'];
+        $settings->elyos_y = (float) $validated['elyos_y'];
+        $settings->elyos_z = (float) $validated['elyos_z'];
+        $settings->elyos_map = (int) $validated['elyos_map'];
+        $settings->asmodians_x = (float) $validated['asmodians_x'];
+        $settings->asmodians_y = (float) $validated['asmodians_y'];
+        $settings->asmodians_z = (float) $validated['asmodians_z'];
+        $settings->asmodians_map = (int) $validated['asmodians_map'];
+        $settings->cooldown_minutes = (int) $validated['cooldown_minutes'];
+        $settings->save();
+
+        return response()->json([
+            'data' => $validated,
+            'message' => __('Teleport settings updated successfully!'),
         ]);
     }
 }

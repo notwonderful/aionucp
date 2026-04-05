@@ -112,6 +112,46 @@
         </AppButton>
       </form>
     </div>
+
+    <div class="mt-12 border-t border-white/[0.04] pt-10">
+      <h2 class="mb-4 font-display text-lg font-bold uppercase tracking-wider">{{ $t('admin.teleportSettings') }}</h2>
+
+      <form @submit.prevent="handleTeleportSubmit" class="space-y-6">
+        <div class="grid gap-6 lg:grid-cols-2">
+          <section v-for="race in ['elyos', 'asmodians']" :key="race"
+            class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-3">
+            <h3 class="text-[13px] font-bold uppercase tracking-widest text-white/30">{{ race === 'elyos' ? 'Elyos' : 'Asmodians' }}</h3>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div v-for="coord in ['x', 'y', 'z']" :key="coord">
+                <label class="mb-1 block text-[11px] font-medium text-white/25">{{ coord.toUpperCase() }}</label>
+                <input v-model.number="teleportForm[`${race}_${coord}`]" type="number" step="any"
+                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30">
+              </div>
+              <div>
+                <label class="mb-1 block text-[11px] font-medium text-white/25">Map ID</label>
+                <input v-model.number="teleportForm[`${race}_map`]" type="number" step="1"
+                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30">
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+          <div class="max-w-xs">
+            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.cooldownMinutes') }}</label>
+            <input v-model.number="teleportForm.cooldown_minutes" type="number" min="1" step="1"
+              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30">
+          </div>
+        </section>
+
+        <AlertMessage :message="teleportSuccess" variant="success" />
+        <AlertMessage :message="teleportError" variant="error" />
+
+        <AppButton type="submit" :loading="teleportSaving" :loading-text="$t('common.loading')">
+          {{ $t('common.save') }}
+        </AppButton>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -209,6 +249,51 @@ async function handleAnnounceSubmit() {
     announceError.value = err.data?.message || t('admin.settingsFailed')
   } finally {
     announceSaving.value = false
+  }
+}
+
+const teleportSaving = ref(false)
+const teleportSuccess = ref('')
+const teleportError = ref('')
+
+const teleportForm = reactive<Record<string, number>>({
+  elyos_x: 0,
+  elyos_y: 0,
+  elyos_z: 0,
+  elyos_map: 0,
+  asmodians_x: 0,
+  asmodians_y: 0,
+  asmodians_z: 0,
+  asmodians_map: 0,
+  cooldown_minutes: 60,
+})
+
+async function fetchTeleportSettings() {
+  try {
+    const res = await $api<{ data: Record<string, number> }>('/admin/settings/teleport')
+    Object.assign(teleportForm, res.data)
+  } catch { /* */ }
+}
+
+fetchTeleportSettings()
+
+async function handleTeleportSubmit() {
+  teleportSaving.value = true
+  teleportSuccess.value = ''
+  teleportError.value = ''
+
+  try {
+    await fetchCsrfCookie()
+    const res = await $api<{ message: string }>('/admin/settings/teleport', {
+      method: 'PUT',
+      body: { ...teleportForm },
+    })
+    teleportSuccess.value = res.message || t('admin.settingsSaved')
+  } catch (e: unknown) {
+    const err = e as { data?: { message?: string } }
+    teleportError.value = err.data?.message || t('admin.settingsFailed')
+  } finally {
+    teleportSaving.value = false
   }
 }
 </script>

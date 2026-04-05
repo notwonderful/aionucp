@@ -85,6 +85,8 @@
     "title": "Персонажи",
     "subtitle": "Твои даэвы на всех серверах",
     "teleport": "Телепорт к обелиску",
+    "teleportConfirmTitle": "Подтвердите телепорт",
+    "teleportConfirmDesc": "Вы уверены что хотите телепортировать {name} к обелиску? Персонаж должен быть оффлайн.",
     "teleportSuccess": "Персонаж телепортирован",
     "teleportFailed": "Телепорт не удался. Возможно, персонаж онлайн."
   },
@@ -456,6 +458,8 @@
     "minAmount": "Мин. сумма",
     "maxAmount": "Макс. сумма",
     "enabled": "Включено",
+    "teleportSettings": "Координаты телепорта",
+    "cooldownMinutes": "Кулдаун (минуты)",
     "announcementSettings": "Панель объявлений",
     "announceEnabled": "Показывать панель объявлений",
     "announceText": "Текст объявления",

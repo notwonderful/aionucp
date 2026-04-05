@@ -49,7 +49,7 @@
 
           <div class="flex items-center gap-2">
             <button
-              @click="handleTeleport(player)"
+              @click="confirmTeleport(player)"
               :disabled="player.online || teleportingId === player.id"
               class="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2 text-[12px] font-medium text-white/40 transition-all duration-300 hover:border-red-500/20 hover:bg-red-600/10 hover:text-red-400 disabled:opacity-30 disabled:pointer-events-none"
             >
@@ -69,6 +69,19 @@
         </Transition>
       </div>
     </div>
+
+    <AppModal :open="!!pendingTeleport" @close="cancelTeleport">
+      <div class="space-y-4">
+        <h3 class="font-display text-lg font-bold uppercase tracking-wider">{{ $t('characters.teleportConfirmTitle') }}</h3>
+        <p class="text-[13px] leading-relaxed text-white/40">
+          {{ $t('characters.teleportConfirmDesc', { name: pendingTeleport?.name }) }}
+        </p>
+        <div class="flex gap-3">
+          <AppButton variant="secondary" @click="cancelTeleport">{{ $t('common.cancel') }}</AppButton>
+          <AppButton @click="executeTeleport">{{ $t('characters.teleport') }}</AppButton>
+        </div>
+      </div>
+    </AppModal>
   </div>
 </template>
 
@@ -91,6 +104,22 @@ const allPlayers = computed(() =>
 
 const teleportingId = ref<number | null>(null)
 const teleportResult = reactive<Record<number, { success: boolean; message: string } | null>>({})
+const pendingTeleport = ref<Player | null>(null)
+
+function confirmTeleport(player: Player) {
+  pendingTeleport.value = player
+}
+
+function cancelTeleport() {
+  pendingTeleport.value = null
+}
+
+function executeTeleport() {
+  if (pendingTeleport.value) {
+    handleTeleport(pendingTeleport.value)
+    pendingTeleport.value = null
+  }
+}
 
 async function handleTeleport(player: Player) {
   teleportingId.value = player.id

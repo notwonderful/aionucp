@@ -243,6 +243,9 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
         Route::get('announcement', [AdminSettingsController::class, 'announcementShow']);
         Route::put('announcement', [AdminSettingsController::class, 'announcementUpdate'])
             ->middleware('permission:'.Permission::SETTINGS_EDIT->value);
+        Route::get('teleport', [AdminSettingsController::class, 'teleportShow']);
+        Route::put('teleport', [AdminSettingsController::class, 'teleportUpdate'])
+            ->middleware('permission:'.Permission::SETTINGS_EDIT->value);
     });
 
     Route::prefix('settings/payments')->middleware('permission:'.Permission::PAYMENTS_VIEW->value)->group(function () {

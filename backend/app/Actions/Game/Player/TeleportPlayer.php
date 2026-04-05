@@ -9,15 +9,16 @@ use App\Exceptions\TeleportCooldownException;
 use App\Exceptions\TeleportException;
 use App\Models\Game\Player;
 use App\Services\RechargeService;
+use App\Settings\TeleportSettings;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 
 final class TeleportPlayer
 {
     public function __construct(
         private readonly GameServerContract $gameServer,
         private readonly RechargeService $rechargeService,
-        private readonly CheckTeleportCooldown $checkTeleportCooldown
+        private readonly CheckTeleportCooldown $checkTeleportCooldown,
+        private readonly TeleportSettings $settings,
     ) {}
 
     /**
@@ -26,10 +27,7 @@ final class TeleportPlayer
      */
     public function execute(Player $player, int $userId): void
     {
-        /** @var int $cooldownMinutes */
-        $cooldownMinutes = config('teleport.cooldown_teleport_minutes', 60);
-
-        $lock = Cache::lock("teleport_player_{$player->id}", $cooldownMinutes * 60);
+        $lock = Cache::lock("teleport_player_{$player->id}", $this->settings->cooldown_minutes * 60);
 
         if (! $lock->get()) {
             throw new TeleportException('Teleport is already in progress.');
@@ -38,12 +36,7 @@ final class TeleportPlayer
         try {
             $this->checkTeleportCooldown->execute($player, $userId);
 
-            /** @var array{x: float, y: float, z: float, map: int}|null $teleportData */
-            $teleportData = Config::get('teleport.' . strtolower($player->race->value));
-
-            if (! $teleportData) {
-                throw new TeleportException('Teleport configuration not found.');
-            }
+            $teleportData = $this->settings->getCoordinates($player->race->value);
 
             $teleportSuccess = $this->gameServer->teleportPlayer(
                 $player->account_id,
@@ -51,7 +44,7 @@ final class TeleportPlayer
                 $teleportData['x'],
                 $teleportData['y'],
                 $teleportData['z'],
-                $teleportData['map']
+                $teleportData['map'],
             );
 
             if (! $teleportSuccess) {

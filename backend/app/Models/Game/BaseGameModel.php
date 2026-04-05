@@ -14,4 +14,9 @@ abstract class BaseGameModel extends Model
     {
         return false;
     }
+
+    public function getConnectionName(): ?string
+    {
+        return static::usesWorldDatabase() ? 'aion_world' : 'aion_auth';
+    }
 }
