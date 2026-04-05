@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 final class ActivatePromoCodeAction
 {
     public function __construct(
-        protected GameServerContract $gameServer
+        private readonly GameServerContract $gameServer
     ) {}
 
     public function execute(User $user, string $code): void

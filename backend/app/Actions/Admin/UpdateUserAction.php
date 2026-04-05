@@ -12,8 +12,8 @@ use App\Models\User;
 final class UpdateUserAction
 {
     public function __construct(
-        protected UpdateUserEmail $updateUserEmail,
-        protected GameServerContract $gameServer
+        private readonly UpdateUserEmail $updateUserEmail,
+        private readonly GameServerContract $gameServer
     ) {}
 
     public function execute(User $user, AdminUpdateUserData $data): User

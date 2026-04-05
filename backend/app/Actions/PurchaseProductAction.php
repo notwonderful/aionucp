@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\DB;
 final class PurchaseProductAction
 {
     public function __construct(
-        protected GameServerContract $gameServer,
-        protected ProductService $productService,
+        private readonly GameServerContract $gameServer,
+        private readonly ProductService $productService,
     ) {}
 
     public function execute(User $user, Player $player, Product $product): void

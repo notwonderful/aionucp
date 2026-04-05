@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 final class UpdateUserEmail
 {
     public function __construct(
-        protected GameServerContract $gameServer
+        private readonly GameServerContract $gameServer
     ) {}
 
     public function execute(User $user, string $newEmail): void

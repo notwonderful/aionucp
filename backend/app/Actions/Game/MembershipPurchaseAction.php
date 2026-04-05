@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\DB;
 final class MembershipPurchaseAction
 {
     public function __construct(
-        protected MembershipCostCalculator $costCalculator,
-        protected GameServerContract $gameServer
+        private readonly MembershipCostCalculator $costCalculator,
+        private readonly GameServerContract $gameServer
     ) {}
 
     /**

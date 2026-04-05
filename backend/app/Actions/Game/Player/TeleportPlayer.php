@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Config;
 final class TeleportPlayer
 {
     public function __construct(
-        protected GameServerContract $gameServer,
-        protected RechargeService $rechargeService,
-        protected CheckTeleportCooldown $checkTeleportCooldown
+        private readonly GameServerContract $gameServer,
+        private readonly RechargeService $rechargeService,
+        private readonly CheckTeleportCooldown $checkTeleportCooldown
     ) {}
 
     /**

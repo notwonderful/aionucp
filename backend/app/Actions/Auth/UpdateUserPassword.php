@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 final class UpdateUserPassword
 {
     public function __construct(
-        protected GameServerContract $gameServer
+        private readonly GameServerContract $gameServer
     ) {}
 
     public function execute(User $user, string $newPassword): void
