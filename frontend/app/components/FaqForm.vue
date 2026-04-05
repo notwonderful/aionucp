@@ -124,13 +124,11 @@ async function handleSubmit() {
   try {
     await fetchCsrfCookie()
 
-    const payload: Record<string, string | number | boolean> = {
+    const payload = {
+      question: { ...form.question },
+      answer: { ...form.answer },
       sort_order: form.sort_order,
       published: form.published,
-    }
-    for (const loc of locales) {
-      payload[`question[${loc}]`] = form.question[loc] || ''
-      payload[`answer[${loc}]`] = form.answer[loc] || ''
     }
 
     if (props.faq) {
