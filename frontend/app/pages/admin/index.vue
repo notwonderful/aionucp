@@ -83,6 +83,17 @@
         </div>
       </NuxtLink>
 
+      <NuxtLink to="/admin/donations"
+        class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10">
+          <svg class="h-6 w-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <div>
+          <div class="text-[15px] font-semibold transition-colors group-hover:text-emerald-400">{{ $t('admin.donations') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('admin.donationsDesc') }}</div>
+        </div>
+      </NuxtLink>
+
       <NuxtLink to="/admin/settings/payments"
         class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
         <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10">
@@ -113,6 +124,17 @@
         <div>
           <div class="text-[15px] font-semibold transition-colors group-hover:text-red-400">{{ $t('admin.products') }}</div>
           <div class="mt-0.5 text-[12px] text-white/20">{{ $t('admin.productsDesc') }}</div>
+        </div>
+      </NuxtLink>
+
+      <NuxtLink to="/admin/item-tracker"
+        class="group flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]">
+        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-500/10">
+          <svg class="h-6 w-6 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        </div>
+        <div>
+          <div class="text-[15px] font-semibold transition-colors group-hover:text-rose-400">{{ $t('admin.itemTracker') }}</div>
+          <div class="mt-0.5 text-[12px] text-white/20">{{ $t('admin.itemTrackerDesc') }}</div>
         </div>
       </NuxtLink>
     </div>
