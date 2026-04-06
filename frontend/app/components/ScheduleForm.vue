@@ -2,11 +2,11 @@
   <form @submit.prevent="handleSubmit" class="space-y-6">
     <div class="grid gap-6 lg:grid-cols-3">
       <div class="lg:col-span-2 space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.categoryLabel') }}</label>
+            <label class="form-label">{{ $t('admin.categoryLabel') }}</label>
             <select v-model="form.category" :disabled="!!entry"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 disabled:opacity-40">
+              class="form-input disabled:opacity-40">
               <option value="siege">Siege</option>
               <option value="dredgion">Dredgion</option>
               <option value="rift">Rift</option>
@@ -14,9 +14,9 @@
           </div>
 
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.entryName') }}</label>
+            <label class="form-label">{{ $t('admin.entryName') }}</label>
             <input v-model="form.name" type="text"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+              class="form-input"
               :placeholder="form.category === 'siege' ? 'Fortress name' : form.category === 'dredgion' ? 'Dredgion name' : 'Direction'">
           </div>
 
@@ -24,22 +24,22 @@
           <template v-if="form.category === 'siege'">
             <div class="grid gap-4 sm:grid-cols-3">
               <div>
-                <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('schedule.time') }}</label>
+                <label class="form-label">{{ $t('schedule.time') }}</label>
                 <input v-model="form.metadata.time" type="text"
-                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                  class="form-input"
                   placeholder="20:00">
               </div>
               <div>
-                <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('schedule.day') }}</label>
+                <label class="form-label">{{ $t('schedule.day') }}</label>
                 <select v-model.number="form.metadata.day_of_week"
-                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30">
+                  class="form-input">
                   <option v-for="(d, i) in dayNames" :key="i" :value="i">{{ d }}</option>
                 </select>
               </div>
               <div>
-                <label class="mb-1.5 block text-[12px] font-medium text-white/30">Fortress type</label>
+                <label class="form-label">Fortress type</label>
                 <select v-model="form.metadata.fortress_type"
-                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30">
+                  class="form-input">
                   <option value="divine">Divine</option>
                   <option value="upper">Upper Abyss</option>
                   <option value="lower">Lower Abyss</option>
@@ -51,9 +51,9 @@
           <!-- Dredgion fields -->
           <template v-if="form.category === 'dredgion'">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">Level</label>
+              <label class="form-label">Level</label>
               <input v-model="form.metadata.level" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                class="form-input"
                 placeholder="Lv. 46-55">
             </div>
             <div>
@@ -64,10 +64,10 @@
               </div>
               <div v-for="(slot, i) in (form.metadata.slots as any[])" :key="i" class="mb-2 flex gap-2">
                 <input v-model="slot.days" type="text"
-                  class="w-40 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30"
+                  class="form-input w-40"
                   placeholder="Mon — Fri">
                 <input v-model="slot.time" type="text"
-                  class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30"
+                  class="form-input flex-1"
                   placeholder="10:00 — 02:00">
                 <button type="button" @click="removeSlot(i)"
                   class="shrink-0 rounded-lg px-2 text-white/15 transition-colors hover:bg-red-600/10 hover:text-red-400">
@@ -81,15 +81,15 @@
           <template v-if="form.category === 'rift'">
             <div class="grid gap-4 sm:grid-cols-2">
               <div>
-                <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('schedule.time') }}</label>
+                <label class="form-label">{{ $t('schedule.time') }}</label>
                 <input v-model="form.metadata.time" type="text"
-                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                  class="form-input"
                   placeholder="01:00">
               </div>
               <div>
-                <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('schedule.direction') }}</label>
+                <label class="form-label">{{ $t('schedule.direction') }}</label>
                 <input v-model="form.metadata.direction" type="text"
-                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                  class="form-input"
                   placeholder="Morheim → Eltnen">
               </div>
             </div>
@@ -98,11 +98,11 @@
       </div>
 
       <div class="space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.sortOrder') }}</label>
+            <label class="form-label">{{ $t('admin.sortOrder') }}</label>
             <input v-model.number="form.sort_order" type="number" min="0"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+              class="form-input"
               placeholder="0">
           </div>
           <div class="flex items-center gap-3">

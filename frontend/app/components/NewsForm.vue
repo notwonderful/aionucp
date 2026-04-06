@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit" class="space-y-6">
     <div class="grid gap-6 lg:grid-cols-3">
       <div class="lg:col-span-2 space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-5">
+        <section class="card-panel p-6 space-y-5">
           <div class="flex gap-2">
             <button v-for="loc in locales" :key="loc" type="button" @click="activeLang = loc"
               :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition-all',
@@ -13,19 +13,19 @@
 
           <div v-for="loc in locales" :key="loc" v-show="activeLang === loc" class="space-y-4">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.newsTitle') }} ({{ loc }})</label>
+              <label class="form-label">{{ $t('admin.newsTitle') }} ({{ loc }})</label>
               <input v-model="form.title[loc]" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+                class="form-input"
                 :placeholder="$t('admin.newsTitlePlaceholder')">
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.excerpt') }} ({{ loc }})</label>
+              <label class="form-label">{{ $t('admin.excerpt') }} ({{ loc }})</label>
               <textarea v-model="form.excerpt[loc]" rows="2"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15 resize-none"
+                class="form-input resize-none"
                 :placeholder="$t('admin.excerptPlaceholder')" />
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.body') }} ({{ loc }})</label>
+              <label class="form-label">{{ $t('admin.body') }} ({{ loc }})</label>
               <RichEditor v-model="form.body[loc]" :placeholder="$t('admin.bodyPlaceholder')" />
             </div>
           </div>
@@ -33,11 +33,11 @@
       </div>
 
       <div class="space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.tag') }}</label>
+            <label class="form-label">{{ $t('admin.tag') }}</label>
             <select v-model="form.tag"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30">
+              class="form-input">
               <option value="Update">Update</option>
               <option value="Event">Event</option>
               <option value="Patch">Patch</option>
@@ -47,7 +47,7 @@
           </div>
 
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.image') }}</label>
+            <label class="form-label">{{ $t('admin.image') }}</label>
             <input type="file" accept="image/*" @change="handleImageChange"
               class="w-full text-[13px] text-white/40 file:mr-3 file:rounded-lg file:border-0 file:bg-white/[0.06] file:px-3 file:py-1.5 file:text-[12px] file:font-medium file:text-white/50 file:cursor-pointer hover:file:bg-white/[0.1]">
             <div v-if="article?.image_url && !imageFile" class="mt-2">

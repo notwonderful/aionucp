@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit" class="space-y-6">
     <div class="grid gap-6 lg:grid-cols-3">
       <div class="lg:col-span-2 space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-5">
+        <section class="card-panel p-6 space-y-5">
           <div class="flex gap-2">
             <button v-for="loc in locales" :key="loc" type="button" @click="activeLang = loc"
               :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider transition-all',
@@ -13,13 +13,13 @@
 
           <div v-for="loc in locales" :key="loc" v-show="activeLang === loc" class="space-y-4">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.productName') }} ({{ loc }})</label>
+              <label class="form-label">{{ $t('admin.productName') }} ({{ loc }})</label>
               <input v-model="form.name[loc]" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+                class="form-input"
                 :placeholder="$t('admin.productNamePlaceholder')">
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.productDescription') }} ({{ loc }})</label>
+              <label class="form-label">{{ $t('admin.productDescription') }} ({{ loc }})</label>
               <RichEditor v-model="form.description[loc]" :placeholder="$t('admin.productDescPlaceholder')" />
             </div>
           </div>
@@ -27,39 +27,39 @@
       </div>
 
       <div class="space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.categoryLabel') }}</label>
+            <label class="form-label">{{ $t('admin.categoryLabel') }}</label>
             <select v-model.number="form.category_id"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30">
+              class="form-input">
               <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
             </select>
           </div>
 
           <div class="grid gap-3 grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">Item ID</label>
+              <label class="form-label">Item ID</label>
               <input v-model.number="form.item_id" type="number" min="0"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                class="form-input"
                 placeholder="0">
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.itemQty') }}</label>
+              <label class="form-label">{{ $t('admin.itemQty') }}</label>
               <input v-model.number="form.item_qty" type="number" min="1"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                class="form-input"
                 placeholder="1">
             </div>
           </div>
 
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.toll') }}</label>
+            <label class="form-label">{{ $t('admin.toll') }}</label>
             <input v-model.number="form.toll" type="number" min="0"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+              class="form-input"
               placeholder="100">
           </div>
 
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.image') }}</label>
+            <label class="form-label">{{ $t('admin.image') }}</label>
             <input type="file" accept="image/*" @change="handleImageChange"
               class="w-full text-[13px] text-white/40 file:mr-3 file:rounded-lg file:border-0 file:bg-white/[0.06] file:px-3 file:py-1.5 file:text-[12px] file:font-medium file:text-white/50 file:cursor-pointer hover:file:bg-white/[0.1]">
             <div v-if="product?.image_url && !imageFile" class="mt-2">

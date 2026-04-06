@@ -2,19 +2,19 @@
   <form @submit.prevent="handleSubmit" class="space-y-6">
     <div class="grid gap-6 lg:grid-cols-3">
       <div class="lg:col-span-2 space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.categoryLabel') }}</label>
+              <label class="form-label">{{ $t('admin.categoryLabel') }}</label>
               <select v-model.number="form.wiki_category_id"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30 disabled:opacity-40">
+                class="form-input disabled:opacity-40">
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
               </select>
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.wikiType') }}</label>
+              <label class="form-label">{{ $t('admin.wikiType') }}</label>
               <select v-model="form.type" :disabled="!!entry"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30 disabled:opacity-40">
+                class="form-input disabled:opacity-40">
                 <option v-for="tp in types" :key="tp" :value="tp">{{ tp }}</option>
               </select>
             </div>
@@ -22,16 +22,16 @@
 
           <!-- Text -->
           <div v-if="form.type === 'text'">
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.body') }}</label>
+            <label class="form-label">{{ $t('admin.body') }}</label>
             <RichEditor v-model="form.content.body as string" placeholder="Paragraph text..." />
           </div>
 
           <!-- Table -->
           <template v-if="form.type === 'table'">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.newsTitle') }}</label>
+              <label class="form-label">{{ $t('admin.newsTitle') }}</label>
               <input v-model="form.content.title" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                class="form-input"
                 placeholder="Section title">
             </div>
             <div>
@@ -42,10 +42,10 @@
               </div>
               <div v-for="(row, i) in (form.content.rows as string[][])" :key="i" class="mb-2 flex gap-2">
                 <input v-model="row[0]" type="text"
-                  class="w-1/3 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30"
+                  class="form-input w-1/3"
                   placeholder="Label">
                 <input v-model="row[1]" type="text"
-                  class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30"
+                  class="form-input flex-1"
                   placeholder="Value">
                 <button type="button" @click="removeRow(i)"
                   class="shrink-0 rounded-lg px-2 text-white/15 hover:bg-red-600/10 hover:text-red-400">
@@ -58,16 +58,16 @@
           <!-- Callout -->
           <template v-if="form.type === 'callout'">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">Callout type</label>
+              <label class="form-label">Callout type</label>
               <select v-model="form.content.callout_type"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30">
+                class="form-input">
                 <option value="tip">Tip</option>
                 <option value="warning">Warning</option>
                 <option value="note">Note</option>
               </select>
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.body') }}</label>
+              <label class="form-label">{{ $t('admin.body') }}</label>
               <RichEditor v-model="form.content.body as string" placeholder="Callout text..." />
             </div>
           </template>
@@ -75,13 +75,13 @@
           <!-- Spoiler -->
           <template v-if="form.type === 'spoiler'">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.newsTitle') }}</label>
+              <label class="form-label">{{ $t('admin.newsTitle') }}</label>
               <input v-model="form.content.title" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+                class="form-input"
                 placeholder="Spoiler question">
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.body') }}</label>
+              <label class="form-label">{{ $t('admin.body') }}</label>
               <RichEditor v-model="form.content.body as string" placeholder="Answer..." />
             </div>
           </template>
@@ -89,11 +89,11 @@
       </div>
 
       <div class="space-y-5">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.sortOrder') }}</label>
+            <label class="form-label">{{ $t('admin.sortOrder') }}</label>
             <input v-model.number="form.sort_order" type="number" min="0"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30"
+              class="form-input"
               placeholder="0">
           </div>
           <div class="flex items-center gap-3">
