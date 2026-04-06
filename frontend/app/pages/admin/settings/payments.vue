@@ -7,12 +7,7 @@
         <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
           <h3 class="text-[13px] font-bold uppercase tracking-widest text-white/30">{{ $t('admin.paymentGeneral') }}</h3>
           <div class="flex items-center gap-3">
-            <button type="button" @click="paymentForm.enabled = !paymentForm.enabled"
-              :class="['relative h-6 w-11 rounded-full transition-colors duration-300',
-                paymentForm.enabled ? 'bg-emerald-500' : 'bg-white/10']">
-              <span :class="['absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform duration-300',
-                paymentForm.enabled && 'translate-x-5']" />
-            </button>
+            <ToggleSwitch v-model="paymentForm.enabled" />
             <span class="text-[13px] text-white/50">{{ $t('admin.donationsEnabled') }}</span>
           </div>
           <div>
@@ -45,12 +40,7 @@
             <div class="flex items-center justify-between">
               <span class="text-[14px] font-semibold text-white/60">{{ gatewayLabels[key] || key }}</span>
               <div class="flex items-center gap-2">
-                <button type="button" @click="limit.enabled = !limit.enabled"
-                  :class="['relative h-6 w-11 rounded-full transition-colors duration-300',
-                    limit.enabled ? 'bg-emerald-500' : 'bg-white/10']">
-                  <span :class="['absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform duration-300',
-                    limit.enabled && 'translate-x-5']" />
-                </button>
+                <ToggleSwitch v-model="limit.enabled" />
                 <span class="text-[11px] text-white/30">{{ $t('admin.enabled') }}</span>
               </div>
             </div>

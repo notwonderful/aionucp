@@ -106,12 +106,7 @@
               placeholder="0">
           </div>
           <div class="flex items-center gap-3">
-            <button type="button" @click="form.published = !form.published"
-              :class="['relative h-6 w-11 rounded-full transition-colors duration-300',
-                form.published ? 'bg-emerald-500' : 'bg-white/10']">
-              <span :class="['absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform duration-300',
-                form.published && 'translate-x-5']" />
-            </button>
+            <ToggleSwitch v-model="form.published" />
             <span class="text-[13px] text-white/50">{{ $t('admin.published') }}</span>
           </div>
         </section>

@@ -31,12 +31,7 @@
           class="w-28 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[14px] text-white/70 outline-none focus:border-red-500/30">
         <input v-model.number="cat.sort_order" type="number" min="0"
           class="w-16 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[14px] text-white/70 outline-none focus:border-red-500/30">
-        <button type="button" @click="cat.published = !cat.published"
-          :class="['relative h-6 w-11 shrink-0 rounded-full transition-colors duration-300',
-            cat.published ? 'bg-emerald-500' : 'bg-white/10']">
-          <span :class="['absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform duration-300',
-            cat.published && 'translate-x-5']" />
-        </button>
+        <ToggleSwitch v-model="cat.published" class="shrink-0" />
         <button @click="handleSave(cat)" class="rounded-lg bg-white/[0.04] px-3 py-2 text-[12px] font-bold text-white/40 hover:bg-white/[0.08] hover:text-white/60">
           {{ $t('common.save') }}
         </button>
