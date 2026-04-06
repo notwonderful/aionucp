@@ -23,7 +23,7 @@
           <div class="absolute left-0 top-1 hidden h-12 w-12 items-center justify-center rounded-xl bg-red-600/15 ring-1 ring-red-500/25 md:flex">
             <span class="font-display text-lg font-extrabold text-red-500">01</span>
           </div>
-          <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-8">
+          <div class="card-panel p-8">
             <span class="mb-1 inline-block font-display text-lg font-extrabold text-red-500 md:hidden">01</span>
             <h2 class="font-display text-2xl font-extrabold uppercase tracking-tight">{{ t('start.s1.title') }}</h2>
             <p class="mt-3 max-w-lg text-[14px] leading-relaxed text-white/35">{{ t('start.s1.desc') }}</p>
@@ -39,7 +39,7 @@
           <div class="absolute left-0 top-1 hidden h-12 w-12 items-center justify-center rounded-xl bg-red-600/15 ring-1 ring-red-500/25 md:flex">
             <span class="font-display text-lg font-extrabold text-red-500">02</span>
           </div>
-          <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-8">
+          <div class="card-panel p-8">
             <span class="mb-1 inline-block font-display text-lg font-extrabold text-red-500 md:hidden">02</span>
             <h2 class="font-display text-2xl font-extrabold uppercase tracking-tight">{{ t('start.s2.title') }}</h2>
             <p class="mt-3 max-w-lg text-[14px] leading-relaxed text-white/35">{{ t('start.s2.desc') }}</p>
@@ -62,7 +62,7 @@
           <div class="absolute left-0 top-1 hidden h-12 w-12 items-center justify-center rounded-xl bg-red-600/15 ring-1 ring-red-500/25 md:flex">
             <span class="font-display text-lg font-extrabold text-red-500">03</span>
           </div>
-          <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-8">
+          <div class="card-panel p-8">
             <span class="mb-1 inline-block font-display text-lg font-extrabold text-red-500 md:hidden">03</span>
             <h2 class="font-display text-2xl font-extrabold uppercase tracking-tight">{{ t('start.s3.title') }}</h2>
             <p class="mt-3 max-w-lg text-[14px] leading-relaxed text-white/35">{{ t('start.s3.desc') }}</p>
@@ -86,7 +86,7 @@
 
         <div class="grid gap-4 sm:grid-cols-2">
           <!-- Minimum -->
-          <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+          <div class="card-panel p-6">
             <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/20">{{ t('start.req.min') }}</span>
             <div class="mt-4 space-y-3">
               <div v-for="req in minReqs" :key="req.label" class="flex justify-between border-t border-white/[0.03] pt-3">

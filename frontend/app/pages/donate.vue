@@ -15,7 +15,7 @@
       <svg class="h-6 w-6 animate-spin text-white/20" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
     </div>
 
-    <div v-else-if="gateways.length === 0" class="rounded-xl border border-white/[0.04] bg-white/[0.02] px-6 py-16 text-center">
+    <div v-else-if="gateways.length === 0" class="card-panel px-6 py-16 text-center">
       <p class="text-[14px] text-white/30">{{ $t('donate.unavailable') }}</p>
     </div>
 
@@ -41,7 +41,7 @@
         </div>
       </section>
 
-      <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+      <section class="card-panel p-6">
         <label class="mb-3 block text-[11px] font-bold uppercase tracking-widest text-white/20">{{ $t('donate.amountLabel') }}</label>
 
         <div class="relative">
@@ -74,7 +74,7 @@
         </div>
       </section>
 
-      <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+      <section class="card-panel p-6">
         <label class="mb-3 block text-[11px] font-bold uppercase tracking-widest text-white/20">{{ $t('donate.paymentMethod') }}</label>
 
         <div class="grid gap-3" :class="gateways.length > 1 ? 'sm:grid-cols-2' : ''">
@@ -107,7 +107,7 @@
       </section>
 
       <section class="space-y-4">
-        <div v-if="amount && amount > 0 && selectedGateway" class="rounded-xl border border-white/[0.04] bg-white/[0.02] px-6 py-5">
+        <div v-if="amount && amount > 0 && selectedGateway" class="card-panel px-6 py-5">
           <div class="flex items-center justify-between">
             <div class="space-y-0.5">
               <p class="text-[12px] text-white/25">{{ $t('donate.youReceive') }}</p>

@@ -19,7 +19,7 @@
     </div>
 
     <div v-else class="mt-6 grid gap-8 lg:grid-cols-2">
-      <div class="relative aspect-square overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02]">
+      <div class="relative aspect-square overflow-hidden card-panel">
         <div class="absolute inset-0 flex items-center justify-center">
           <svg class="h-16 w-16 text-white/[0.05]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="0.75"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>
         </div>
@@ -43,7 +43,7 @@
 
         <p v-if="product.description" class="mt-3 text-[14px] leading-relaxed text-white/30">{{ product.description }}</p>
 
-        <div class="mt-6 flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
+        <div class="mt-6 flex items-center gap-4 card-panel p-5">
           <div>
             <div class="text-[11px] font-medium uppercase tracking-widest text-white/20">{{ $t('shop.price') }}</div>
             <div class="mt-1 font-display text-3xl font-extrabold tabular-nums text-red-400">{{ product.toll }}</div>
@@ -87,7 +87,7 @@
         <NuxtLink
           v-for="item in relatedProducts" :key="item.id"
           :to="`/shop/${item.slug}`"
-          class="group overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]"
+          class="group overflow-hidden card-panel transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03]"
         >
           <div class="relative overflow-hidden border-b border-white/[0.04] bg-gradient-to-br from-red-950/20 via-surface-card to-surface" style="aspect-ratio: 4/3">
             <div class="absolute inset-0 flex items-center justify-center">
