@@ -107,9 +107,7 @@ const router = useRouter()
 
 const locales = availableLocales
 const activeLang = ref(locales[0])
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 const imageFile = ref<File | null>(null)
 
 const emptyTranslations = () => Object.fromEntries(locales.map(l => [l, '']))
@@ -141,50 +139,28 @@ function handleImageChange(e: Event) {
 }
 
 async function handleSubmit() {
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
+  const fd = new FormData()
+  for (const loc of locales) {
+    fd.append(`title[${loc}]`, form.title[loc] || '')
+    fd.append(`excerpt[${loc}]`, form.excerpt[loc] || '')
+    fd.append(`body[${loc}]`, form.body[loc] || '')
+  }
+  fd.append('tag', form.tag)
+  fd.append('published', form.published ? '1' : '0')
+  if (form.published) fd.append('published_at', new Date().toISOString())
+  if (imageFile.value) fd.append('image', imageFile.value)
 
-  try {
-    await fetchCsrfCookie()
-
-    const fd = new FormData()
-    for (const loc of locales) {
-      fd.append(`title[${loc}]`, form.title[loc] || '')
-      fd.append(`excerpt[${loc}]`, form.excerpt[loc] || '')
-      fd.append(`body[${loc}]`, form.body[loc] || '')
-    }
-    fd.append('tag', form.tag)
-    fd.append('published', form.published ? '1' : '0')
-    if (form.published) {
-      fd.append('published_at', new Date().toISOString())
-    }
-    if (imageFile.value) {
-      fd.append('image', imageFile.value)
-    }
-
+  await submit(async (api) => {
     if (props.article) {
       fd.append('_method', 'PUT')
-      const res = await $api<{ data: NewsArticle; message: string }>(`/admin/news/${props.article.id}`, {
-        method: 'POST',
-        body: fd,
-      })
-      successMsg.value = res.message || t('admin.articleSaved')
+      const res = await api<{ data: NewsArticle; message: string }>(`/admin/news/${props.article.id}`, { method: 'POST', body: fd })
       emit('saved', res.data.id)
-    } else {
-      const res = await $api<{ data: NewsArticle; message: string }>('/admin/news', {
-        method: 'POST',
-        body: fd,
-      })
-      successMsg.value = res.message || t('admin.articleCreated')
-      emit('saved', res.data.id)
+      return res.message || t('admin.articleSaved')
     }
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.articleFailed')
-  } finally {
-    saving.value = false
-  }
+    const res = await api<{ data: NewsArticle; message: string }>('/admin/news', { method: 'POST', body: fd })
+    emit('saved', res.data.id)
+    return res.message || t('admin.articleCreated')
+  }, t('admin.articleFailed'))
 }
 
 async function handleDelete() {

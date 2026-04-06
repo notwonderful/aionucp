@@ -155,9 +155,7 @@ const { $api, fetchCsrfCookie } = useApi()
 const router = useRouter()
 
 const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 
 const form = reactive({
   category: 'siege',
@@ -199,42 +197,24 @@ function removeSlot(i: number) {
 }
 
 async function handleSubmit() {
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
-
-  try {
-    await fetchCsrfCookie()
-
-    const payload = {
-      category: form.category,
-      name: form.name,
-      metadata: form.metadata,
-      sort_order: form.sort_order,
-      published: form.published,
-    }
-
-    if (props.entry) {
-      const res = await $api<{ data: ScheduleItem; message: string }>(`/admin/schedule/${props.entry.id}`, {
-        method: 'PUT',
-        body: payload,
-      })
-      successMsg.value = res.message || t('admin.scheduleSaved')
-      emit('saved', res.data.id)
-    } else {
-      const res = await $api<{ data: ScheduleItem; message: string }>('/admin/schedule', {
-        method: 'POST',
-        body: payload,
-      })
-      successMsg.value = res.message || t('admin.scheduleCreated')
-      emit('saved', res.data.id)
-    }
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.scheduleFailed')
-  } finally {
-    saving.value = false
+  const payload = {
+    category: form.category,
+    name: form.name,
+    metadata: form.metadata,
+    sort_order: form.sort_order,
+    published: form.published,
   }
+
+  await submit(async (api) => {
+    if (props.entry) {
+      const res = await api<{ data: ScheduleItem; message: string }>(`/admin/schedule/${props.entry.id}`, { method: 'PUT', body: payload })
+      emit('saved', res.data.id)
+      return res.message || t('admin.scheduleSaved')
+    }
+    const res = await api<{ data: ScheduleItem; message: string }>('/admin/schedule', { method: 'POST', body: payload })
+    emit('saved', res.data.id)
+    return res.message || t('admin.scheduleCreated')
+  }, t('admin.scheduleFailed'))
 }
 
 async function handleDelete() {

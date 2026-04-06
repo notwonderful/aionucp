@@ -150,9 +150,7 @@ const router = useRouter()
 const { data: catsData } = useAsyncData('wiki-categories', () => $api<{ data: WikiCat[] }>('/admin/wiki-categories'))
 const categories = computed(() => catsData.value?.data ?? [])
 const types = ['text', 'table', 'callout', 'spoiler']
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 
 function initContent(type: string): Record<string, unknown> {
   if (type === 'text') return { body: '' }
@@ -192,42 +190,24 @@ function removeRow(i: number) {
 }
 
 async function handleSubmit() {
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
-
-  try {
-    await fetchCsrfCookie()
-
-    const payload = {
-      wiki_category_id: form.wiki_category_id,
-      type: form.type,
-      content: form.content,
-      sort_order: form.sort_order,
-      published: form.published,
-    }
-
-    if (props.entry) {
-      const res = await $api<{ data: WikiItem; message: string }>(`/admin/wiki/${props.entry.id}`, {
-        method: 'PUT',
-        body: payload,
-      })
-      successMsg.value = res.message || t('admin.wikiSaved')
-      emit('saved', res.data.id)
-    } else {
-      const res = await $api<{ data: WikiItem; message: string }>('/admin/wiki', {
-        method: 'POST',
-        body: payload,
-      })
-      successMsg.value = res.message || t('admin.wikiCreated')
-      emit('saved', res.data.id)
-    }
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.wikiFailed')
-  } finally {
-    saving.value = false
+  const payload = {
+    wiki_category_id: form.wiki_category_id,
+    type: form.type,
+    content: form.content,
+    sort_order: form.sort_order,
+    published: form.published,
   }
+
+  await submit(async (api) => {
+    if (props.entry) {
+      const res = await api<{ data: WikiItem; message: string }>(`/admin/wiki/${props.entry.id}`, { method: 'PUT', body: payload })
+      emit('saved', res.data.id)
+      return res.message || t('admin.wikiSaved')
+    }
+    const res = await api<{ data: WikiItem; message: string }>('/admin/wiki', { method: 'POST', body: payload })
+    emit('saved', res.data.id)
+    return res.message || t('admin.wikiCreated')
+  }, t('admin.wikiFailed'))
 }
 
 async function handleDelete() {

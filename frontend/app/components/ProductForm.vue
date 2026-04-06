@@ -112,9 +112,7 @@ const router = useRouter()
 
 const locales = availableLocales
 const activeLang = ref(locales[0])
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 const imageFile = ref<File | null>(null)
 
 const emptyTranslations = () => Object.fromEntries(locales.map(l => [l, '']))
@@ -151,46 +149,28 @@ function handleImageChange(e: Event) {
 }
 
 async function handleSubmit() {
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
+  const fd = new FormData()
+  for (const loc of locales) {
+    fd.append(`name[${loc}]`, form.name[loc] || '')
+    fd.append(`description[${loc}]`, form.description[loc] || '')
+  }
+  fd.append('category_id', String(form.category_id ?? ''))
+  fd.append('item_id', String(form.item_id))
+  fd.append('item_qty', String(form.item_qty))
+  fd.append('toll', String(form.toll))
+  if (imageFile.value) fd.append('image', imageFile.value)
 
-  try {
-    await fetchCsrfCookie()
-
-    const fd = new FormData()
-    for (const loc of locales) {
-      fd.append(`name[${loc}]`, form.name[loc] || '')
-      fd.append(`description[${loc}]`, form.description[loc] || '')
-    }
-    fd.append('category_id', String(form.category_id ?? ''))
-    fd.append('item_id', String(form.item_id))
-    fd.append('item_qty', String(form.item_qty))
-    fd.append('toll', String(form.toll))
-    if (imageFile.value) fd.append('image', imageFile.value)
-
+  await submit(async (api) => {
     if (props.product) {
       fd.append('_method', 'PUT')
-      const res = await $api<{ data: ProductItem; message: string }>(`/admin/products/${props.product.id}`, {
-        method: 'POST',
-        body: fd,
-      })
-      successMsg.value = res.message || t('admin.productSaved')
+      const res = await api<{ data: ProductItem; message: string }>(`/admin/products/${props.product.id}`, { method: 'POST', body: fd })
       emit('saved', res.data.id)
-    } else {
-      const res = await $api<{ data: ProductItem; message: string }>('/admin/products', {
-        method: 'POST',
-        body: fd,
-      })
-      successMsg.value = res.message || t('admin.productCreated')
-      emit('saved', res.data.id)
+      return res.message || t('admin.productSaved')
     }
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.productFailed')
-  } finally {
-    saving.value = false
-  }
+    const res = await api<{ data: ProductItem; message: string }>('/admin/products', { method: 'POST', body: fd })
+    emit('saved', res.data.id)
+    return res.message || t('admin.productCreated')
+  }, t('admin.productFailed'))
 }
 
 async function handleDelete() {

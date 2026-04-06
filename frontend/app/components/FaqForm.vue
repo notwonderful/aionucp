@@ -91,9 +91,7 @@ const router = useRouter()
 
 const locales = availableLocales
 const activeLang = ref(locales[0])
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 
 const emptyTranslations = () => Object.fromEntries(locales.map(l => [l, '']))
 
@@ -117,41 +115,23 @@ watch(() => props.faq, (f) => {
 }, { immediate: true })
 
 async function handleSubmit() {
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
-
-  try {
-    await fetchCsrfCookie()
-
-    const payload = {
-      question: { ...form.question },
-      answer: { ...form.answer },
-      sort_order: form.sort_order,
-      published: form.published,
-    }
-
-    if (props.faq) {
-      const res = await $api<{ data: FaqItem; message: string }>(`/admin/faq/${props.faq.id}`, {
-        method: 'PUT',
-        body: payload,
-      })
-      successMsg.value = res.message || t('admin.faqSaved')
-      emit('saved', res.data.id)
-    } else {
-      const res = await $api<{ data: FaqItem; message: string }>('/admin/faq', {
-        method: 'POST',
-        body: payload,
-      })
-      successMsg.value = res.message || t('admin.faqCreated')
-      emit('saved', res.data.id)
-    }
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.faqFailed')
-  } finally {
-    saving.value = false
+  const payload = {
+    question: { ...form.question },
+    answer: { ...form.answer },
+    sort_order: form.sort_order,
+    published: form.published,
   }
+
+  await submit(async (api) => {
+    if (props.faq) {
+      const res = await api<{ data: FaqItem; message: string }>(`/admin/faq/${props.faq.id}`, { method: 'PUT', body: payload })
+      emit('saved', res.data.id)
+      return res.message || t('admin.faqSaved')
+    }
+    const res = await api<{ data: FaqItem; message: string }>('/admin/faq', { method: 'POST', body: payload })
+    emit('saved', res.data.id)
+    return res.message || t('admin.faqCreated')
+  }, t('admin.faqFailed'))
 }
 
 async function handleDelete() {
