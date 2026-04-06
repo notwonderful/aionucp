@@ -88,13 +88,6 @@ abstract class BaseGameServer implements GameServerContract
             ->update(['password' => $this->hashPassword($password)]);
     }
 
-    public function updateEmail(int $accountId, string $email): void
-    {
-        $this->query(AccountData::class)
-            ->where('id', $accountId)
-            ->update(['email' => $email]);
-    }
-
     public function banAccount(string $name): int
     {
         return $this->query(AccountData::class)

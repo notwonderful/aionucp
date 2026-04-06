@@ -199,6 +199,7 @@
     "email": "Email",
     "saving": "Saving...",
     "saveChanges": "Save changes",
+    "password": "Current password",
     "profileUpdated": "Profile updated successfully"
   },
   "security": {

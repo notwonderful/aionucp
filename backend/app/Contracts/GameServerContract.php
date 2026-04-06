@@ -20,8 +20,6 @@ interface GameServerContract
 
     public function updatePassword(int $accountId, string $password): void;
 
-    public function updateEmail(int $accountId, string $email): void;
-
     public function banAccount(string $name): int;
 
     public function unbanAccount(string $name): int;

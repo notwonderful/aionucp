@@ -9,10 +9,6 @@ use App\Models\User;
 
 final class UpdateUserProfile
 {
-    public function __construct(
-        protected UpdateUserEmail $updateUserEmail
-    ) {}
-
     public function execute(User $user, ProfileUpdateData $data): User
     {
         $emailChanged = $data->email !== $user->email;
@@ -21,12 +17,9 @@ final class UpdateUserProfile
 
         if ($emailChanged) {
             $user->email_verified_at = null;
-            $user->save();
-
-            $this->updateUserEmail->execute($user, $data->email);
-        } else {
-            $user->save();
         }
+
+        $user->save();
 
         return $user->fresh() ?? $user;
     }

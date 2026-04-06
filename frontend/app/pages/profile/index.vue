@@ -22,6 +22,7 @@
       </div>
 
       <FormInput v-model="form.email" id="profile-email" :label="$t('profile.email')" type="email" required autocomplete="email" :error="errors.email?.[0]" />
+      <FormInput v-model="form.password" id="profile-password" :label="$t('profile.password')" type="password" required autocomplete="current-password" :error="errors.password?.[0]" />
       <AlertMessage :message="success" variant="success" />
       <AppButton type="submit" :loading="loading" :loading-text="$t('profile.saving')">{{ $t('profile.saveChanges') }}</AppButton>
     </form>
@@ -33,7 +34,7 @@ const { t } = useI18n()
 const { $api, fetchCsrfCookie } = useApi()
 const { user, fetchUser } = useAuth()
 
-const form = reactive({ email: user.value?.email ?? '' })
+const form = reactive({ email: user.value?.email ?? '', password: '' })
 const errors = ref<Record<string, string[]>>({})
 const success = ref('')
 const loading = ref(false)
@@ -46,8 +47,9 @@ async function handleUpdateProfile() {
   success.value = ''
   try {
     await fetchCsrfCookie()
-    await $api('/profile', { method: 'PATCH', body: { email: form.email } })
+    await $api('/profile', { method: 'PATCH', body: { email: form.email, password: form.password } })
     await fetchUser()
+    form.password = ''
     success.value = t('profile.profileUpdated')
   } catch (e: unknown) {
     const err = e as { data?: { errors?: Record<string, string[]> } }

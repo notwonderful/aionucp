@@ -199,6 +199,7 @@
     "email": "Email",
     "saving": "Сохраняем...",
     "saveChanges": "Сохранить изменения",
+    "password": "Текущий пароль",
     "profileUpdated": "Профиль обновлён"
   },
   "security": {
