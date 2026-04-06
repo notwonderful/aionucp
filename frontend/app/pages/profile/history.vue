@@ -16,7 +16,7 @@
       <span class="text-[12px] text-white/15">{{ filteredTransactions.length }} {{ $t('history.transactions') }}</span>
     </div>
 
-    <div v-if="filteredTransactions.length" class="rounded-xl border border-white/[0.04] bg-white/[0.02] overflow-hidden">
+    <div v-if="filteredTransactions.length" class="card-panel overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead>

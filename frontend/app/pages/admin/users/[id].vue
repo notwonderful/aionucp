@@ -8,7 +8,7 @@
 
     <template v-else>
       <div class="mt-6 grid gap-6 lg:grid-cols-2">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02]">
+        <section class="card-panel">
           <div class="border-b border-white/[0.04] px-6 py-4">
             <h2 class="font-display text-[15px] font-bold uppercase tracking-wider">{{ $t('admin.userInfo') }}</h2>
           </div>
@@ -47,7 +47,7 @@
           </div>
         </section>
 
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02]">
+        <section class="card-panel">
           <div class="border-b border-white/[0.04] px-6 py-4">
             <h2 class="font-display text-[15px] font-bold uppercase tracking-wider">{{ $t('admin.changeRole') }}</h2>
           </div>

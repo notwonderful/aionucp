@@ -18,7 +18,7 @@
     <div v-else class="space-y-3">
       <div
         v-for="player in allPlayers" :key="player.id"
-        class="overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-colors duration-200 hover:bg-white/[0.03]"
+        class="overflow-hidden card-panel transition-colors duration-200 hover:bg-white/[0.03]"
       >
         <div class="flex items-center justify-between px-6 py-5">
           <div class="flex items-center gap-5">

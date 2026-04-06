@@ -261,7 +261,7 @@
           <!-- Side stack — 4 cols -->
           <div class="flex flex-col gap-4 lg:col-span-4">
             <NuxtLink v-for="item in sideNews" :key="item.id" :to="localePath(`/news/${item.slug}`)"
-              class="group flex-1 overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-colors hover:border-white/[0.08]">
+              class="group flex-1 overflow-hidden card-panel transition-colors hover:border-white/[0.08]">
               <div v-if="item.image_url" class="h-28 bg-cover bg-center" :style="{ backgroundImage: `url(${item.image_url})` }">
                 <div class="h-full bg-gradient-to-t from-surface to-transparent" />
               </div>

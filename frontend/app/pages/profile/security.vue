@@ -1,7 +1,7 @@
 <template>
   <div class="grid gap-6 xl:grid-cols-2">
     <div class="space-y-6">
-      <section class="rounded-xl border border-white/[0.04] bg-white/[0.02]">
+      <section class="card-panel">
         <div class="border-b border-white/[0.04] px-6 py-4">
           <div class="flex items-center gap-3">
             <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04]">
@@ -24,7 +24,7 @@
         </form>
       </section>
 
-      <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] px-6 py-5">
+      <section class="card-panel px-6 py-5">
         <h3 class="flex items-center gap-2 font-display text-[13px] font-bold uppercase tracking-wider text-white/30">
           <svg class="h-3.5 w-3.5 text-white/15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
           {{ $t('security.securityTips') }}
@@ -46,7 +46,7 @@
       </section>
     </div>
 
-    <section class="rounded-xl border border-white/[0.04] bg-white/[0.02]">
+    <section class="card-panel">
       <div class="border-b border-white/[0.04] px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -79,7 +79,7 @@
             {{ $t('security.twoFactorInfo') }}
           </p>
           <div class="mt-5 space-y-2">
-            <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] transition-all duration-300" :class="selectedMethod === 'email' && 'border-red-500/15 bg-white/[0.03]'">
+            <div class="card-panel transition-all duration-300" :class="selectedMethod === 'email' && 'border-red-500/15 bg-white/[0.03]'">
               <button @click="selectedMethod = selectedMethod === 'email' ? '' : 'email'" class="group flex w-full items-center gap-4 p-4 text-left">
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-red-600/10 transition-colors group-hover:bg-red-600/15">
                   <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
@@ -95,7 +95,7 @@
                 <AppButton class="mt-3" @click="setupTfa('email')" :loading="tfaActionLoading" :loading-text="$t('security.sending')">{{ $t('security.sendCode') }}</AppButton>
               </div>
             </div>
-            <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] transition-all duration-300" :class="selectedMethod === 'app' && 'border-white/[0.08] bg-white/[0.03]'">
+            <div class="card-panel transition-all duration-300" :class="selectedMethod === 'app' && 'border-white/[0.08] bg-white/[0.03]'">
               <button @click="selectedMethod = selectedMethod === 'app' ? '' : 'app'" class="group flex w-full items-center gap-4 p-4 text-left">
                 <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/[0.04] transition-colors group-hover:bg-white/[0.06]">
                   <svg class="h-5 w-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>

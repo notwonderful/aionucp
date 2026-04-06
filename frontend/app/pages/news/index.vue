@@ -35,7 +35,7 @@
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <NuxtLink v-for="article in rest" :key="article.id" :to="localePath(`/news/${article.slug}`)"
-            class="group overflow-hidden rounded-xl border border-white/[0.04] bg-white/[0.02] transition-colors duration-300 hover:border-white/[0.08]">
+            class="group overflow-hidden card-panel transition-colors duration-300 hover:border-white/[0.08]">
             <div class="h-40 bg-cover bg-center" :style="article.image_url ? { backgroundImage: `url(${article.image_url})` } : {}"
               :class="!article.image_url && 'bg-gradient-to-br from-white/[0.03] to-transparent'" />
             <div class="p-5">

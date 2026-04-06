@@ -1,5 +1,5 @@
 <template>
-  <section class="rounded-xl border border-white/[0.04] bg-white/[0.02]">
+  <section class="card-panel">
     <div class="border-b border-white/[0.04] px-6 py-4">
       <div class="flex items-center gap-3">
         <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600/10">
