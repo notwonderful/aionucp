@@ -43,6 +43,7 @@ use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\UploadController;
 use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Admin\DonationController as AdminDonationController;
+use App\Http\Controllers\Admin\ItemTrackerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -259,6 +260,8 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
 
     Route::get('donations', [AdminDonationController::class, 'index'])
         ->middleware('permission:'.Permission::DONATIONS_VIEW->value);
+    Route::get('donations/stats', [AdminDonationController::class, 'stats'])
+        ->middleware('permission:'.Permission::DONATIONS_VIEW->value);
 
     Route::prefix('tickets')->middleware('permission:'.Permission::TICKETS_VIEW->value)->group(function () {
         Route::get('/', [AdminTicketController::class, 'index']);
@@ -269,5 +272,16 @@ Route::middleware(['auth:sanctum', 'role:'.implode('|', UserRole::adminRoles())]
             ->middleware('permission:'.Permission::TICKETS_CLOSE->value);
         Route::post('{ticket}/open', [AdminTicketController::class, 'open'])
             ->middleware('permission:'.Permission::TICKETS_CLOSE->value);
+    });
+
+    Route::prefix('item-tracker')->group(function () {
+        Route::get('/', [ItemTrackerController::class, 'index'])
+            ->middleware('permission:'.Permission::ITEM_TRACKER_VIEW->value);
+        Route::get('logs', [ItemTrackerController::class, 'logs'])
+            ->middleware('permission:'.Permission::ITEM_TRACKER_VIEW->value);
+        Route::post('/', [ItemTrackerController::class, 'store'])
+            ->middleware('permission:'.Permission::ITEM_TRACKER_MANAGE->value);
+        Route::delete('{trackedItem}', [ItemTrackerController::class, 'destroy'])
+            ->middleware('permission:'.Permission::ITEM_TRACKER_MANAGE->value);
     });
 });

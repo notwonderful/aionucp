@@ -71,6 +71,10 @@ enum Permission: string
     // Bulk Email
     case BULK_EMAIL_SEND = 'bulk-email.send';
 
+    // Item Tracker
+    case ITEM_TRACKER_VIEW = 'item-tracker.view';
+    case ITEM_TRACKER_MANAGE = 'item-tracker.manage';
+
     public function label(): string
     {
         return match ($this) {
@@ -113,6 +117,8 @@ enum Permission: string
             self::PAYMENTS_EDIT => __('Edit Payment Settings'),
             self::DONATIONS_VIEW => __('View Donations'),
             self::BULK_EMAIL_SEND => __('Send Bulk Email'),
+            self::ITEM_TRACKER_VIEW => __('View Item Tracker'),
+            self::ITEM_TRACKER_MANAGE => __('Manage Item Tracker'),
         };
     }
 }

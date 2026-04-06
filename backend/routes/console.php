@@ -8,3 +8,8 @@ Schedule::command('app:record-online')
     ->hourly()
     ->withoutOverlapping()
     ->onOneServer();
+
+Schedule::command('app:track-items')
+    ->everyFiveMinutes()
+    ->withoutOverlapping()
+    ->onOneServer();
