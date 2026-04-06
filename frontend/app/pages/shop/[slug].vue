@@ -161,8 +161,9 @@ interface Player { id: number; name: string; race: string; player_class: string;
 const { t } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()
-const { $api, fetchCsrfCookie } = useApi()
+const { $api } = useApi()
 const { fetchUser } = useAuth()
+const { submit: purchaseSubmit, loading: purchasing, successMsg: successMessage, errorMsg: errorMessage } = useFormSubmit()
 
 const { data: shopData, status } = useAsyncData('shop', () =>
   $api<{ data: { products: Product[]; players: Player[] } }>('/shop'),
@@ -187,33 +188,16 @@ const selectedPlayerName = computed(() =>
 )
 
 const showConfirm = ref(false)
-const purchasing = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
 
 async function handlePurchase() {
   if (!product.value || !selectedPlayerId.value) return
-
-  purchasing.value = true
-  errorMessage.value = ''
-  successMessage.value = ''
-
-  try {
-    await fetchCsrfCookie()
-    await $api(`/shop/${product.value.id}/buy`, {
-      method: 'POST',
-      body: { player_id: Number(selectedPlayerId.value) },
-    })
+  await purchaseSubmit(async (api) => {
+    await api(`/shop/${product.value!.id}/buy`, { method: 'POST', body: { player_id: Number(selectedPlayerId.value) } })
     showConfirm.value = false
-    successMessage.value = t('shop.sentTo', { item: product.value.name, character: selectedPlayerName.value })
     await fetchUser()
-  } catch (e: unknown) {
-    showConfirm.value = false
-    const err = e as { data?: { message?: string } }
-    errorMessage.value = err.data?.message || t('shop.purchaseFailed')
-  } finally {
-    purchasing.value = false
-  }
+    return t('shop.sentTo', { item: product.value!.name, character: selectedPlayerName.value })
+  }, t('shop.purchaseFailed'))
+  showConfirm.value = false
 }
 
 onMounted(() => {

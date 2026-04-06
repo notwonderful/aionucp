@@ -176,9 +176,10 @@ definePageMeta({ layout: 'dashboard', middleware: ['auth', 'verified'] })
 interface Player { id: number; name: string; race: string; player_class: string; online: boolean }
 interface AccountData { id: number; name: string; toll: number; membership: number; membership_expire: string | null; players: Player[] }
 
-const { $api, fetchCsrfCookie } = useApi()
+const { $api } = useApi()
 const { user, fetchUser } = useAuth()
 const localePath = useLocalePath()
+const { submit: promoSubmit, loading: promoLoading, successMsg: promoSuccess, errorMsg: promoError } = useFormSubmit()
 
 const { data: dashboardData, status } = useAsyncData('dashboard', () =>
   $api<{ data: AccountData[] }>('/dashboard'),
@@ -190,10 +191,6 @@ const allPlayers = computed(() =>
 
 const showPromoModal = ref(false)
 const promoCode = ref('')
-const promoLoading = ref(false)
-const promoSuccess = ref('')
-const promoError = ref('')
-
 function closePromoModal() {
   showPromoModal.value = false
   promoCode.value = ''
@@ -203,24 +200,12 @@ function closePromoModal() {
 
 async function handleActivatePromo() {
   if (!promoCode.value.trim()) return
-  promoLoading.value = true
-  promoSuccess.value = ''
-  promoError.value = ''
-  try {
-    await fetchCsrfCookie()
-    const res = await $api<{ message: string }>('/promocodes/activate', {
-      method: 'POST',
-      body: { code: promoCode.value.trim() },
-    })
-    promoSuccess.value = res.message || 'Promo code activated!'
+  await promoSubmit(async (api) => {
+    const res = await api<{ message: string }>('/promocodes/activate', { method: 'POST', body: { code: promoCode.value.trim() } })
     promoCode.value = ''
     await fetchUser()
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    promoError.value = err.data?.message || 'Invalid or expired promo code.'
-  } finally {
-    promoLoading.value = false
-  }
+    return res.message || 'Promo code activated!'
+  }, 'Invalid or expired promo code.')
 }
 
 const classIconMap: Record<string, number> = {
