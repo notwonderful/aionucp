@@ -77,9 +77,9 @@
     <AppModal :open="showAddModal" :title="$t('admin.addItem')" @close="showAddModal = false">
       <form class="space-y-4" @submit.prevent="handleAdd">
         <div>
-          <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.itemUniqueId') }}</label>
+          <label class="form-label">{{ $t('admin.itemUniqueId') }}</label>
           <input v-model.number="addForm.item_unique_id" type="number" min="1" required
-            class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+            class="form-input"
             placeholder="100000">
         </div>
 

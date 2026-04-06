@@ -9,7 +9,7 @@
     </PageHeader>
 
     <!-- Add new -->
-    <form @submit.prevent="handleAdd" class="mb-8 rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
+    <form @submit.prevent="handleAdd" class="mb-8 card-panel p-5">
       <h3 class="mb-3 text-[12px] font-bold uppercase tracking-widest text-white/20">{{ $t('admin.addCategory') }}</h3>
       <div class="flex flex-col gap-3 sm:flex-row">
         <div class="flex-1 space-y-2">
@@ -30,7 +30,7 @@
     <!-- List -->
     <div class="space-y-2">
       <div v-for="cat in cats" :key="cat.id"
-        class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-4">
+        class="card-panel p-4">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div class="flex-1 space-y-1.5">
             <div v-for="loc in locales" :key="loc" class="flex gap-2">

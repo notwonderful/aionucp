@@ -6,33 +6,33 @@
 
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <div class="grid gap-6 lg:grid-cols-2">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <h3 class="text-[13px] font-bold uppercase tracking-widest text-white/30">{{ $t('admin.downloadGeneral') }}</h3>
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.downloadUrl') }}</label>
+            <label class="form-label">{{ $t('admin.downloadUrl') }}</label>
             <input v-model="form.url" type="text"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+              class="form-input"
               placeholder="https://...">
           </div>
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.fileSize') }}</label>
+              <label class="form-label">{{ $t('admin.fileSize') }}</label>
               <input v-model="form.file_size" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+                class="form-input"
                 placeholder="~8.2 GB">
             </div>
           </div>
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">Discord URL</label>
+            <label class="form-label">Discord URL</label>
             <input v-model="form.discord_url" type="text"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+              class="form-input"
               placeholder="https://discord.gg/...">
           </div>
         </section>
 
         <div class="space-y-6">
           <section v-for="(reqs, key) in { min_requirements: form.min_requirements, rec_requirements: form.rec_requirements }" :key="key"
-            class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-3">
+            class="card-panel p-6 space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="text-[13px] font-bold uppercase tracking-widest text-white/30">
                 {{ key === 'min_requirements' ? $t('admin.minRequirements') : $t('admin.recRequirements') }}
@@ -44,10 +44,10 @@
             </div>
             <div v-for="(req, i) in reqs" :key="i" class="flex gap-2">
               <input v-model="req.label" type="text"
-                class="w-24 shrink-0 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30 placeholder:text-white/15"
+                class="form-input w-24 shrink-0"
                 placeholder="Label">
               <input v-model="req.value" type="text"
-                class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30 placeholder:text-white/15"
+                class="form-input flex-1"
                 placeholder="Value">
               <button type="button" @click="removeReq(key, i)"
                 class="shrink-0 rounded-lg px-2 text-white/15 transition-colors hover:bg-red-600/10 hover:text-red-400">
@@ -70,30 +70,30 @@
       <h2 class="mb-4 font-display text-lg font-bold uppercase tracking-wider">{{ $t('admin.announcementSettings') }}</h2>
 
       <form @submit.prevent="handleAnnounceSubmit" class="space-y-6">
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-4">
+        <section class="card-panel p-6 space-y-4">
           <div class="flex items-center gap-3">
             <ToggleSwitch v-model="announceForm.enabled" />
             <span class="text-[13px] text-white/50">{{ $t('admin.announceEnabled') }}</span>
           </div>
 
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.announceText') }}</label>
+            <label class="form-label">{{ $t('admin.announceText') }}</label>
             <input v-model="announceForm.text" type="text"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+              class="form-input"
               placeholder="Patch 3.9.7 is live...">
           </div>
 
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.announceLinkText') }}</label>
+              <label class="form-label">{{ $t('admin.announceLinkText') }}</label>
               <input v-model="announceForm.link_text" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30"
+                class="form-input"
                 placeholder="Read more">
             </div>
             <div>
-              <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.announceLinkUrl') }}</label>
+              <label class="form-label">{{ $t('admin.announceLinkUrl') }}</label>
               <input v-model="announceForm.link_url" type="text"
-                class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30"
+                class="form-input"
                 placeholder="/news/patch-notes">
             </div>
           </div>
@@ -114,28 +114,28 @@
       <form @submit.prevent="handleTeleportSubmit" class="space-y-6">
         <div class="grid gap-6 lg:grid-cols-2">
           <section v-for="race in ['elyos', 'asmodians']" :key="race"
-            class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6 space-y-3">
+            class="card-panel p-6 space-y-3">
             <h3 class="text-[13px] font-bold uppercase tracking-widest text-white/30">{{ race === 'elyos' ? 'Elyos' : 'Asmodians' }}</h3>
             <div class="grid gap-3 sm:grid-cols-2">
               <div v-for="coord in ['x', 'y', 'z']" :key="coord">
                 <label class="mb-1 block text-[11px] font-medium text-white/25">{{ coord.toUpperCase() }}</label>
                 <input v-model.number="teleportForm[`${race}_${coord}`]" type="number" step="any"
-                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30">
+                  class="form-input">
               </div>
               <div>
                 <label class="mb-1 block text-[11px] font-medium text-white/25">Map ID</label>
                 <input v-model.number="teleportForm[`${race}_map`]" type="number" step="1"
-                  class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30">
+                  class="form-input">
               </div>
             </div>
           </section>
         </div>
 
-        <section class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+        <section class="card-panel p-6">
           <div class="max-w-xs">
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.cooldownMinutes') }}</label>
+            <label class="form-label">{{ $t('admin.cooldownMinutes') }}</label>
             <input v-model.number="teleportForm.cooldown_minutes" type="number" min="1" step="1"
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30">
+              class="form-input">
           </div>
         </section>
 

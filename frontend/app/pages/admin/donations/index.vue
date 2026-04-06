@@ -7,29 +7,29 @@
     </div>
 
     <div v-else class="mb-8 grid gap-4 sm:grid-cols-3">
-      <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
+      <div class="card-panel p-5">
         <div class="text-[12px] font-medium uppercase tracking-widest text-white/25">{{ $t('admin.totalRevenue') }}</div>
         <div class="mt-2 font-display text-2xl font-extrabold tabular-nums text-emerald-400">${{ stats.total_revenue.toLocaleString('en-US', { minimumFractionDigits: 2 }) }}</div>
       </div>
-      <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
+      <div class="card-panel p-5">
         <div class="text-[12px] font-medium uppercase tracking-widest text-white/25">{{ $t('admin.totalToll') }}</div>
         <div class="mt-2 font-display text-2xl font-extrabold tabular-nums text-red-400">{{ stats.total_toll.toLocaleString() }}</div>
       </div>
-      <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-5">
+      <div class="card-panel p-5">
         <div class="text-[12px] font-medium uppercase tracking-widest text-white/25">{{ $t('admin.totalDonations') }}</div>
         <div class="mt-2 font-display text-2xl font-extrabold tabular-nums text-sky-400">{{ stats.total_count }}</div>
       </div>
     </div>
 
     <div class="mb-8 grid gap-4 lg:grid-cols-3">
-      <div class="lg:col-span-2 rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+      <div class="lg:col-span-2 card-panel p-6">
         <h3 class="mb-2 font-display text-[13px] font-bold uppercase tracking-widest text-white/30">{{ $t('admin.revenueChart') }}</h3>
         <ClientOnly>
           <apexchart type="area" height="280" :options="revenueChartOpts" :series="revenueChartSeries" />
         </ClientOnly>
       </div>
 
-      <div class="rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+      <div class="card-panel p-6">
         <h3 class="mb-2 font-display text-[13px] font-bold uppercase tracking-widest text-white/30">{{ $t('admin.gateway') }}</h3>
         <ClientOnly>
           <apexchart type="donut" height="280" :options="gatewayChartOpts" :series="gatewayChartSeries" />

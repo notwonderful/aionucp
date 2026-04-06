@@ -11,11 +11,11 @@
     <!-- Add new -->
     <form @submit.prevent="handleAdd" class="mb-8 flex gap-3">
       <input v-model="newCat.name" type="text" placeholder="Category name"
-        class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30 placeholder:text-white/15">
+        class="form-input flex-1">
       <input v-model="newCat.slug" type="text" placeholder="slug"
-        class="w-32 rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30 placeholder:text-white/15">
+        class="form-input w-32">
       <input v-model.number="newCat.sort_order" type="number" placeholder="0" min="0"
-        class="w-20 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2.5 text-[14px] text-white/70 outline-none focus:border-red-500/30">
+        class="form-input w-20">
       <AppButton type="submit" :loading="adding" :loading-text="'...'">{{ $t('common.save') }}</AppButton>
     </form>
 
@@ -24,13 +24,13 @@
     <!-- List -->
     <div class="space-y-2">
       <div v-for="cat in cats" :key="cat.id"
-        class="flex items-center gap-4 rounded-xl border border-white/[0.04] bg-white/[0.02] p-4">
+        class="flex items-center gap-4 card-panel p-4">
         <input v-model="cat.name" type="text"
-          class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[14px] text-white/70 outline-none focus:border-red-500/30">
+          class="form-input flex-1">
         <input v-model="cat.slug" type="text"
-          class="w-28 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[14px] text-white/70 outline-none focus:border-red-500/30">
+          class="form-input w-28">
         <input v-model.number="cat.sort_order" type="number" min="0"
-          class="w-16 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[14px] text-white/70 outline-none focus:border-red-500/30">
+          class="form-input w-16">
         <ToggleSwitch v-model="cat.published" class="shrink-0" />
         <button @click="handleSave(cat)" class="rounded-lg bg-white/[0.04] px-3 py-2 text-[12px] font-bold text-white/40 hover:bg-white/[0.08] hover:text-white/60">
           {{ $t('common.save') }}

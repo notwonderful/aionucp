@@ -3,25 +3,25 @@
     <PageHeader :title="$t('admin.sendItem')" :subtitle="$t('admin.sendItemDesc')" />
 
     <div class="grid gap-8 lg:grid-cols-3">
-      <section class="lg:col-span-1 rounded-xl border border-white/[0.04] bg-white/[0.02] p-6">
+      <section class="lg:col-span-1 card-panel p-6">
         <h3 class="mb-5 text-[13px] font-bold uppercase tracking-widest text-white/30">{{ $t('admin.sendNewItem') }}</h3>
         <form class="space-y-4" @submit.prevent="handleSend">
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.playerName') }}</label>
+            <label class="form-label">{{ $t('admin.playerName') }}</label>
             <input v-model="form.player_name" type="text" required
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30 placeholder:text-white/15"
+              class="form-input"
               placeholder="CharacterName">
           </div>
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">Item ID</label>
+            <label class="form-label">Item ID</label>
             <input v-model.number="form.item_id" type="number" min="1" required
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30"
+              class="form-input"
               placeholder="100000">
           </div>
           <div>
-            <label class="mb-1.5 block text-[12px] font-medium text-white/30">{{ $t('admin.itemQty') }}</label>
+            <label class="form-label">{{ $t('admin.itemQty') }}</label>
             <input v-model.number="form.item_qty" type="number" min="1" max="1000" required
-              class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[14px] text-white/70 outline-none transition-colors focus:border-red-500/30"
+              class="form-input"
               placeholder="1">
           </div>
 
