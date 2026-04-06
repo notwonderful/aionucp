@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 use App\Http\Middleware\SecurityHeadersMiddleware;
 use App\Http\Middleware\SetLocaleMiddleware;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,5 +32,25 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(function () {
             return true;
+        });
+
+        $exceptions->render(function (QueryException $e) {
+            report($e);
+
+            return response()->json([
+                'message' => 'A server error occurred. Please try again later.',
+            ], 500);
+        });
+
+        $exceptions->render(function (\Throwable $e) {
+            if ($e instanceof HttpException || $e instanceof \Illuminate\Validation\ValidationException) {
+                return null;
+            }
+
+            report($e);
+
+            return response()->json([
+                'message' => 'A server error occurred. Please try again later.',
+            ], 500);
         });
     })->create();
