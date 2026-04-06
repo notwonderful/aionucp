@@ -79,20 +79,28 @@
           </div>
 
           <template v-else>
-            <div ref="messagesContainer" class="flex-1 overflow-y-auto px-5 py-4" @scroll="onMessagesScroll">
-              <div class="mx-auto max-w-2xl space-y-4">
+            <div ref="messagesContainer" class="flex-1 overflow-y-auto px-5 py-6" @scroll="onMessagesScroll">
+              <div class="mx-auto max-w-2xl space-y-3">
                 <div v-if="loadingMore" class="flex justify-center py-2">
                   <svg class="h-5 w-5 animate-spin text-white/20" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
                 </div>
                 <div v-for="msg in messages" :key="msg.id"
-                  :class="['flex', msg.user.is_admin ? 'justify-start' : 'justify-end']">
-                  <div :class="['max-w-[80%] rounded-2xl px-4 py-2.5',
-                    msg.user.is_admin
-                      ? 'rounded-bl-md bg-white/[0.05] text-white/60'
-                      : 'rounded-br-md bg-red-600/20 text-white/80']">
-                    <div v-if="msg.user.is_admin" class="mb-1 text-[11px] font-medium text-red-400/60">{{ msg.user.name }}</div>
+                  :class="['flex items-end gap-2', isOwnMessage(msg) ? 'justify-end' : 'justify-start']">
+
+                  <div v-if="!isOwnMessage(msg)" class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-600/15 text-[10px] font-bold uppercase text-red-400">
+                    {{ msg.user.name.charAt(0) }}
+                  </div>
+
+                  <div :class="['msg-bubble max-w-[75%] px-4 py-2.5',
+                    isOwnMessage(msg)
+                      ? 'msg-bubble--own'
+                      : 'msg-bubble--admin']">
+                    <div v-if="!isOwnMessage(msg)" class="mb-1 flex items-center gap-1.5">
+                      <span class="text-[11px] font-semibold text-red-400/80">{{ msg.user.name }}</span>
+                      <span v-if="msg.user.is_admin" class="rounded bg-red-500/10 px-1 py-px text-[9px] font-medium uppercase tracking-wider text-red-400/50">staff</span>
+                    </div>
                     <div class="prose-chat text-[13px] leading-relaxed" v-html="msg.body" />
-                    <div :class="['mt-1 text-[10px]', msg.user.is_admin ? 'text-white/15' : 'text-right text-white/20']">{{ formatTime(msg.created_at) }}</div>
+                    <div :class="['mt-1.5 text-[10px]', isOwnMessage(msg) ? 'text-right text-white/25' : 'text-white/15']">{{ formatTime(msg.created_at) }}</div>
                   </div>
                 </div>
               </div>
@@ -297,6 +305,11 @@ function selectTicket(id: string) {
   activeTicketId.value = id
 }
 
+const { user } = useAuth()
+function isOwnMessage(msg: TicketMsg): boolean {
+  return msg.user.id === user.value?.id
+}
+
 function scrollToBottom() {
   nextTick(() => {
     if (messagesContainer.value) {
@@ -310,7 +323,6 @@ async function sendMessage() {
 
   const tempId = Date.now()
   const body = messageText.value
-  const { user } = useAuth()
 
   messages.value.push({
     id: tempId,
@@ -377,6 +389,24 @@ function stripHtml(html: string) {
 .send-btn { width: 46px; height: 46px; }
 .ticket-list--collapsed { display: none; }
 .ticket-chat--empty { display: none; }
+
+.msg-bubble {
+  position: relative;
+}
+
+.msg-bubble--own {
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.1);
+  border-radius: 1rem 1rem 0.25rem 1rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.msg-bubble--admin {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem 1rem 1rem 0.25rem;
+  color: rgba(255, 255, 255, 0.65);
+}
 
 @media (min-width: 1024px) {
   .ticket-list { width: 340px; }
