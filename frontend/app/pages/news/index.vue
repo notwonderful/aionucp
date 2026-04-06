@@ -52,13 +52,7 @@
 
       <div v-else class="py-20 text-center text-white/20">{{ $t('news.noNews') }}</div>
 
-      <div v-if="meta.last_page > 1" class="mt-10 flex items-center justify-center gap-2">
-        <button v-for="p in meta.last_page" :key="p" @click="page = p"
-          :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-            page === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-          {{ p }}
-        </button>
-      </div>
+      <PaginationButtons v-model="page" :last-page="meta.last_page" />
     </div>
   </div>
 </template>

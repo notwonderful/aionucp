@@ -29,9 +29,7 @@
 
       <!-- ONLINE PLAYERS -->
       <div v-if="activeTab === 'online'">
-        <div v-if="onlineLoading" class="space-y-3">
-          <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-lg bg-white/[0.03]" />
-        </div>
+        <SkeletonLoader v-if="onlineLoading" />
         <table v-else class="w-full">
           <thead>
             <tr class="border-b border-white/[0.06]">
@@ -55,20 +53,12 @@
           </tbody>
         </table>
         <p v-if="!onlineLoading && onlineData.length === 0" class="py-12 text-center text-[14px] text-white/20">{{ t('rank.noOnline') }}</p>
-        <div v-if="onlineMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
-          <button v-for="p in onlineMeta.last_page" :key="p" @click="onlinePage = p"
-            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-              onlinePage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-            {{ p }}
-          </button>
-        </div>
+        <PaginationButtons v-model="onlinePage" :last-page="onlineMeta.last_page" />
       </div>
 
       <!-- ABYSS RANKINGS -->
       <div v-else-if="activeTab === 'abyss'">
-        <div v-if="abyssLoading" class="space-y-3">
-          <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-lg bg-white/[0.03]" />
-        </div>
+        <SkeletonLoader v-if="abyssLoading" />
         <table v-else class="w-full">
           <thead>
             <tr class="border-b border-white/[0.06]">
@@ -96,20 +86,12 @@
           </tbody>
         </table>
         <p v-if="!abyssLoading && abyssData.length === 0" class="py-12 text-center text-[14px] text-white/20">No abyss ranking data yet.</p>
-        <div v-if="abyssMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
-          <button v-for="p in abyssMeta.last_page" :key="p" @click="abyssPage = p"
-            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-              abyssPage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-            {{ p }}
-          </button>
-        </div>
+        <PaginationButtons v-model="abyssPage" :last-page="abyssMeta.last_page" />
       </div>
 
       <!-- LEGIONS -->
       <div v-else-if="activeTab === 'legions'">
-        <div v-if="legionLoading" class="space-y-3">
-          <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-lg bg-white/[0.03]" />
-        </div>
+        <SkeletonLoader v-if="legionLoading" />
         <table v-else class="w-full">
           <thead>
             <tr class="border-b border-white/[0.06]">
@@ -129,13 +111,7 @@
           </tbody>
         </table>
         <p v-if="!legionLoading && legionData.length === 0" class="py-12 text-center text-[14px] text-white/20">No legion data yet.</p>
-        <div v-if="legionMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
-          <button v-for="p in legionMeta.last_page" :key="p" @click="legionPage = p"
-            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-              legionPage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-            {{ p }}
-          </button>
-        </div>
+        <PaginationButtons v-model="legionPage" :last-page="legionMeta.last_page" />
       </div>
 
       <!-- STATISTICS -->
