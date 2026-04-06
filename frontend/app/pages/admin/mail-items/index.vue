@@ -37,9 +37,7 @@
       <section class="lg:col-span-2">
         <h3 class="mb-4 text-[13px] font-bold uppercase tracking-widest text-white/30">{{ $t('admin.sendHistory') }}</h3>
 
-        <div v-if="logsStatus === 'pending'" class="space-y-2">
-          <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-xl bg-white/[0.02]" />
-        </div>
+        <SkeletonLoader v-if="logsStatus === 'pending'" />
 
         <DataTable v-else :columns="columns" :has-rows="!!logs.length" :empty-text="$t('admin.noMailLogs')">
           <tr v-for="log in logs" :key="log.id"

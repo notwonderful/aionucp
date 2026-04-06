@@ -42,9 +42,7 @@
       <SearchInput v-model="search" :placeholder="$t('admin.searchUsers')" class="sm:w-64" />
     </div>
 
-    <div v-if="listStatus === 'pending'" class="space-y-2">
-      <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-xl bg-white/[0.02]" />
-    </div>
+    <SkeletonLoader v-if="listStatus === 'pending'" />
 
     <template v-else>
       <DataTable :columns="columns" :has-rows="!!donations.length" :empty-text="$t('admin.noDonations')">
@@ -57,25 +55,15 @@
           <td class="px-5 py-3 text-[13px] tabular-nums text-red-400">{{ d.amount_toll.toLocaleString() }}</td>
           <td class="px-5 py-3 text-[13px] text-white/40">{{ d.gateway }}</td>
           <td class="px-5 py-3">
-            <span :class="['rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider',
-              d.status === 'completed' ? 'bg-emerald-500/10 text-emerald-400'
-                : d.status === 'pending' ? 'bg-amber-500/10 text-amber-400'
-                : d.status === 'refunded' ? 'bg-sky-500/10 text-sky-400'
-                : 'bg-red-500/10 text-red-400']">
-              {{ statusLabel(d.status) }}
-            </span>
+            <StatusBadge
+              :color="d.status === 'completed' ? 'emerald' : d.status === 'pending' ? 'amber' : d.status === 'refunded' ? 'sky' : 'red'"
+              :label="statusLabel(d.status)" />
           </td>
           <td class="px-5 py-3 text-right text-[12px] text-white/20">{{ formatDate(d.completed_at || d.created_at) }}</td>
         </tr>
       </DataTable>
 
-      <div v-if="listMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
-        <button v-for="p in listMeta.last_page" :key="p" @click="page = p"
-          :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-            page === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-          {{ p }}
-        </button>
-      </div>
+      <PaginationButtons v-model="page" :last-page="listMeta.last_page" />
     </template>
   </div>
 </template>

@@ -9,9 +9,7 @@
       </template>
     </PageHeader>
 
-    <div v-if="status === 'pending'" class="space-y-2">
-      <div v-for="i in 10" :key="i" class="h-14 animate-pulse rounded-xl bg-white/[0.02]" />
-    </div>
+    <SkeletonLoader v-if="status === 'pending'" :count="10" />
 
     <template v-else>
       <DataTable :columns="columns" :has-rows="!!logs.length" :empty-text="$t('admin.noMailLogs')">
@@ -25,13 +23,7 @@
         </tr>
       </DataTable>
 
-      <div v-if="meta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
-        <button v-for="p in meta.last_page" :key="p" @click="page = p"
-          :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-            page === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-          {{ p }}
-        </button>
-      </div>
+      <PaginationButtons v-model="page" :last-page="meta.last_page" />
     </template>
   </div>
 </template>

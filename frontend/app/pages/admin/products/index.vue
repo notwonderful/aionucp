@@ -19,9 +19,7 @@
       <SearchInput v-model="search" :placeholder="$t('admin.searchProducts')" class="sm:w-64" />
     </div>
 
-    <div v-if="status === 'pending'" class="space-y-2">
-      <div v-for="i in 5" :key="i" class="h-20 animate-pulse rounded-xl bg-white/[0.02]" />
-    </div>
+    <SkeletonLoader v-if="status === 'pending'" height="h-20" />
 
     <template v-else>
       <DataTable :columns="columns" :has-rows="!!products.length" :empty-text="$t('admin.noProductsFound')">

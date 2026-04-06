@@ -20,19 +20,14 @@
       <FilterTabs v-model="typeFilter" :tabs="typeFilters" />
     </div>
 
-    <div v-if="status === 'pending'" class="space-y-2">
-      <div v-for="i in 5" :key="i" class="h-16 animate-pulse rounded-xl bg-white/[0.02]" />
-    </div>
+    <SkeletonLoader v-if="status === 'pending'" height="h-16" />
 
     <template v-else>
       <DataTable :columns="columns" :has-rows="!!entries.length" :empty-text="$t('admin.noWikiFound')">
         <NuxtLink v-for="item in entries" :key="item.id" :to="`/admin/wiki/${item.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5">
-            <span :class="['rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider',
-              item.published ? 'bg-emerald-500/10 text-emerald-400' : 'bg-white/[0.04] text-white/25']">
-              {{ item.published ? $t('admin.published') : $t('admin.draft') }}
-            </span>
+            <StatusBadge :color="item.published ? 'emerald' : 'muted'" :label="item.published ? $t('admin.published') : $t('admin.draft')" />
           </td>
           <td class="px-5 py-3.5">
             <span class="rounded bg-white/[0.04] px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white/40">{{ item.category?.name ?? '' }}</span>

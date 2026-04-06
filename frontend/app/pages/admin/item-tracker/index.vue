@@ -16,9 +16,7 @@
     </div>
 
     <template v-if="activeTab === 'items'">
-      <div v-if="itemsStatus === 'pending'" class="space-y-2">
-        <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-xl bg-white/[0.02]" />
-      </div>
+      <SkeletonLoader v-if="itemsStatus === 'pending'" />
 
       <template v-else>
         <DataTable :columns="itemColumns" :has-rows="!!items.length" :empty-text="$t('admin.noTrackedItems')">
@@ -31,10 +29,7 @@
             <td class="px-5 py-3 text-[13px] tabular-nums text-white/50">{{ item.item_count }}</td>
             <td class="px-5 py-3 text-[13px] tabular-nums text-white/50">+{{ item.enchant }}</td>
             <td class="px-5 py-3">
-              <span :class="['rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider',
-                item.is_deleted ? 'bg-red-500/10 text-red-400' : 'bg-emerald-500/10 text-emerald-400']">
-                {{ item.is_deleted ? $t('admin.deleted') : $t('admin.active') }}
-              </span>
+              <StatusBadge :color="item.is_deleted ? 'red' : 'emerald'" :label="item.is_deleted ? $t('admin.deleted') : $t('admin.active')" />
             </td>
             <td class="px-5 py-3 text-[12px] text-white/20">{{ formatDate(item.last_changed_at) }}</td>
             <td class="px-5 py-3 text-right">
@@ -45,20 +40,12 @@
           </tr>
         </DataTable>
 
-        <div v-if="itemsMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
-          <button v-for="p in itemsMeta.last_page" :key="p" @click="itemsPage = p"
-            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-              itemsPage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-            {{ p }}
-          </button>
-        </div>
+        <PaginationButtons v-model="itemsPage" :last-page="itemsMeta.last_page" />
       </template>
     </template>
 
     <template v-if="activeTab === 'logs'">
-      <div v-if="logsStatus === 'pending'" class="space-y-2">
-        <div v-for="i in 5" :key="i" class="h-14 animate-pulse rounded-xl bg-white/[0.02]" />
-      </div>
+      <SkeletonLoader v-if="logsStatus === 'pending'" />
 
       <template v-else>
         <DataTable :columns="logColumns" :has-rows="!!logs.length" :empty-text="$t('admin.noTransferLogs')">
@@ -75,24 +62,15 @@
               <div class="text-[11px] text-white/20">{{ log.new_owner_account || '' }}</div>
             </td>
             <td class="px-5 py-3">
-              <span :class="['rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider',
-                log.event_type === 'transfer' ? 'bg-sky-500/10 text-sky-400'
-                  : log.event_type === 'deleted' ? 'bg-red-500/10 text-red-400'
-                  : 'bg-amber-500/10 text-amber-400']">
-                {{ log.event_type === 'transfer' ? $t('admin.transfer') : log.event_type === 'deleted' ? $t('admin.deleted') : $t('admin.enchantChanged') }}
-              </span>
+              <StatusBadge
+                :color="log.event_type === 'transfer' ? 'sky' : log.event_type === 'deleted' ? 'red' : 'amber'"
+                :label="log.event_type === 'transfer' ? $t('admin.transfer') : log.event_type === 'deleted' ? $t('admin.deleted') : $t('admin.enchantChanged')" />
             </td>
             <td class="px-5 py-3 text-right text-[12px] text-white/20">{{ formatDate(log.logged_at) }}</td>
           </tr>
         </DataTable>
 
-        <div v-if="logsMeta.last_page > 1" class="mt-6 flex items-center justify-center gap-2">
-          <button v-for="p in logsMeta.last_page" :key="p" @click="logsPage = p"
-            :class="['rounded-lg px-3 py-1.5 text-[12px] font-bold transition-colors',
-              logsPage === p ? 'bg-red-600/15 text-red-400' : 'text-white/25 hover:text-white/50']">
-            {{ p }}
-          </button>
-        </div>
+        <PaginationButtons v-model="logsPage" :last-page="logsMeta.last_page" />
       </template>
     </template>
 
