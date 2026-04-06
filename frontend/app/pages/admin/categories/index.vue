@@ -16,7 +16,7 @@
           <div v-for="loc in locales" :key="loc" class="flex gap-2">
             <span class="flex w-8 shrink-0 items-center justify-center text-[10px] font-bold uppercase text-white/20">{{ loc }}</span>
             <input v-model="newCat.name[loc]" type="text" :placeholder="`Name (${loc})`"
-              class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30 placeholder:text-white/15">
+              class="form-input flex-1">
           </div>
         </div>
         <div class="flex items-end">
@@ -36,7 +36,7 @@
             <div v-for="loc in locales" :key="loc" class="flex gap-2">
               <span class="flex w-8 shrink-0 items-center justify-center text-[10px] font-bold uppercase text-white/20">{{ loc }}</span>
               <input v-model="cat._names[loc]" type="text"
-                class="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[13px] text-white/70 outline-none focus:border-red-500/30">
+                class="form-input flex-1">
             </div>
           </div>
           <div class="flex items-center gap-2">

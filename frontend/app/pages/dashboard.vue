@@ -147,7 +147,7 @@
           <input
             v-model="promoCode" type="text" required
             placeholder="XXXX-XXXX-XXXX"
-            class="w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-3 font-mono text-[15px] tracking-widest text-white uppercase placeholder-white/15 outline-none transition-all duration-300 focus:border-gold-500/30 focus:bg-white/[0.05] focus:ring-1 focus:ring-gold-500/20"
+            class="form-input font-mono text-[15px] tracking-widest text-white uppercase focus:border-gold-500/30 focus:bg-white/[0.05] focus:ring-1 focus:ring-gold-500/20"
           />
         </div>
 

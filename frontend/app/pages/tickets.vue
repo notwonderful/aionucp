@@ -140,7 +140,7 @@
           <label class="mb-1.5 block text-[12px] font-medium text-white/40">{{ $t('tickets.category') }}</label>
           <select
             v-model="newTicket.category_id"
-            class="w-full appearance-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-[14px] text-white outline-none transition-all duration-300 focus:border-red-500/30 focus:bg-white/[0.05] focus:ring-1 focus:ring-red-500/20"
+            class="form-input appearance-none"
           >
             <option v-for="cat in categories" :key="cat.id" :value="cat.id" class="bg-surface-overlay">{{ cat.name }}</option>
           </select>
