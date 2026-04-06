@@ -132,14 +132,7 @@ const stats = computed<StatsData>(() => statsData.value ?? { total_revenue: 0, t
 const donations = computed(() => listData.value?.data ?? [])
 const listMeta = computed(() => listData.value?.meta ?? { last_page: 1 })
 
-const chartTheme = {
-  chart: { background: 'transparent', toolbar: { show: false }, zoom: { enabled: false } },
-  theme: { mode: 'dark' as const },
-  grid: { borderColor: 'rgba(255,255,255,0.04)', strokeDashArray: 3 },
-  tooltip: { theme: 'dark', style: { fontSize: '12px' } },
-  xaxis: { labels: { style: { colors: 'rgba(255,255,255,0.25)', fontSize: '11px' } } },
-  yaxis: { labels: { style: { colors: 'rgba(255,255,255,0.25)', fontSize: '11px' } } },
-}
+const { chartTheme } = useChartTheme()
 
 const revenueChartOpts = computed(() => ({
   ...chartTheme,
