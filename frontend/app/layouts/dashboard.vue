@@ -115,6 +115,12 @@
             </Transition>
           </div>
           <div class="h-5 w-px bg-white/[0.06]" />
+          <div class="flex items-center gap-1">
+            <NuxtLink v-for="l in (['en','ru'] as const)" :key="l" :to="switchLocalePath(l)"
+              :class="['rounded px-2 py-1 text-[11px] font-bold uppercase transition-all duration-300',
+                locale===l ? 'bg-white/[0.08] text-white' : 'text-white/20 hover:text-white/50']">{{ l }}</NuxtLink>
+          </div>
+          <div class="h-5 w-px bg-white/[0.06]" />
           <span class="text-[13px] font-medium text-white/40">{{ user?.name }}</span>
         </div>
       </header>
@@ -150,8 +156,10 @@ import { h } from 'vue'
 
 const { user, isAdmin, logout } = useAuth()
 const { relative: formatNotifTime } = useDate()
+const { locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
+const switchLocalePath = useSwitchLocalePath()
 const sidebarOpen = ref(false)
 const notifOpen = ref(false)
 const showLogoutModal = ref(false)
