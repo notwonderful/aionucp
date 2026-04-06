@@ -1,5 +1,5 @@
 <template>
-  <footer class="relative overflow-hidden border-t border-white/[0.04] bg-[#08070a]">
+  <footer class="relative overflow-hidden border-t border-white/[0.04] bg-surface-dark">
     <!-- Atmospheric bg -->
     <div class="absolute inset-0 bg-[url('/img/bg_waterfall.jpg')] bg-cover bg-center opacity-[0.02]" />
 
@@ -10,10 +10,10 @@
         <!-- Brand column -->
         <div class="md:col-span-4">
           <NuxtLink :to="localePath('/')" class="group inline-flex items-center gap-2.5">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/15 ring-1 ring-red-500/20">
-              <svg class="h-4 w-4 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-primary/20">
+              <svg class="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <span class="font-display text-xl font-extrabold tracking-tight text-white">AION<span class="text-red-500">UCP</span></span>
+            <span class="font-display text-xl font-extrabold tracking-tight text-white">AION<span class="text-accent">UCP</span></span>
           </NuxtLink>
           <p class="mt-4 max-w-[260px] text-[13px] leading-relaxed text-white/20">
             {{ t('footer.desc') }}

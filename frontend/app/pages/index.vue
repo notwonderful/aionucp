@@ -8,8 +8,8 @@
         <source src="/video/hero.mp4" type="video/mp4" />
       </video>
       <!-- Minimal overlay — let video breathe -->
-      <div class="absolute inset-0 bg-gradient-to-b from-surface/40 via-transparent to-surface" />
-      <div class="absolute inset-0 bg-gradient-to-r from-surface/80 via-surface/20 to-transparent" />
+      <div class="absolute inset-0 bg-gradient-to-b from-surface/30 via-transparent to-surface" />
+      <div class="absolute inset-0 bg-gradient-to-r from-surface/70 via-surface/10 to-transparent" />
 
       <!-- Content — left aligned, bottom heavy -->
       <div class="relative z-10 flex min-h-[100dvh] flex-col justify-end pb-24 pt-32 lg:justify-center lg:pb-0 lg:pt-0">
@@ -28,7 +28,7 @@
             <!-- Title — massive Syne -->
             <h1 class="font-display text-[clamp(3rem,9vw,8rem)] font-extrabold uppercase leading-[0.85] tracking-tighter">
               {{ t('hero.title1') }}<br>
-              <span class="text-red-500">{{ t('hero.title2') }}</span>
+              <span class="text-ember-400">{{ t('hero.title2') }}</span>
             </h1>
 
             <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/40 italic">
@@ -37,7 +37,7 @@
 
             <div class="mt-10 flex items-center gap-5">
               <NuxtLink :to="localePath('/start')"
-                class="inline-block bg-red-600 px-8 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-red-500 hover:shadow-[0_0_40px_rgba(220,60,60,0.3)] active:scale-[0.97]">
+                class="inline-block bg-primary px-8 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-primary-hover hover:shadow-[0_0_40px_rgba(184,58,42,0.3)] active:scale-[0.97]">
                 {{ t('hero.cta') }}
               </NuxtLink>
               <a href="#" class="inline-flex items-center gap-2.5 rounded-lg bg-[#5865F2] px-6 py-4 text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-[#4752C4] hover:shadow-[0_0_30px_rgba(88,101,242,0.25)] active:scale-[0.97]">
@@ -62,7 +62,7 @@
           <template v-for="(step, i) in steps" :key="i">
             <!-- Arrow between steps -->
             <div v-if="i > 0" class="hidden items-center justify-center self-center md:flex">
-              <svg class="h-5 w-5 text-red-600/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              <svg class="h-5 w-5 text-accent/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
             </div>
             <!-- Step -->
             <div class="relative border-t border-white/[0.06] p-10 md:p-12">
@@ -71,7 +71,7 @@
                 <h3 class="font-display text-[18px] font-bold uppercase tracking-wider">{{ t(step.titleKey) }}</h3>
                 <p class="mt-2 max-w-xs text-[14px] leading-relaxed text-white/30">{{ t(step.descKey) }}</p>
                 <NuxtLink v-if="step.link" :to="step.link"
-                  class="mt-5 inline-block text-[12px] font-bold uppercase tracking-widest text-red-500 transition-colors hover:text-red-400">
+                  class="mt-5 inline-block text-[12px] font-bold uppercase tracking-widest text-ember-400 transition-colors hover:text-ember-300">
                   {{ step.linkLabel }} &rarr;
                 </NuxtLink>
               </div>
@@ -100,11 +100,11 @@
         <!-- Asmodian — armor art is the star -->
         <div class="relative flex items-end overflow-hidden p-8 lg:p-12">
           <div class="absolute inset-0 bg-[url('/img/bg_39_armor.jpg')] bg-cover bg-center" />
-          <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-red-950/30" />
+          <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-ember-900/30" />
           <div class="absolute inset-0 bg-gradient-to-l from-surface/30 to-transparent md:bg-none" />
           <img src="/img/race/1.png" alt="" class="pointer-events-none absolute top-6 left-6 h-12 w-12 object-contain opacity-30" />
           <div class="relative md:ml-auto md:text-right">
-            <div class="font-display text-[13px] font-bold uppercase tracking-[0.3em] text-red-500/60">{{ t('factions.asmodian') }}</div>
+            <div class="font-display text-[13px] font-bold uppercase tracking-[0.3em] text-ember-400/60">{{ t('factions.asmodian') }}</div>
             <div class="mt-1 text-[48px] font-bold tabular-nums leading-none text-white lg:text-[56px]">{{ factionData.asmodians }}</div>
             <div class="mt-2 text-[12px] text-white/40">{{ t('stats.online') }}</div>
           </div>
@@ -117,11 +117,11 @@
       <div class="absolute inset-0 bg-[url('/img/bg_39_armor.jpg')] bg-cover bg-center opacity-[0.04]" />
       <div class="relative mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-6 px-6 py-10 md:flex-row">
         <div class="flex items-center gap-4">
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600/15">
-            <svg class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15">
+            <svg class="h-5 w-5 text-ember-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
           </div>
           <div>
-            <div class="text-[11px] font-bold uppercase tracking-widest text-red-500/60">{{ t('timer.next') }}</div>
+            <div class="text-[11px] font-bold uppercase tracking-widest text-ember-400/60">{{ t('timer.next') }}</div>
             <div class="font-display text-lg font-bold uppercase tracking-tight">{{ nextSiege.name }}</div>
           </div>
         </div>
@@ -163,7 +163,7 @@
             <div :class="['absolute inset-0 transition-opacity duration-700',
               selectedClass === cls.id ? 'opacity-0' : 'bg-black/50 opacity-100 group-hover:opacity-70']" />
             <!-- Red line indicator for active -->
-            <div :class="['absolute bottom-0 left-0 right-0 h-[3px] bg-red-500 transition-all duration-500',
+            <div :class="['absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary to-accent transition-all duration-500',
               selectedClass === cls.id ? 'opacity-100' : 'opacity-0']" />
 
             <!-- Class icon centered — visible in collapsed state -->
@@ -190,7 +190,7 @@
                 class="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.07]" />
 
               <div class="relative">
-                <div class="text-[11px] font-bold uppercase tracking-[0.2em] text-red-400/70">{{ cls.role }}</div>
+                <div class="text-[11px] font-bold uppercase tracking-[0.2em] text-ember-300/70">{{ cls.role }}</div>
                 <div class="mt-1 font-display text-3xl font-extrabold uppercase tracking-tight lg:text-4xl">{{ cls.name }}</div>
                 <p class="mt-3 max-w-sm text-[13px] leading-relaxed text-white/40">{{ cls.description }}</p>
                 <!-- Stat bars inline -->
@@ -199,7 +199,7 @@
                     <div class="mb-1 text-[9px] font-bold uppercase tracking-wider text-white/20">{{ stat.name }}</div>
                     <div class="h-1 overflow-hidden rounded-full bg-white/[0.08]">
                       <div class="h-full rounded-full transition-all duration-1000 ease-[cubic-bezier(0.32,0.72,0,1)]"
-                        :class="stat.value >= 8 ? 'bg-red-500/70' : stat.value >= 5 ? 'bg-amber-500/50' : 'bg-white/20'"
+                        :class="stat.value >= 8 ? 'bg-gradient-to-r from-ember-600 to-ember-400' : stat.value >= 5 ? 'bg-amber-500/50' : 'bg-white/20'"
                         :style="{ width: selectedClass === cls.id ? `${stat.value * 10}%` : '0%' }" />
                     </div>
                   </div>
@@ -217,7 +217,7 @@
       <div class="relative mx-auto max-w-[1200px] px-6">
         <!-- Section header — left aligned, big -->
         <div v-reveal class="mb-20 max-w-lg">
-          <span class="text-[11px] font-bold uppercase tracking-[0.3em] text-red-500/70">{{ t('realm.eyebrow') }}</span>
+          <span class="text-[11px] font-bold uppercase tracking-[0.3em] text-accent/70">{{ t('realm.eyebrow') }}</span>
           <h2 class="mt-3 font-display text-4xl font-extrabold uppercase tracking-tighter lg:text-5xl">
             {{ t('realm.title') }}
           </h2>
@@ -225,7 +225,7 @@
 
         <!-- 2-col feature grid — no cards, just text blocks with left red bar -->
         <div class="grid gap-x-20 gap-y-16 md:grid-cols-2">
-          <div v-for="feat in allFeatures" :key="feat.titleKey" class="relative pl-5 before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-red-600/30">
+          <div v-for="feat in allFeatures" :key="feat.titleKey" class="relative pl-5 before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-accent/20">
             <h3 class="font-display text-[17px] font-bold uppercase tracking-wider">{{ t(feat.titleKey) }}</h3>
             <p class="mt-2 text-[14px] leading-relaxed text-white/35">{{ t(feat.descKey) }}</p>
           </div>
@@ -242,15 +242,15 @@
       <div class="relative mx-auto max-w-[1200px] px-6">
         <div class="mb-14 flex items-end justify-between">
           <h2 v-reveal class="font-display text-3xl font-extrabold uppercase tracking-tighter lg:text-4xl">{{ t('news.title') }}</h2>
-          <NuxtLink :to="localePath('/news')" class="text-[12px] font-medium uppercase tracking-widest text-red-500/60 transition-colors hover:text-red-500">{{ t('news.all') }}</NuxtLink>
+          <NuxtLink :to="localePath('/news')" class="text-[12px] font-medium uppercase tracking-widest text-ember-400/60 transition-colors hover:text-ember-400">{{ t('news.all') }}</NuxtLink>
         </div>
 
         <div class="grid gap-4 lg:grid-cols-12">
           <!-- Featured — 8 cols, image dominant -->
           <NuxtLink v-if="featuredNews" :to="localePath(`/news/${featuredNews.slug}`)" class="group relative overflow-hidden lg:col-span-8">
-            <div class="aspect-[16/9] overflow-hidden bg-cover bg-center lg:aspect-[2/1]" :style="featuredNews.image_url ? { backgroundImage: `url(${featuredNews.image_url})` } : {}" :class="!featuredNews.image_url && 'bg-gradient-to-br from-red-950/30 to-surface'">
+            <div class="aspect-[16/9] overflow-hidden bg-cover bg-center lg:aspect-[2/1]" :style="featuredNews.image_url ? { backgroundImage: `url(${featuredNews.image_url})` } : {}" :class="!featuredNews.image_url && 'bg-gradient-to-br from-ember-900/30 to-surface'">
               <div class="flex h-full flex-col justify-end bg-gradient-to-t from-surface via-surface/30 to-transparent p-8 transition-all duration-500 group-hover:via-surface/50">
-                <span class="mb-3 w-fit bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest">{{ featuredNews.tag }}</span>
+                <span class="mb-3 w-fit bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest">{{ featuredNews.tag }}</span>
                 <h3 class="font-display text-2xl font-bold uppercase tracking-tight lg:text-3xl">{{ featuredNews.title }}</h3>
                 <p class="mt-2 max-w-md text-[13px] text-white/40">{{ featuredNews.excerpt }}</p>
                 <time class="mt-4 text-[11px] text-white/20">{{ formatDate(featuredNews.published_at) }}</time>
@@ -266,8 +266,8 @@
                 <div class="h-full bg-gradient-to-t from-surface to-transparent" />
               </div>
               <div class="p-5" :class="!item.image_url && 'pt-5'">
-                <span class="text-[10px] font-bold uppercase tracking-widest text-red-500/50">{{ item.tag }}</span>
-                <h3 class="mt-1 font-display text-[15px] font-bold leading-snug uppercase tracking-tight transition-colors group-hover:text-red-400">{{ item.title }}</h3>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-ember-400/50">{{ item.tag }}</span>
+                <h3 class="mt-1 font-display text-[15px] font-bold leading-snug uppercase tracking-tight transition-colors group-hover:text-ember-300">{{ item.title }}</h3>
                 <p class="mt-1 text-[12px] text-white/25 line-clamp-2">{{ item.excerpt }}</p>
                 <time class="mt-2 block text-[11px] text-white/15">{{ formatDate(item.published_at) }}</time>
               </div>
@@ -285,7 +285,7 @@
           <div class="flex">
             <button v-for="tab in rankingTabs" :key="tab.key"
               :class="['border-b-2 px-5 pb-2 text-[12px] font-bold uppercase tracking-widest transition-all',
-                activeTab === tab.key ? 'border-red-500 text-white' : 'border-transparent text-white/25 hover:text-white/50']"
+                activeTab === tab.key ? 'border-accent text-white' : 'border-transparent text-white/25 hover:text-white/50']"
               @click="activeTab = tab.key">{{ t(tab.labelKey) }}</button>
           </div>
         </div>
@@ -302,11 +302,11 @@
           </thead>
           <tbody>
             <tr v-for="(p, i) in rankings" :key="i" class="border-b border-white/[0.03] transition-colors hover:bg-white/[0.015]">
-              <td class="py-4 pr-4"><span :class="['font-display text-lg font-extrabold tabular-nums', i < 3 ? 'text-red-500' : 'text-white/15']">{{ String(i+1).padStart(2,'0') }}</span></td>
+              <td class="py-4 pr-4"><span :class="['font-display text-lg font-extrabold tabular-nums', i < 3 ? 'text-accent' : 'text-white/15']">{{ String(i+1).padStart(2,'0') }}</span></td>
               <td class="py-4 pr-4 text-[14px] font-medium">{{ p.name }}</td>
               <td class="hidden py-4 pr-4 text-[13px] text-white/30 sm:table-cell">{{ p.race }}</td>
               <td class="hidden py-4 pr-4 text-[13px] text-white/30 md:table-cell">{{ p.class }}</td>
-              <td class="py-4 text-right font-display text-[14px] font-bold tabular-nums text-red-400/70">{{ p.score }}</td>
+              <td class="py-4 text-right font-display text-[14px] font-bold tabular-nums text-accent/70">{{ p.score }}</td>
             </tr>
           </tbody>
         </table>
@@ -328,7 +328,7 @@
             </div>
             <div class="flex items-center gap-4">
               <span class="text-[12px] text-white/20">{{ s.day }}</span>
-              <span class="bg-red-600/15 px-3 py-1 text-[12px] font-bold tabular-nums text-red-400">{{ s.time }}</span>
+              <span class="bg-accent/10 px-3 py-1 text-[12px] font-bold tabular-nums text-accent">{{ s.time }}</span>
             </div>
           </div>
         </div>
@@ -373,7 +373,7 @@
             <p class="mt-3 text-[14px] text-white/30">{{ t('download.launcher') }}</p>
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <a href="#"
-                class="inline-flex items-center gap-3 bg-red-600 px-8 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-red-500 hover:shadow-[0_0_40px_rgba(220,60,60,0.25)] active:scale-[0.97]">
+                class="inline-flex items-center gap-3 bg-primary px-8 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-primary-hover hover:shadow-[0_0_40px_rgba(184,58,42,0.25)] active:scale-[0.97]">
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
                 {{ t('download.cta') }}
               </a>
@@ -383,7 +383,7 @@
 
           <!-- Right: system requirements -->
           <div class="w-full max-w-xs">
-            <h3 class="mb-4 text-[11px] font-bold uppercase tracking-[0.3em] text-red-500/60">{{ t('download.req') }}</h3>
+            <h3 class="mb-4 text-[11px] font-bold uppercase tracking-[0.3em] text-ember-400/60">{{ t('download.req') }}</h3>
             <div class="space-y-3">
               <div v-for="req in sysReqs" :key="req.labelKey" class="flex items-start gap-3 border-t border-white/[0.04] pt-3">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-white/15">{{ req.label }}</span>
@@ -428,11 +428,11 @@
 
       <div class="relative mx-auto max-w-xl px-6 text-center">
         <h2 class="font-display text-4xl font-extrabold uppercase tracking-tighter lg:text-6xl">
-          {{ t('cta.title1') }}<br><span class="text-red-500">{{ t('cta.title2') }}</span>
+          {{ t('cta.title1') }}<br><span class="text-ember-400">{{ t('cta.title2') }}</span>
         </h2>
         <p class="mx-auto mt-4 max-w-sm text-[14px] italic text-white/30">{{ t('cta.desc') }}</p>
         <NuxtLink :to="localePath('/register')"
-          class="mt-10 inline-block bg-red-600 px-10 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-red-500 hover:shadow-[0_0_50px_rgba(220,60,60,0.3)] active:scale-[0.97]">
+          class="mt-10 inline-block bg-primary px-10 py-4 font-display text-[13px] font-bold uppercase tracking-widest text-white transition-all hover:bg-primary-hover hover:shadow-[0_0_50px_rgba(184,58,42,0.3)] active:scale-[0.97]">
           {{ t('cta.button') }}
         </NuxtLink>
       </div>
@@ -485,7 +485,7 @@ const factionData = reactive({ elyos: 189, asmodians: 158 })
 
 const discordPreview = [
   { name: 'Lumiel', text: 'LFG Dredgion, need healer', color: 'bg-sky-500', nameColor: 'text-sky-400' },
-  { name: 'Shadowbane', text: 'GG siege, Asmo took Divine', color: 'bg-red-500', nameColor: 'text-red-400' },
+  { name: 'Shadowbane', text: 'GG siege, Asmo took Divine', color: 'bg-red-500', nameColor: 'text-ember-300' },
   { name: 'Celestia', text: 'Selling Balic crafts, PM me', color: 'bg-emerald-500', nameColor: 'text-emerald-400' },
   { name: 'Ironwing', text: 'New patch when?', color: 'bg-amber-500', nameColor: 'text-amber-400' },
 ]

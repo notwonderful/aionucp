@@ -2,7 +2,7 @@
   <div>
     <!-- ANNOUNCEMENT BAR -->
     <ClientOnly>
-      <div v-if="showAnnounce && announcement" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 bg-red-600 px-4 py-2 text-center">
+      <div v-if="showAnnounce && announcement" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 bg-primary px-4 py-2 text-center">
         <span class="text-[12px] font-medium text-white/90">{{ announcement.text }}</span>
         <NuxtLink :to="announcement.link_url" class="text-[12px] font-bold text-white underline underline-offset-2">{{ announcement.link_text }}</NuxtLink>
         <button class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 transition-colors hover:text-white" @click="showAnnounce = false">
@@ -19,51 +19,51 @@
       ? 'bg-surface/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
       : 'bg-gradient-to-b from-black/70 to-transparent',
   ]">
-    <div class="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4">
+    <div class="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-5">
       <!-- Logo -->
-      <NuxtLink :to="localePath('/')" class="group flex items-center gap-2.5">
-        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-red-600/15 ring-1 ring-red-500/20 transition-all duration-300 group-hover:bg-red-600/25 group-hover:ring-red-500/40">
-          <svg class="h-4 w-4 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <NuxtLink :to="localePath('/')" class="group flex items-center gap-3">
+        <div class="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-primary/20 transition-all duration-300 group-hover:bg-primary/25 group-hover:ring-primary/40">
+          <svg class="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
-        <span class="font-display text-xl font-extrabold tracking-tight text-white">AION<span class="text-red-500">UCP</span></span>
+        <span class="font-display text-2xl font-extrabold tracking-tight text-white">AION<span class="text-accent">UCP</span></span>
       </NuxtLink>
 
       <!-- Nav links -->
-      <div class="hidden items-center gap-7 md:flex">
+      <div class="hidden items-center gap-8 md:flex">
         <NuxtLink v-for="lnk in navLinks" :key="lnk.href" :to="localePath(lnk.href)"
-          :class="['group relative py-1 text-[12px] font-medium uppercase tracking-widest transition-colors duration-300',
+          :class="['group relative py-1.5 text-[14px] font-medium uppercase tracking-widest transition-colors duration-300',
             isActive(lnk.href) ? 'text-white' : 'text-white/40 hover:text-white']">
           {{ t(lnk.key) }}
-          <span :class="['absolute bottom-0 left-1/2 h-[2px] -translate-x-1/2 rounded-full bg-red-500 transition-all duration-300',
+          <span :class="['absolute bottom-0 left-1/2 h-[2px] -translate-x-1/2 rounded-full bg-accent transition-all duration-300',
             isActive(lnk.href) ? 'w-full' : 'w-0 group-hover:w-full']" />
         </NuxtLink>
       </div>
 
       <!-- Right zone -->
-      <div class="flex items-center gap-4">
-        <div class="hidden items-center gap-1 sm:flex">
+      <div class="flex items-center gap-5">
+        <div class="hidden items-center gap-1.5 sm:flex">
           <NuxtLink v-for="l in (['en','ru'] as const)" :key="l" :to="switchLocalePath(l)"
-            :class="['rounded px-2 py-1 text-[10px] font-bold uppercase transition-all duration-300',
+            :class="['rounded px-2.5 py-1.5 text-[11px] font-bold uppercase transition-all duration-300',
               locale===l ? 'bg-white/[0.08] text-white' : 'text-white/20 hover:text-white/50']">{{ l }}</NuxtLink>
         </div>
-        <div class="hidden h-5 w-px bg-white/[0.08] sm:block" />
+        <div class="hidden h-6 w-px bg-white/[0.08] sm:block" />
         <template v-if="isAuthenticated">
           <NuxtLink :to="localePath('/dashboard')"
-            class="rounded-lg bg-red-600 px-5 py-2.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(220,60,60,0.15)] transition-all duration-300 hover:bg-red-500 hover:shadow-[0_0_25px_rgba(220,60,60,0.35)] active:scale-[0.97]">
+            class="rounded-lg bg-primary px-6 py-3 text-[13px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(184,58,42,0.2)] transition-all duration-300 hover:bg-primary-hover hover:shadow-[0_0_25px_rgba(184,58,42,0.4)] active:scale-[0.97]">
             Dashboard
           </NuxtLink>
         </template>
         <template v-else>
-          <NuxtLink :to="localePath('/login')" class="hidden text-[12px] font-medium text-white/30 transition-colors duration-300 hover:text-white/60 sm:block">
+          <NuxtLink :to="localePath('/login')" class="hidden text-[14px] font-medium text-white/30 transition-colors duration-300 hover:text-white/60 sm:block">
             {{ t('nav.signin') }}
           </NuxtLink>
           <NuxtLink :to="localePath('/register')"
-            class="rounded-lg bg-red-600 px-5 py-2.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(220,60,60,0.15)] transition-all duration-300 hover:bg-red-500 hover:shadow-[0_0_25px_rgba(220,60,60,0.35)] active:scale-[0.97]">
+            class="rounded-lg bg-primary px-6 py-3 text-[13px] font-bold uppercase tracking-widest text-white shadow-[0_0_15px_rgba(184,58,42,0.2)] transition-all duration-300 hover:bg-primary-hover hover:shadow-[0_0_25px_rgba(184,58,42,0.4)] active:scale-[0.97]">
             {{ t('nav.play') }}
           </NuxtLink>
         </template>
         <!-- Mobile hamburger -->
-        <button class="flex h-9 w-9 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/[0.06] hover:text-white md:hidden" @click="mobileMenu = !mobileMenu">
+        <button class="flex h-10 w-10 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/[0.06] hover:text-white md:hidden" @click="mobileMenu = !mobileMenu">
           <svg v-if="!mobileMenu" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" /></svg>
           <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>

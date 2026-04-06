@@ -4,13 +4,22 @@
 @theme {
   --font-body: 'DM Sans', sans-serif;
   --font-display: 'Syne', sans-serif;
-  --color-primary: #dc2626;
-  --color-primary-hover: #ef4444;
-  --color-surface: #0d0b0e;
-  --color-surface-dark: #0a0912;
-  --color-surface-light: #141218;
-  --color-surface-overlay: #1a1720;
-  --color-surface-card: #110f16;
+
+  --color-primary: #b83a2a;
+  --color-primary-hover: #cf4a35;
+  --color-primary-muted: #8c2e22;
+
+  --color-accent: #c9a84c;
+  --color-accent-hover: #d4b85e;
+  --color-accent-muted: #9a7a22;
+
+  --color-surface: #14110e;
+  --color-surface-dark: #0f0d0a;
+  --color-surface-light: #1c1814;
+  --color-surface-overlay: #231f1a;
+  --color-surface-card: #191510;
+  --color-surface-warm: #1e1a15;
+
   --color-gold-50: #fdf8e8;
   --color-gold-100: #f5ebc5;
   --color-gold-200: #e8d48e;
@@ -21,6 +30,21 @@
   --color-gold-700: #7a611b;
   --color-gold-800: #5c4915;
   --color-gold-900: #3d300e;
+
+  --color-ember-50: #fef2ee;
+  --color-ember-100: #fde0d6;
+  --color-ember-200: #f9baa8;
+  --color-ember-300: #f0876c;
+  --color-ember-400: #e65c3a;
+  --color-ember-500: #cf4a35;
+  --color-ember-600: #b83a2a;
+  --color-ember-700: #982e22;
+  --color-ember-800: #7a2720;
+  --color-ember-900: #5e211e;
+}
+
+html, body {
+  background-color: #14110e;
 }
 
 button, [role="button"], a[href], select, summary, input[type="submit"], input[type="button"], input[type="reset"] {
@@ -43,6 +67,10 @@ button, [role="button"], a[href], select, summary, input[type="submit"], input[t
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
+@keyframes ember-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(184, 58, 42, 0.2); }
+  50% { box-shadow: 0 0 35px rgba(184, 58, 42, 0.4), 0 0 60px rgba(201, 168, 76, 0.1); }
+}
 
 @utility animate-fade-in-up {
   animation: fade-in-up 0.8s ease-out both;
@@ -55,4 +83,7 @@ button, [role="button"], a[href], select, summary, input[type="submit"], input[t
 }
 @utility animate-float {
   animation: float 4s ease-in-out infinite;
+}
+@utility animate-ember-pulse {
+  animation: ember-pulse 3s ease-in-out infinite;
 }
