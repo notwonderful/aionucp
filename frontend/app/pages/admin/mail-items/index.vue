@@ -63,13 +63,11 @@
 definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 
 const { t } = useI18n()
-const { $api, fetchCsrfCookie } = useApi()
+const { $api } = useApi()
 const { datetime: formatDate } = useDate()
+const { submit, loading: sending, successMsg, errorMsg } = useFormSubmit()
 
 const form = reactive({ player_name: '', item_id: 0, item_qty: 1 })
-const sending = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
 
 const columns = [
   { key: 'admin', label: t('admin.admin') },
@@ -87,26 +85,13 @@ const { data: logsData, status: logsStatus, refresh: refreshLogs } = useAsyncDat
 const logs = computed(() => logsData.value?.data ?? [])
 
 async function handleSend() {
-  sending.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
-
-  try {
-    await fetchCsrfCookie()
-    const res = await $api<{ message: string }>('/admin/mail-items', {
-      method: 'POST',
-      body: form,
-    })
-    successMsg.value = res.message || t('admin.itemSent')
+  await submit(async (api) => {
+    const res = await api<{ message: string }>('/admin/mail-items', { method: 'POST', body: form })
     form.player_name = ''
     form.item_id = 0
     form.item_qty = 1
     await refreshLogs()
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.itemSendFailed')
-  } finally {
-    sending.value = false
-  }
+    return res.message || t('admin.itemSent')
+  }, t('admin.itemSendFailed'))
 }
 </script>

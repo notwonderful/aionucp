@@ -110,11 +110,8 @@
 definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 
 const { t } = useI18n()
-const { $api, fetchCsrfCookie } = useApi()
-
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { $api } = useApi()
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 
 const gatewayLabels: Record<string, string> = { stripe: 'Stripe', pally: 'Pally' }
 
@@ -152,28 +149,12 @@ async function fetchSettings() {
 fetchSettings()
 
 async function handleSubmit() {
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
-
-  try {
-    await fetchCsrfCookie()
+  await submit(async (api) => {
     await Promise.all([
-      $api('/admin/settings/payments/rates', {
-        method: 'PUT',
-        body: { ...paymentForm },
-      }),
-      $api('/admin/settings/payments/gateways', {
-        method: 'PUT',
-        body: { limits: gatewayForm.limits },
-      }),
+      api('/admin/settings/payments/rates', { method: 'PUT', body: { ...paymentForm } }),
+      api('/admin/settings/payments/gateways', { method: 'PUT', body: { limits: gatewayForm.limits } }),
     ])
-    successMsg.value = t('admin.settingsSaved')
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.settingsFailed')
-  } finally {
-    saving.value = false
-  }
+    return t('admin.settingsSaved')
+  }, t('admin.settingsFailed'))
 }
 </script>

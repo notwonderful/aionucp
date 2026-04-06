@@ -119,6 +119,7 @@ interface LogData { id: number; item_unique_id: number; item_id: number; old_own
 const { t } = useI18n()
 const { $api, fetchCsrfCookie } = useApi()
 const { datetime: formatDate } = useDate()
+const { submit: addSubmit, loading: adding, successMsg: addSuccess, errorMsg: addError } = useFormSubmit()
 
 const activeTab = ref('items')
 const search = ref('')
@@ -190,31 +191,15 @@ const logsMeta = computed(() => logsData.value?.meta ?? { last_page: 1 })
 
 const showAddModal = ref(false)
 const addForm = reactive({ item_unique_id: 0 })
-const adding = ref(false)
-const addSuccess = ref('')
-const addError = ref('')
 
 async function handleAdd() {
-  adding.value = true
-  addSuccess.value = ''
-  addError.value = ''
-
-  try {
-    await fetchCsrfCookie()
-    const res = await $api<{ message: string }>('/admin/item-tracker', {
-      method: 'POST',
-      body: addForm,
-    })
-    addSuccess.value = res.message || t('admin.itemTracked')
+  await addSubmit(async (api) => {
+    const res = await api<{ message: string }>('/admin/item-tracker', { method: 'POST', body: addForm })
     addForm.item_unique_id = 0
     await refreshItems()
     setTimeout(() => { showAddModal.value = false; addSuccess.value = '' }, 1500)
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    addError.value = err.data?.message || t('admin.itemTrackFailed')
-  } finally {
-    adding.value = false
-  }
+    return res.message || t('admin.itemTracked')
+  }, t('admin.itemTrackFailed'))
 }
 
 const deleteTarget = ref<TrackedItemData | null>(null)

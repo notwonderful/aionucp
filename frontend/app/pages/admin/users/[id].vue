@@ -104,9 +104,7 @@ const { full: formatDate } = useDate()
 const userData = ref<UserDetail | null>(null)
 const roles = ref<RoleItem[]>([])
 const selectedRole = ref('')
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 
 const currentRole = computed(() => userData.value?.roles?.[0] ?? 'member')
 
@@ -126,23 +124,14 @@ fetchData()
 
 async function handleAssignRole() {
   if (!userData.value || selectedRole.value === currentRole.value) return
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
-  try {
-    await fetchCsrfCookie()
-    const res = await $api<{ data: UserDetail; message: string }>(`/admin/users/${userData.value.id}/role`, {
+  await submit(async (api) => {
+    const res = await api<{ data: UserDetail; message: string }>(`/admin/users/${userData.value!.id}/role`, {
       method: 'PUT',
       body: { role: selectedRole.value },
     })
     userData.value = res.data
     selectedRole.value = res.data.roles?.[0] ?? 'member'
-    successMsg.value = res.message || t('admin.roleUpdated')
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.roleFailed')
-  } finally {
-    saving.value = false
-  }
+    return res.message || t('admin.roleUpdated')
+  }, t('admin.roleFailed'))
 }
 </script>

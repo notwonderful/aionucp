@@ -159,11 +159,8 @@
 definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 
 const { t } = useI18n()
-const { $api, fetchCsrfCookie } = useApi()
-
-const saving = ref(false)
-const successMsg = ref('')
-const errorMsg = ref('')
+const { $api } = useApi()
+const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
 
 interface ReqItem { label: string; value: string }
 
@@ -193,28 +190,13 @@ async function fetchSettings() {
 fetchSettings()
 
 async function handleSubmit() {
-  saving.value = true
-  successMsg.value = ''
-  errorMsg.value = ''
-
-  try {
-    await fetchCsrfCookie()
-    const res = await $api<{ message: string }>('/admin/settings/download', {
-      method: 'PUT',
-      body: { ...form },
-    })
-    successMsg.value = res.message || t('admin.settingsSaved')
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.settingsFailed')
-  } finally {
-    saving.value = false
-  }
+  await submit(async (api) => {
+    const res = await api<{ message: string }>('/admin/settings/download', { method: 'PUT', body: { ...form } })
+    return res.message || t('admin.settingsSaved')
+  }, t('admin.settingsFailed'))
 }
 
-const announceSaving = ref(false)
-const announceSuccess = ref('')
-const announceError = ref('')
+const { submit: announceSubmit, loading: announceSaving, successMsg: announceSuccess, errorMsg: announceError } = useFormSubmit()
 
 const announceForm = reactive({
   enabled: true,
@@ -233,28 +215,13 @@ async function fetchAnnounceSettings() {
 fetchAnnounceSettings()
 
 async function handleAnnounceSubmit() {
-  announceSaving.value = true
-  announceSuccess.value = ''
-  announceError.value = ''
-
-  try {
-    await fetchCsrfCookie()
-    const res = await $api<{ message: string }>('/admin/settings/announcement', {
-      method: 'PUT',
-      body: { ...announceForm },
-    })
-    announceSuccess.value = res.message || t('admin.settingsSaved')
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    announceError.value = err.data?.message || t('admin.settingsFailed')
-  } finally {
-    announceSaving.value = false
-  }
+  await announceSubmit(async (api) => {
+    const res = await api<{ message: string }>('/admin/settings/announcement', { method: 'PUT', body: { ...announceForm } })
+    return res.message || t('admin.settingsSaved')
+  }, t('admin.settingsFailed'))
 }
 
-const teleportSaving = ref(false)
-const teleportSuccess = ref('')
-const teleportError = ref('')
+const { submit: teleportSubmit, loading: teleportSaving, successMsg: teleportSuccess, errorMsg: teleportError } = useFormSubmit()
 
 const teleportForm = reactive<Record<string, number>>({
   elyos_x: 0,
@@ -278,22 +245,9 @@ async function fetchTeleportSettings() {
 fetchTeleportSettings()
 
 async function handleTeleportSubmit() {
-  teleportSaving.value = true
-  teleportSuccess.value = ''
-  teleportError.value = ''
-
-  try {
-    await fetchCsrfCookie()
-    const res = await $api<{ message: string }>('/admin/settings/teleport', {
-      method: 'PUT',
-      body: { ...teleportForm },
-    })
-    teleportSuccess.value = res.message || t('admin.settingsSaved')
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    teleportError.value = err.data?.message || t('admin.settingsFailed')
-  } finally {
-    teleportSaving.value = false
-  }
+  await teleportSubmit(async (api) => {
+    const res = await api<{ message: string }>('/admin/settings/teleport', { method: 'PUT', body: { ...teleportForm } })
+    return res.message || t('admin.settingsSaved')
+  }, t('admin.settingsFailed'))
 }
 </script>
