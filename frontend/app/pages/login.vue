@@ -9,7 +9,7 @@
       <div>
         <div class="mb-1.5 flex items-center justify-between">
           <label for="password" class="text-[12px] font-medium text-white/40">{{ $t('auth.password') }}</label>
-          <NuxtLink :to="localePath('/forgot-password')" class="text-[11px] font-medium text-white/20 transition-colors hover:text-red-400">{{ $t('auth.forgotPassword') }}</NuxtLink>
+          <NuxtLink :to="localePath('/forgot-password')" class="text-[11px] font-medium text-red-400 transition-colors hover:text-red-300">{{ $t('auth.forgotPassword') }}</NuxtLink>
         </div>
         <FormInput v-model="form.password" id="password" type="password" required autocomplete="current-password" :placeholder="$t('auth.enterPassword')" :error="errors.password?.[0]" />
       </div>
