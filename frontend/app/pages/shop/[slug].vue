@@ -73,7 +73,7 @@
           </p>
         </div>
 
-        <AppButton :loading="purchasing" :loading-text="$t('donate.processing')" :disabled="!selectedPlayerId" block @click="showConfirm = true">{{ $t('shop.purchaseFor', { amount: product.toll }) }}</AppButton>
+        <AppButton class="mt-4" :loading="purchasing" :loading-text="$t('donate.processing')" :disabled="!selectedPlayerId" block @click="showConfirm = true">{{ $t('shop.purchaseFor', { amount: product.toll }) }}</AppButton>
 
         <AlertMessage :message="successMessage" variant="success" />
         <AlertMessage :message="errorMessage" variant="error" />
