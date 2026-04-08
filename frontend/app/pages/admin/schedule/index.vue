@@ -17,8 +17,8 @@
     <SkeletonLoader v-if="status === 'pending'" height="h-16" />
 
     <template v-else>
-      <DataTable :columns="columns" :has-rows="!!entries.length" :empty-text="$t('admin.noScheduleFound')">
-        <NuxtLink v-for="item in entries" :key="item.id" :to="`/admin/schedule/${item.id}`"
+      <DataTable :columns="columns" :has-rows="!!items.length" :empty-text="$t('admin.noScheduleFound')">
+        <NuxtLink v-for="item in items" :key="item.id" :to="`/admin/schedule/${item.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5">
             <StatusBadge :color="item.published ? 'emerald' : 'muted'" :label="item.published ? $t('admin.published') : $t('admin.draft')" />
@@ -42,7 +42,15 @@
 definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 
 const { t } = useI18n()
-const { $api } = useApi()
+
+interface ScheduleItem {
+  id: number
+  category: string
+  name: string
+  metadata: Record<string, unknown>
+  sort_order: number
+  published: boolean
+}
 
 const categoryFilters = computed(() => [
   { label: t('history.all'), value: '' },
@@ -60,27 +68,12 @@ const columns = computed(() => [
 
 const activeFilter = ref('')
 
-const queryParams = computed(() => {
-  const params = new URLSearchParams()
-  if (activeFilter.value) params.set('filter[category]', activeFilter.value)
-  params.set('per_page', '50')
-  return params.toString()
+const { items, status } = useListData<ScheduleItem>({
+  cacheKey: 'admin-schedule',
+  endpoint: '/admin/schedule',
+  filters: [
+    { key: 'category', value: activeFilter },
+  ],
+  extraParams: { per_page: '50' },
 })
-
-interface ScheduleItem {
-  id: number
-  category: string
-  name: string
-  metadata: Record<string, unknown>
-  sort_order: number
-  published: boolean
-}
-
-const { data: scheduleData, status } = useAsyncData(
-  'admin-schedule',
-  () => $api<{ data: ScheduleItem[] }>(`/admin/schedule?${queryParams.value}`),
-  { watch: [queryParams] },
-)
-
-const entries = computed(() => scheduleData.value?.data ?? [])
 </script>

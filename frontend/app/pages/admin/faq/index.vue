@@ -13,8 +13,8 @@
     <SkeletonLoader v-if="status === 'pending'" height="h-20" />
 
     <template v-else>
-      <DataTable :columns="columns" :has-rows="!!faqList.length" :empty-text="$t('admin.noFaqFound')">
-        <NuxtLink v-for="item in faqList" :key="item.id" :to="`/admin/faq/${item.id}`"
+      <DataTable :columns="columns" :has-rows="!!items.length" :empty-text="$t('admin.noFaqFound')">
+        <NuxtLink v-for="item in items" :key="item.id" :to="`/admin/faq/${item.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5">
             <StatusBadge :color="item.published ? 'emerald' : 'muted'" :label="item.published ? $t('admin.published') : $t('admin.draft')" />
@@ -31,7 +31,6 @@
 definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 
 const { t } = useI18n()
-const { $api } = useApi()
 
 const columns = computed(() => [
   { key: 'status', label: t('admin.status') },
@@ -39,10 +38,8 @@ const columns = computed(() => [
   { key: 'sort_order', label: t('admin.sortOrder'), align: 'right' as const },
 ])
 
-const { data: faqData, status } = useAsyncData(
-  'admin-faq',
-  () => $api<{ data: Array<{ id: number; question: string; answer: string; sort_order: number; published: boolean }> }>('/admin/faq'),
-)
-
-const faqList = computed(() => faqData.value?.data ?? [])
+const { items, status } = useListData<{ id: number; question: string; answer: string; sort_order: number; published: boolean }>({
+  cacheKey: 'admin-faq',
+  endpoint: '/admin/faq',
+})
 </script>

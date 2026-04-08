@@ -18,8 +18,8 @@
     <SkeletonLoader v-if="status === 'pending'" height="h-20" />
 
     <template v-else>
-      <DataTable :columns="columns" :has-rows="!!newsList.length" :empty-text="$t('admin.noNewsFound')">
-        <NuxtLink v-for="item in newsList" :key="item.id" :to="`/admin/news/${item.id}`"
+      <DataTable :columns="columns" :has-rows="!!items.length" :empty-text="$t('admin.noNewsFound')">
+        <NuxtLink v-for="item in items" :key="item.id" :to="`/admin/news/${item.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5">
             <StatusBadge :color="item.published ? 'emerald' : 'muted'" :label="item.published ? $t('admin.published') : $t('admin.draft')" />
@@ -36,13 +36,15 @@
 </template>
 
 <script setup lang="ts">
-import type { NewsResponse } from '~/composables/useNews'
+import type { NewsArticle } from '~/composables/useNews'
 
 definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 
 const { t } = useI18n()
-const { $api } = useApi()
 const { relative: formatDate } = useDate()
+
+const activeFilter = ref('')
+const search = ref('')
 
 const tagFilters = computed(() => [
   { label: t('history.all'), value: '' },
@@ -60,21 +62,12 @@ const columns = computed(() => [
   { key: 'published_at', label: t('admin.publishedAt'), align: 'right' as const, sortable: true },
 ])
 
-const activeFilter = ref('')
-const search = ref('')
-
-const queryParams = computed(() => {
-  const params = new URLSearchParams()
-  if (activeFilter.value) params.set('filter[tag]', activeFilter.value)
-  if (search.value) params.set('filter[search]', search.value)
-  return params.toString()
+const { items, status } = useListData<NewsArticle>({
+  cacheKey: 'admin-news',
+  endpoint: '/admin/news',
+  filters: [
+    { key: 'tag', value: activeFilter },
+    { key: 'search', value: search },
+  ],
 })
-
-const { data: newsData, status } = useAsyncData(
-  'admin-news',
-  () => $api<NewsResponse>(`/admin/news${queryParams.value ? `?${queryParams.value}` : ''}`),
-  { watch: [queryParams] },
-)
-
-const newsList = computed(() => newsData.value?.data ?? [])
 </script>

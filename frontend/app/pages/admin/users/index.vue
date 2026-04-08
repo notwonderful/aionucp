@@ -9,8 +9,8 @@
     <SkeletonLoader v-if="status === 'pending'" height="h-16" />
 
     <template v-else>
-      <DataTable :columns="columns" :has-rows="!!users.length" :empty-text="$t('admin.noUsersFound')">
-        <NuxtLink v-for="u in users" :key="u.id" :to="`/admin/users/${u.id}`"
+      <DataTable :columns="columns" :has-rows="!!items.length" :empty-text="$t('admin.noUsersFound')">
+        <NuxtLink v-for="u in items" :key="u.id" :to="`/admin/users/${u.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5 text-[13px] font-semibold text-white/70">{{ u.name }}</td>
           <td class="px-5 py-3.5 text-[13px] text-white/40">{{ u.email }}</td>
@@ -32,7 +32,6 @@ definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 interface UserItem { id: number; name: string; email: string; roles: string[]; created_at: string }
 
 const { t } = useI18n()
-const { $api } = useApi()
 const { relative: formatDate } = useDate()
 
 const search = ref('')
@@ -44,17 +43,11 @@ const columns = computed(() => [
   { key: 'created_at', label: t('admin.registered'), align: 'right' as const, sortable: true },
 ])
 
-const queryParams = computed(() => {
-  const params = new URLSearchParams()
-  if (search.value) params.set('filter[name]', search.value)
-  return params.toString()
+const { items, status } = useListData<UserItem>({
+  cacheKey: 'admin-users',
+  endpoint: '/admin/users',
+  filters: [
+    { key: 'name', value: search },
+  ],
 })
-
-const { data: usersData, status } = useAsyncData(
-  'admin-users',
-  () => $api<{ data: UserItem[] }>(`/admin/users${queryParams.value ? `?${queryParams.value}` : ''}`),
-  { watch: [queryParams] },
-)
-
-const users = computed(() => usersData.value?.data ?? [])
 </script>

@@ -10,8 +10,8 @@
     <SkeletonLoader v-if="status === 'pending'" height="h-20" />
 
     <template v-else>
-      <DataTable :columns="columns" :has-rows="!!tickets.length" :empty-text="$t('admin.noTicketsFound')">
-        <NuxtLink v-for="t in tickets" :key="t.id" :to="`/admin/tickets/${t.id}`"
+      <DataTable :columns="columns" :has-rows="!!items.length" :empty-text="$t('admin.noTicketsFound')">
+        <NuxtLink v-for="t in items" :key="t.id" :to="`/admin/tickets/${t.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5">
             <StatusBadge :color="t.status === 'open' ? 'emerald' : t.status === 'waiting' ? 'amber' : 'muted'" :label="t.status" />
@@ -36,7 +36,6 @@ definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 interface TicketItem { id: string; subject: string; status: string; user: { id: number; name: string; email: string } | null; category: { id: number; name: string } | null; messages_count: number; updated_at: string }
 
 const { t } = useI18n()
-const { $api } = useApi()
 const { relative: formatDate } = useDate()
 
 const statusFilters = computed(() => [
@@ -58,18 +57,12 @@ const columns = computed(() => [
 const activeFilter = ref('')
 const search = ref('')
 
-const queryParams = computed(() => {
-  const params = new URLSearchParams()
-  if (activeFilter.value) params.set('filter[status]', activeFilter.value)
-  if (search.value) params.set('filter[search]', search.value)
-  return params.toString()
+const { items, status } = useListData<TicketItem>({
+  cacheKey: 'admin-tickets',
+  endpoint: '/admin/tickets',
+  filters: [
+    { key: 'status', value: activeFilter },
+    { key: 'search', value: search },
+  ],
 })
-
-const { data: ticketsData, status } = useAsyncData(
-  'admin-tickets',
-  () => $api<{ data: TicketItem[] }>(`/admin/tickets${queryParams.value ? `?${queryParams.value}` : ''}`),
-  { watch: [queryParams] },
-)
-
-const tickets = computed(() => ticketsData.value?.data ?? [])
 </script>

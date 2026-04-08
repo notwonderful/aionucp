@@ -22,8 +22,8 @@
     <SkeletonLoader v-if="status === 'pending'" height="h-20" />
 
     <template v-else>
-      <DataTable :columns="columns" :has-rows="!!products.length" :empty-text="$t('admin.noProductsFound')">
-        <NuxtLink v-for="item in products" :key="item.id" :to="`/admin/products/${item.id}`"
+      <DataTable :columns="columns" :has-rows="!!items.length" :empty-text="$t('admin.noProductsFound')">
+        <NuxtLink v-for="item in items" :key="item.id" :to="`/admin/products/${item.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5">
             <img v-if="item.image_url" :src="item.image_url" class="h-10 w-10 rounded-lg object-cover" />
@@ -67,18 +67,12 @@ const columns = computed(() => [
 const catFilter = ref('')
 const search = ref('')
 
-const queryParams = computed(() => {
-  const params = new URLSearchParams()
-  if (catFilter.value) params.set('filter[category_id]', catFilter.value)
-  if (search.value) params.set('filter[name]', search.value)
-  return params.toString()
+const { items, status } = useListData<ProductItem>({
+  cacheKey: 'admin-products',
+  endpoint: '/admin/products',
+  filters: [
+    { key: 'category_id', value: catFilter },
+    { key: 'name', value: search },
+  ],
 })
-
-const { data, status } = useAsyncData(
-  'admin-products',
-  () => $api<{ data: ProductItem[] }>(`/admin/products${queryParams.value ? `?${queryParams.value}` : ''}`),
-  { watch: [queryParams] },
-)
-
-const products = computed(() => data.value?.data ?? [])
 </script>

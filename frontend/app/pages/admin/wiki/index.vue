@@ -23,8 +23,8 @@
     <SkeletonLoader v-if="status === 'pending'" height="h-16" />
 
     <template v-else>
-      <DataTable :columns="columns" :has-rows="!!entries.length" :empty-text="$t('admin.noWikiFound')">
-        <NuxtLink v-for="item in entries" :key="item.id" :to="`/admin/wiki/${item.id}`"
+      <DataTable :columns="columns" :has-rows="!!items.length" :empty-text="$t('admin.noWikiFound')">
+        <NuxtLink v-for="item in items" :key="item.id" :to="`/admin/wiki/${item.id}`"
           class="table-row border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.015]">
           <td class="px-5 py-3.5">
             <StatusBadge :color="item.published ? 'emerald' : 'muted'" :label="item.published ? $t('admin.published') : $t('admin.draft')" />
@@ -50,6 +50,15 @@ const { t } = useI18n()
 const { $api } = useApi()
 
 interface WikiCat { id: number; name: string; slug: string }
+interface WikiItem {
+  id: number
+  category?: { id: number; name: string }
+  type: string
+  content: Record<string, unknown>
+  sort_order: number
+  published: boolean
+}
+
 const { data: catsData } = useAsyncData('wiki-categories-filter', () => $api<{ data: WikiCat[] }>('/admin/wiki-categories'))
 const categoryFilters = computed(() => [
   { label: t('history.all'), value: '' },
@@ -75,30 +84,15 @@ const columns = computed(() => [
 const catFilter = ref('')
 const typeFilter = ref('')
 
-const queryParams = computed(() => {
-  const params = new URLSearchParams()
-  if (catFilter.value) params.set('filter[wiki_category_id]', catFilter.value)
-  if (typeFilter.value) params.set('filter[type]', typeFilter.value)
-  params.set('per_page', '50')
-  return params.toString()
+const { items, status } = useListData<WikiItem>({
+  cacheKey: 'admin-wiki',
+  endpoint: '/admin/wiki',
+  filters: [
+    { key: 'wiki_category_id', value: catFilter },
+    { key: 'type', value: typeFilter },
+  ],
+  extraParams: { per_page: '50' },
 })
-
-interface WikiItem {
-  id: number
-  category: string
-  type: string
-  content: Record<string, unknown>
-  sort_order: number
-  published: boolean
-}
-
-const { data, status } = useAsyncData(
-  'admin-wiki',
-  () => $api<{ data: WikiItem[] }>(`/admin/wiki?${queryParams.value}`),
-  { watch: [queryParams] },
-)
-
-const entries = computed(() => data.value?.data ?? [])
 
 function entryLabel(item: WikiItem): string {
   const c = item.content
