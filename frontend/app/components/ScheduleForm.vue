@@ -1,130 +1,98 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="space-y-6">
-    <div class="grid gap-6 lg:grid-cols-3">
-      <div class="lg:col-span-2 space-y-5">
-        <section class="card-panel p-6 space-y-4">
-          <div>
-            <label class="form-label">{{ $t('admin.categoryLabel') }}</label>
-            <select v-model="form.category" :disabled="!!entry"
-              class="form-input disabled:opacity-40">
-              <option value="siege">Siege</option>
-              <option value="dredgion">Dredgion</option>
-              <option value="rift">Rift</option>
-            </select>
-          </div>
+  <AdminFormLayout
+    :item="entry" :saving="saving" :success-msg="successMsg" :error-msg="errorMsg"
+    :save-label="$t('admin.saveEntry')" :create-label="$t('admin.createEntry')" :delete-label="$t('admin.deleteEntry')"
+    @submit="onSubmit" @delete="onDelete">
+    <template #main>
+      <section class="card-panel p-6 space-y-4">
+        <div>
+          <label class="form-label">{{ $t('admin.categoryLabel') }}</label>
+          <select v-model="form.category" :disabled="!!entry" class="form-input disabled:opacity-40">
+            <option value="siege">Siege</option>
+            <option value="dredgion">Dredgion</option>
+            <option value="rift">Rift</option>
+          </select>
+        </div>
 
-          <div>
-            <label class="form-label">{{ $t('admin.entryName') }}</label>
-            <input v-model="form.name" type="text"
-              class="form-input"
-              :placeholder="form.category === 'siege' ? 'Fortress name' : form.category === 'dredgion' ? 'Dredgion name' : 'Direction'">
-          </div>
+        <div>
+          <label class="form-label">{{ $t('admin.entryName') }}</label>
+          <input v-model="form.name" type="text" class="form-input"
+            :placeholder="form.category === 'siege' ? 'Fortress name' : form.category === 'dredgion' ? 'Dredgion name' : 'Direction'">
+        </div>
 
-          <!-- Siege fields -->
-          <template v-if="form.category === 'siege'">
-            <div class="grid gap-4 sm:grid-cols-3">
-              <div>
-                <label class="form-label">{{ $t('schedule.time') }}</label>
-                <input v-model="form.metadata.time" type="text"
-                  class="form-input"
-                  placeholder="20:00">
-              </div>
-              <div>
-                <label class="form-label">{{ $t('schedule.day') }}</label>
-                <select v-model.number="form.metadata.day_of_week"
-                  class="form-input">
-                  <option v-for="(d, i) in dayNames" :key="i" :value="i">{{ d }}</option>
-                </select>
-              </div>
-              <div>
-                <label class="form-label">Fortress type</label>
-                <select v-model="form.metadata.fortress_type"
-                  class="form-input">
-                  <option value="divine">Divine</option>
-                  <option value="upper">Upper Abyss</option>
-                  <option value="lower">Lower Abyss</option>
-                </select>
-              </div>
-            </div>
-          </template>
-
-          <!-- Dredgion fields -->
-          <template v-if="form.category === 'dredgion'">
+        <template v-if="form.category === 'siege'">
+          <div class="grid gap-4 sm:grid-cols-3">
             <div>
-              <label class="form-label">Level</label>
-              <input v-model="form.metadata.level" type="text"
-                class="form-input"
-                placeholder="Lv. 46-55">
+              <label class="form-label">{{ $t('schedule.time') }}</label>
+              <input v-model="form.metadata.time" type="text" class="form-input" placeholder="20:00">
             </div>
             <div>
-              <div class="mb-2 flex items-center justify-between">
-                <label class="text-[12px] font-medium text-white/30">Time slots</label>
-                <button type="button" @click="addSlot"
-                  class="rounded-lg bg-white/[0.04] px-2.5 py-1 text-[11px] font-bold text-white/30 transition-colors hover:bg-white/[0.08]">+</button>
-              </div>
-              <div v-for="(slot, i) in (form.metadata.slots as any[])" :key="i" class="mb-2 flex gap-2">
-                <input v-model="slot.days" type="text"
-                  class="form-input w-40"
-                  placeholder="Mon — Fri">
-                <input v-model="slot.time" type="text"
-                  class="form-input flex-1"
-                  placeholder="10:00 — 02:00">
-                <button type="button" @click="removeSlot(i)"
-                  class="shrink-0 rounded-lg px-2 text-white/15 transition-colors hover:bg-red-600/10 hover:text-red-400">
-                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-              </div>
+              <label class="form-label">{{ $t('schedule.day') }}</label>
+              <select v-model.number="form.metadata.day_of_week" class="form-input">
+                <option v-for="(d, i) in dayNames" :key="i" :value="i">{{ d }}</option>
+              </select>
             </div>
-          </template>
-
-          <!-- Rift fields -->
-          <template v-if="form.category === 'rift'">
-            <div class="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label class="form-label">{{ $t('schedule.time') }}</label>
-                <input v-model="form.metadata.time" type="text"
-                  class="form-input"
-                  placeholder="01:00">
-              </div>
-              <div>
-                <label class="form-label">{{ $t('schedule.direction') }}</label>
-                <input v-model="form.metadata.direction" type="text"
-                  class="form-input"
-                  placeholder="Morheim → Eltnen">
-              </div>
+            <div>
+              <label class="form-label">Fortress type</label>
+              <select v-model="form.metadata.fortress_type" class="form-input">
+                <option value="divine">Divine</option>
+                <option value="upper">Upper Abyss</option>
+                <option value="lower">Lower Abyss</option>
+              </select>
             </div>
-          </template>
-        </section>
-      </div>
+          </div>
+        </template>
 
-      <div class="space-y-5">
-        <section class="card-panel p-6 space-y-4">
+        <template v-if="form.category === 'dredgion'">
           <div>
-            <label class="form-label">{{ $t('admin.sortOrder') }}</label>
-            <input v-model.number="form.sort_order" type="number" min="0"
-              class="form-input"
-              placeholder="0">
+            <label class="form-label">Level</label>
+            <input v-model="form.metadata.level" type="text" class="form-input" placeholder="Lv. 46-55">
           </div>
-          <div class="flex items-center gap-3">
-            <ToggleSwitch v-model="form.published" />
-            <span class="text-[13px] text-white/50">{{ $t('admin.published') }}</span>
+          <div>
+            <div class="mb-2 flex items-center justify-between">
+              <label class="text-[12px] font-medium text-white/30">Time slots</label>
+              <button type="button" @click="addSlot"
+                class="rounded-lg bg-white/[0.04] px-2.5 py-1 text-[11px] font-bold text-white/30 transition-colors hover:bg-white/[0.08]">+</button>
+            </div>
+            <div v-for="(slot, i) in (form.metadata.slots as any[])" :key="i" class="mb-2 flex gap-2">
+              <input v-model="slot.days" type="text" class="form-input w-40" placeholder="Mon — Fri">
+              <input v-model="slot.time" type="text" class="form-input flex-1" placeholder="10:00 — 02:00">
+              <button type="button" @click="removeSlot(i)"
+                class="shrink-0 rounded-lg px-2 text-white/15 transition-colors hover:bg-red-600/10 hover:text-red-400">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
           </div>
-        </section>
+        </template>
 
-        <AlertMessage :message="successMsg" variant="success" />
-        <AlertMessage :message="errorMsg" variant="error" />
+        <template v-if="form.category === 'rift'">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label class="form-label">{{ $t('schedule.time') }}</label>
+              <input v-model="form.metadata.time" type="text" class="form-input" placeholder="01:00">
+            </div>
+            <div>
+              <label class="form-label">{{ $t('schedule.direction') }}</label>
+              <input v-model="form.metadata.direction" type="text" class="form-input" placeholder="Morheim → Eltnen">
+            </div>
+          </div>
+        </template>
+      </section>
+    </template>
 
-        <AppButton type="submit" :loading="saving" :loading-text="$t('common.loading')" block>
-          {{ entry ? $t('admin.saveEntry') : $t('admin.createEntry') }}
-        </AppButton>
-
-        <button v-if="entry" type="button" @click="handleDelete"
-          class="w-full rounded-lg border border-red-500/10 bg-red-600/5 py-2.5 text-[12px] font-bold uppercase tracking-widest text-red-400/60 transition-colors hover:bg-red-600/10 hover:text-red-400">
-          {{ $t('admin.deleteEntry') }}
-        </button>
-      </div>
-    </div>
-  </form>
+    <template #sidebar>
+      <section class="card-panel p-6 space-y-4">
+        <div>
+          <label class="form-label">{{ $t('admin.sortOrder') }}</label>
+          <input v-model.number="form.sort_order" type="number" min="0" class="form-input" placeholder="0">
+        </div>
+        <div class="flex items-center gap-3">
+          <ToggleSwitch v-model="form.published" />
+          <span class="text-[13px] text-white/50">{{ $t('admin.published') }}</span>
+        </div>
+      </section>
+    </template>
+  </AdminFormLayout>
 </template>
 
 <script setup lang="ts">
@@ -137,20 +105,18 @@ interface ScheduleItem {
   published: boolean
 }
 
-const props = defineProps<{
-  entry?: ScheduleItem | null
-}>()
-
-const emit = defineEmits<{
-  saved: [id: number]
-}>()
+const props = defineProps<{ entry?: ScheduleItem | null }>()
+const emit = defineEmits<{ saved: [id: number] }>()
 
 const { t } = useI18n()
-const { $api, fetchCsrfCookie } = useApi()
-const router = useRouter()
 
 const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-const { submit, loading: saving, successMsg, errorMsg } = useFormSubmit()
+
+const { handleSubmit, handleDelete, saving, successMsg, errorMsg } = useAdminForm<ScheduleItem>({
+  endpoint: '/admin/schedule',
+  redirectTo: '/admin/schedule',
+  i18n: { saved: t('admin.scheduleSaved'), created: t('admin.scheduleCreated'), failed: t('admin.scheduleFailed'), deleteConfirm: t('admin.scheduleDeleteConfirm') },
+})
 
 const form = reactive({
   category: 'siege',
@@ -191,7 +157,7 @@ function removeSlot(i: number) {
   ;(form.metadata.slots as any[]).splice(i, 1)
 }
 
-async function handleSubmit() {
+async function onSubmit() {
   const payload = {
     category: form.category,
     name: form.name,
@@ -199,28 +165,10 @@ async function handleSubmit() {
     sort_order: form.sort_order,
     published: form.published,
   }
-
-  await submit(async (api) => {
-    if (props.entry) {
-      const res = await api<{ data: ScheduleItem; message: string }>(`/admin/schedule/${props.entry.id}`, { method: 'PUT', body: payload })
-      emit('saved', res.data.id)
-      return res.message || t('admin.scheduleSaved')
-    }
-    const res = await api<{ data: ScheduleItem; message: string }>('/admin/schedule', { method: 'POST', body: payload })
-    emit('saved', res.data.id)
-    return res.message || t('admin.scheduleCreated')
-  }, t('admin.scheduleFailed'))
+  await handleSubmit(props.entry, payload, id => emit('saved', id))
 }
 
-async function handleDelete() {
-  if (!props.entry || !confirm(t('admin.scheduleDeleteConfirm'))) return
-  try {
-    await fetchCsrfCookie()
-    await $api(`/admin/schedule/${props.entry.id}`, { method: 'DELETE' })
-    router.push('/admin/schedule')
-  } catch (e: unknown) {
-    const err = e as { data?: { message?: string } }
-    errorMsg.value = err.data?.message || t('admin.scheduleFailed')
-  }
+function onDelete() {
+  handleDelete(props.entry)
 }
 </script>
