@@ -24,8 +24,8 @@ final class TwoFactorCodeNotification extends Notification
     {
         return (new MailMessage())
             ->subject(__('Your two-factor authentication code'))
-            ->line(__('Your verification code is: **:code**', ['code' => $this->code]))
-            ->line(__('This code will expire in 10 minutes.'))
-            ->line(__('If you did not request this code, please ignore this email.'));
+            ->view('emails.two-factor-code', [
+                'code' => $this->code,
+            ]);
     }
 }

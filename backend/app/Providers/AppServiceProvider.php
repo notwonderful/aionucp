@@ -31,13 +31,13 @@ final class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         VerifyEmail::toMailUsing(function (object $notifiable, string $url): MailMessage {
-            $frontendUrl = config('app.frontend_url').'/verify-email/confirm?verify_url='.urlencode($url);
+            $verificationUrl = config('app.frontend_url').'/verify-email/confirm?verify_url='.urlencode($url);
 
-            return (new MailMessage)
+            return (new MailMessage())
                 ->subject(__('Verify Email Address'))
-                ->line(__('Please click the button below to verify your email address.'))
-                ->action(__('Verify Email Address'), $frontendUrl)
-                ->line(__('If you did not create an account, no further action is required.'));
+                ->view('emails.verify-email', [
+                    'verificationUrl' => $verificationUrl,
+                ]);
         });
     }
 }

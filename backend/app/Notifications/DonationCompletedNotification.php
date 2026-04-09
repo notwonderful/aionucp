@@ -23,16 +23,13 @@ final class DonationCompletedNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject(__('Donation Completed'))
-            ->greeting(__('Thank you for your donation!'))
-            ->line(__('Your donation of :toll Toll has been credited to your account.', [
-                'toll' => $this->donation->amount_toll,
-            ]))
-            ->line(__('Amount paid: :amount :currency', [
-                'amount' => $this->donation->amount_money,
+            ->view('emails.donation-completed', [
+                'amountToll' => $this->donation->amount_toll,
+                'amountMoney' => $this->donation->amount_money,
                 'currency' => $this->donation->currency->value,
-            ]));
+            ]);
     }
 
     /** @return array<string, mixed> */

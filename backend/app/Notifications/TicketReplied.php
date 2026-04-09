@@ -47,9 +47,12 @@ final class TicketReplied extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->subject("Reply to ticket: {$this->ticket->subject}")
-            ->line("{$this->message->user->name} replied to your ticket.")
-            ->line(mb_substr(strip_tags($this->message->body), 0, 200))
-            ->action('View Ticket', url("/tickets?id={$this->ticket->id}"));
+            ->subject(__('Reply to ticket: :subject', ['subject' => $this->ticket->subject]))
+            ->view('emails.ticket-replied', [
+                'senderName' => $this->message->user->name,
+                'ticketSubject' => $this->ticket->subject,
+                'messagePreview' => mb_substr(strip_tags($this->message->body), 0, 200),
+                'actionUrl' => url("/tickets?id={$this->ticket->id}"),
+            ]);
     }
 }
