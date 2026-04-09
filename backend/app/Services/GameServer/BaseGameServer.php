@@ -104,17 +104,21 @@ abstract class BaseGameServer implements GameServerContract
 
     public function getBalance(int $accountId): int
     {
-        /** @var int $balance */
-        $balance = Cache::flexible($this->cacheKey("balance_{$accountId}"), [60, 300], function () use ($accountId): int {
-            /** @var int|null $toll */
-            $toll = $this->query(AccountData::class)
-                ->where('id', $accountId)
-                ->value('toll');
+        try {
+            /** @var int $balance */
+            $balance = Cache::flexible($this->cacheKey("balance_{$accountId}"), [60, 300], function () use ($accountId): int {
+                /** @var int|null $toll */
+                $toll = $this->query(AccountData::class)
+                    ->where('id', $accountId)
+                    ->value('toll');
 
-            return $toll ?? 0;
-        });
+                return $toll ?? 0;
+            });
 
-        return $balance;
+            return $balance;
+        } catch (\Throwable) {
+            return 0;
+        }
     }
 
     public function setBalance(int $accountId, int $amount): void
@@ -260,11 +264,13 @@ abstract class BaseGameServer implements GameServerContract
     /** @return LengthAwarePaginator<int, Player> */
     public function getOnlinePlayers(): LengthAwarePaginator
     {
-        return $this->query(Player::class)
-            ->where('online', 1)
-            ->select(['id', 'name', 'race', 'player_class', 'exp', 'online'])
-            ->orderBy('name')
-            ->paginate();
+        return Cache::flexible($this->cacheKey('online_players'), [180, 300], function () {
+            return $this->query(Player::class)
+                ->where('online', 1)
+                ->select(['id', 'name', 'race', 'player_class', 'exp', 'online'])
+                ->orderBy('name')
+                ->paginate();
+        });
     }
 
     /** @return LengthAwarePaginator<int, AbyssRank> */
