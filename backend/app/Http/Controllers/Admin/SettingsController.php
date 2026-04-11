@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Settings\AnnouncementSettingsUpdateRequest;
+use App\Http\Requests\Admin\Settings\ClassesSettingsUpdateRequest;
+use App\Http\Requests\Admin\Settings\DownloadSettingsUpdateRequest;
+use App\Http\Requests\Admin\Settings\GatewaySettingsUpdateRequest;
+use App\Http\Requests\Admin\Settings\PaymentSettingsUpdateRequest;
+use App\Http\Requests\Admin\Settings\TeleportSettingsUpdateRequest;
 use App\Settings\AnnouncementSettings;
+use App\Settings\ClassesSettings;
 use App\Settings\DownloadSettings;
 use App\Settings\GatewaySettings;
 use App\Settings\PaymentSettings;
 use App\Settings\TeleportSettings;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 final class SettingsController extends Controller
 {
@@ -28,19 +34,9 @@ final class SettingsController extends Controller
         ]);
     }
 
-    public function downloadUpdate(Request $request, DownloadSettings $settings): JsonResponse
+    public function downloadUpdate(DownloadSettingsUpdateRequest $request, DownloadSettings $settings): JsonResponse
     {
-        $validated = $request->validate([
-            'url' => ['required', 'string', 'max:500'],
-            'file_size' => ['required', 'string', 'max:50'],
-            'discord_url' => ['required', 'string', 'max:500'],
-            'min_requirements' => ['required', 'array'],
-            'min_requirements.*.label' => ['required', 'string', 'max:50'],
-            'min_requirements.*.value' => ['required', 'string', 'max:100'],
-            'rec_requirements' => ['required', 'array'],
-            'rec_requirements.*.label' => ['required', 'string', 'max:50'],
-            'rec_requirements.*.value' => ['required', 'string', 'max:100'],
-        ]);
+        $validated = $request->validated();
 
         $settings->url = $validated['url'];
         $settings->file_size = $validated['file_size'];
@@ -67,14 +63,9 @@ final class SettingsController extends Controller
         ]);
     }
 
-    public function announcementUpdate(Request $request, AnnouncementSettings $settings): JsonResponse
+    public function announcementUpdate(AnnouncementSettingsUpdateRequest $request, AnnouncementSettings $settings): JsonResponse
     {
-        $validated = $request->validate([
-            'enabled' => ['required', 'boolean'],
-            'text' => ['required', 'string', 'max:500'],
-            'link_text' => ['required', 'string', 'max:100'],
-            'link_url' => ['required', 'string', 'max:500'],
-        ]);
+        $validated = $request->validated();
 
         $settings->enabled = $validated['enabled'];
         $settings->text = $validated['text'];
@@ -101,17 +92,9 @@ final class SettingsController extends Controller
         ]);
     }
 
-    public function paymentUpdate(Request $request, PaymentSettings $settings): JsonResponse
+    public function paymentUpdate(PaymentSettingsUpdateRequest $request, PaymentSettings $settings): JsonResponse
     {
-        $validated = $request->validate([
-            'enabled' => ['required', 'boolean'],
-            'rate_rub' => ['required', 'numeric', 'min:0'],
-            'rate_usd' => ['required', 'numeric', 'min:0'],
-            'rate_eur' => ['required', 'numeric', 'min:0'],
-            'bonus_tiers' => ['required', 'array'],
-            'bonus_tiers.*.min_toll' => ['required', 'integer', 'min:1'],
-            'bonus_tiers.*.bonus_percent' => ['required', 'integer', 'min:1', 'max:100'],
-        ]);
+        $validated = $request->validated();
 
         $settings->enabled = $validated['enabled'];
         $settings->rate_rub = (float) $validated['rate_rub'];
@@ -135,15 +118,9 @@ final class SettingsController extends Controller
         ]);
     }
 
-    public function gatewayUpdate(Request $request, GatewaySettings $settings): JsonResponse
+    public function gatewayUpdate(GatewaySettingsUpdateRequest $request, GatewaySettings $settings): JsonResponse
     {
-        $validated = $request->validate([
-            'limits' => ['required', 'array'],
-            'limits.*.min_amount' => ['required', 'numeric', 'min:0'],
-            'limits.*.max_amount' => ['required', 'numeric', 'min:0'],
-            'limits.*.currency' => ['required', 'string', 'max:3'],
-            'limits.*.enabled' => ['required', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $settings->limits = $validated['limits'];
         $settings->save();
@@ -171,19 +148,9 @@ final class SettingsController extends Controller
         ]);
     }
 
-    public function teleportUpdate(Request $request, TeleportSettings $settings): JsonResponse
+    public function teleportUpdate(TeleportSettingsUpdateRequest $request, TeleportSettings $settings): JsonResponse
     {
-        $validated = $request->validate([
-            'elyos_x' => ['required', 'numeric'],
-            'elyos_y' => ['required', 'numeric'],
-            'elyos_z' => ['required', 'numeric'],
-            'elyos_map' => ['required', 'integer'],
-            'asmodians_x' => ['required', 'numeric'],
-            'asmodians_y' => ['required', 'numeric'],
-            'asmodians_z' => ['required', 'numeric'],
-            'asmodians_map' => ['required', 'integer'],
-            'cooldown_minutes' => ['required', 'integer', 'min:1'],
-        ]);
+        $validated = $request->validated();
 
         $settings->elyos_x = (float) $validated['elyos_x'];
         $settings->elyos_y = (float) $validated['elyos_y'];
@@ -199,6 +166,28 @@ final class SettingsController extends Controller
         return response()->json([
             'data' => $validated,
             'message' => __('Teleport settings updated successfully!'),
+        ]);
+    }
+
+    public function classesShow(ClassesSettings $settings): JsonResponse
+    {
+        return response()->json([
+            'data' => [
+                'classes' => $settings->classes,
+            ],
+        ]);
+    }
+
+    public function classesUpdate(ClassesSettingsUpdateRequest $request, ClassesSettings $settings): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $settings->classes = $validated['classes'];
+        $settings->save();
+
+        return response()->json([
+            'data' => $validated,
+            'message' => __('Classes settings updated successfully!'),
         ]);
     }
 }
