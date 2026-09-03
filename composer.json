@@ -8,7 +8,7 @@
         "php": "^8.2",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.12",
